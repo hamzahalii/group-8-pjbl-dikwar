@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PJBL DIKWAR — Portal Demokrasi & Partisipasi Publik Interaktif</title>
+  <meta name="description" content="Platform edukasi terpadu PJBL Pendidikan Kewarganegaraan: Majalah Digital Editorial Apatisme Publik dan Arena Kuis Interaktif Civic Quest." />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=JetBrains+Mono:wght@500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Playfair Display"', 'Georgia', 'serif'],
+            quest: ['"Fredoka"', 'sans-serif'],
+            sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            crimson: {
+              DEFAULT: '#C8102E',
+              bright: '#E63946',
+              dark: '#9B0B22',
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Custom Portal CSS -->
+  <link rel="stylesheet" href="css/portal.css">
+</head>
+<body class="portal-bg min-h-screen text-slate-900 dark:text-slate-100 font-sans antialiased selection:bg-indigo-600 selection:text-white flex flex-col justify-between transition-colors duration-300">
+
+  <!-- TOP HEADER -->
+  <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      
+      <!-- Logo & Project Identity -->
+      <a href="index.html" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-rose-600 flex items-center justify-center text-white shadow-md shadow-indigo-500/20 group-hover:scale-105 transition-transform">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+          </svg>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-sans font-black text-base sm:text-lg tracking-tight text-slate-900 dark:text-white leading-none">
+            PJBL <span class="text-indigo-600 dark:text-indigo-400">DIKWAR</span>
+          </span>
+          <span class="font-mono text-[10px] tracking-widest uppercase text-slate-500 dark:text-slate-400 mt-0.5">
+            Pendidikan Kewarganegaraan
+          </span>
+        </div>
+      </a>
+
+      <!-- Right Navigation & Theme Switcher -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <a href="artikel.html" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-crimson dark:hover:text-rose-400 transition-colors">
+          <svg class="w-4 h-4 text-crimson dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+          </svg>
+          Majalah Digital
+        </a>
+
+        <a href="kuis.html" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+          <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+          Arena Kuis
+        </a>
+
+        <div class="hidden sm:block w-px h-5 bg-slate-300 dark:bg-slate-700 mx-1"></div>
+
+        <!-- Dark / Light Mode Toggle Button -->
+        <button id="btnPortalTheme" type="button" onclick="window.togglePortalTheme()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-200 transition-colors" aria-label="Ganti Tema">
+          <svg id="portalSunIcon" class="w-4 h-4 text-amber-400 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+          </svg>
+          <svg id="portalMoonIcon" class="w-4 h-4 text-slate-600 dark:text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+          </svg>
+          <span id="portalThemeLabel" class="hidden md:inline">Mode Gelap</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN HERO & SELECTION CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 flex-1 flex flex-col justify-center">
+
+    <!-- HERO INTRO -->
+    <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-950/80 border border-indigo-200 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 text-xs font-bold tracking-wide uppercase mb-5">
+        <span class="w-2 h-2 rounded-full bg-indigo-600 animate-pulse"></span>
+        Proyek Pembelajaran Berbasis Masalah (PJBL)
+      </div>
+
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.15] mb-5">
+        Demokrasi, Partisipasi Publik &amp; <span class="bg-gradient-to-r from-indigo-600 via-rose-600 to-amber-600 bg-clip-text text-transparent">Kedaulatan Warga</span>
+      </h1>
+
+      <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+        Selamat datang di portal terpadu pembelajaran kewarganegaraan. Silakan pilih format eksplorasi yang ingin Anda ikuti: baca investigasi mendalam melalui artikel editorial atau uji pemahaman Anda di arena kuis interaktif.
+      </p>
+    </div>
+
+    <!-- 2 MAIN INTERACTIVE CHOICES (CARDS GRID) -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-stretch max-w-6xl mx-auto w-full mb-16">
+
+      <!-- ==========================================
+           PILIHAN 1: MAJALAH DIGITAL / ARTIKEL
+           ========================================== -->
+      <div class="portal-card ambient-glow-article rounded-3xl bg-white dark:bg-slate-900 border-2 border-rose-200 dark:border-rose-950/70 p-7 sm:p-9 flex flex-col justify-between relative overflow-hidden group">
+        
+        <!-- Subtle Background Glow Element -->
+        <div class="absolute -right-16 -top-16 w-52 h-52 bg-rose-500/10 rounded-full blur-3xl pointer-events-none group-hover:bg-rose-500/20 transition-all duration-500"></div>
+
+        <div>
+          <!-- Header Badges -->
+          <div class="flex items-center justify-between gap-3 mb-5">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-rose-100 dark:bg-rose-950/70 text-crimson dark:text-rose-300 font-mono text-xs font-bold uppercase tracking-wider">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+              </svg>
+              Jurnal Warga • Edisi Khusus
+            </span>
+            <span class="text-xs font-mono text-slate-500 dark:text-slate-400">
+              ~5-8 Menit Baca
+            </span>
+          </div>
+
+          <!-- Title -->
+          <h2 class="font-display font-bold text-2xl sm:text-3xl text-slate-900 dark:text-white leading-tight mb-3 group-hover:text-crimson dark:group-hover:text-rose-400 transition-colors">
+            Apatisme Publik: Ketika Masyarakat Merasa Suaranya Tak Lagi Berarti
+          </h2>
+
+          <!-- Subtitle / Excerpt -->
+          <p class="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed mb-6 font-normal">
+            Esai editorial investigatif gaya jurnalisme bermutu tinggi. Membongkar akar fenomena hilangnya kepercayaan publik, mitos kepedulian pemuda, data survei 567 responden, serta solusi reformasi ruang partisipasi.
+          </p>
+
+          <!-- Feature Bullets -->
+          <div class="space-y-2.5 mb-8">
+            <div class="flex items-center gap-2.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+              <div class="w-5 h-5 rounded-full bg-rose-100 dark:bg-rose-950 flex items-center justify-center text-crimson dark:text-rose-400 shrink-0">✓</div>
+              <span><strong>Data Visual &amp; Grafik Interaktif:</strong> Analisis persepsi politik pemuda Indonesia.</span>
+            </div>
+            <div class="flex items-center gap-2.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+              <div class="w-5 h-5 rounded-full bg-rose-100 dark:bg-rose-950 flex items-center justify-center text-crimson dark:text-rose-400 shrink-0">✓</div>
+              <span><strong>Studi Kasus Kebijakan:</strong> Kasus UU Cipta Kerja, Desa Wadas, &amp; UU ITE.</span>
+            </div>
+            <div class="flex items-center gap-2.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+              <div class="w-5 h-5 rounded-full bg-rose-100 dark:bg-rose-950 flex items-center justify-center text-crimson dark:text-rose-400 shrink-0">✓</div>
+              <span><strong>Fitur Interaktif:</strong> Kontrol ukuran font, sitasi otomatis, &amp; ilustrasi SVG modular.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Button -->
+        <a href="artikel.html" class="portal-btn-crimson w-full py-4 px-6 rounded-2xl font-sans font-bold text-base flex items-center justify-center gap-2.5 text-center group cursor-pointer shadow-lg">
+          <span>Buka Majalah Digital</span>
+          <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+          </svg>
+        </a>
+
+      </div>
+
+      <!-- ==========================================
+           PILIHAN 2: CIVIC QUEST / KUIS INTERAKTIF
+           ========================================== -->
+      <div class="portal-card ambient-glow-quiz rounded-3xl bg-white dark:bg-slate-900 border-2 border-indigo-200 dark:border-indigo-950/70 p-7 sm:p-9 flex flex-col justify-between relative overflow-hidden group">
+        
+        <!-- Subtle Background Glow Element -->
+        <div class="absolute -right-16 -top-16 w-52 h-52 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none group-hover:bg-indigo-500/20 transition-all duration-500"></div>
+
+        <div>
+          <!-- Header Badges -->
+          <div class="flex items-center justify-between gap-3 mb-5">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-indigo-100 dark:bg-indigo-950/70 text-indigo-700 dark:text-indigo-300 font-mono text-xs font-bold uppercase tracking-wider">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              </svg>
+              Gamifikasi • Arena Kuis
+            </span>
+            <span class="text-xs font-mono text-slate-500 dark:text-slate-400">
+              10 Tahapan Misi
+            </span>
+          </div>
+
+          <!-- Title -->
+          <h2 class="font-quest font-bold text-2xl sm:text-3xl text-slate-900 dark:text-white leading-tight mb-3 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+            CIVIC QUEST: Arena Uji Pemahaman Demokrasi
+          </h2>
+
+          <!-- Subtitle / Excerpt -->
+          <p class="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed mb-6 font-normal">
+            Platform uji kompetensi berbasis gamifikasi seru dan taktis. Uji pemahaman materi kewarganegaraan Anda melalui skenario riil pengambilan keputusan publik dan analisis solusi kritis.
+          </p>
+
+          <!-- Feature Bullets -->
+          <div class="space-y-2.5 mb-8">
+            <div class="flex items-center gap-2.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+              <div class="w-5 h-5 rounded-full bg-indigo-100 dark:bg-indigo-950 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shrink-0">✓</div>
+              <span><strong>8 Pilihan Ganda + 2 Kasus Esai:</strong> Skenario taktis dan analisis kebijakan publik.</span>
+            </div>
+            <div class="flex items-center gap-2.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+              <div class="w-5 h-5 rounded-full bg-indigo-100 dark:bg-indigo-950 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shrink-0">✓</div>
+              <span><strong>Efek Audio &amp; Selebrasi Confetti:</strong> Pengalaman belajar interaktif dan memotivasi.</span>
+            </div>
+            <div class="flex items-center gap-2.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+              <div class="w-5 h-5 rounded-full bg-indigo-100 dark:bg-indigo-950 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shrink-0">✓</div>
+              <span><strong>Panel Moderator Terintegrasi:</strong> Rekap jawaban ke Google Sheets &amp; unduh CSV.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Button -->
+        <a href="kuis.html" class="portal-btn-indigo w-full py-4 px-6 rounded-2xl font-sans font-bold text-base flex items-center justify-center gap-2.5 text-center group cursor-pointer shadow-lg">
+          <span>Masuk ke Arena Kuis</span>
+          <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+          </svg>
+        </a>
+
+      </div>
+
+    </div>
+
+    <!-- QUICK OVERVIEW / HIGHLIGHT BANNER -->
+    <div class="rounded-3xl bg-slate-100/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-6 sm:p-8 max-w-6xl mx-auto w-full">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
+        <div class="space-y-1">
+          <div class="font-mono text-xs uppercase tracking-wider text-indigo-600 dark:text-indigo-400 font-bold">01. Pembelajaran Kontekstual</div>
+          <h3 class="font-bold text-slate-900 dark:text-white text-base">Berangkat Dari Isu Nyata</h3>
+          <p class="text-xs text-slate-600 dark:text-slate-400">Mengkaji kesenjangan antara hak konstitusional warga dan implementasi kebijakan publik di lapangan.</p>
+        </div>
+        <div class="space-y-1 md:border-l md:border-slate-300 dark:md:border-slate-800 md:pl-6">
+          <div class="font-mono text-xs uppercase tracking-wider text-rose-600 dark:text-rose-400 font-bold">02. Partisipasi Bermakna</div>
+          <h3 class="font-bold text-slate-900 dark:text-white text-base">3 Hak Pokok Konstitusi</h3>
+          <p class="text-xs text-slate-600 dark:text-slate-400">Hak didengar (right to be heard), dipertimbangkan (right to be considered), dan dijelaskan (right to be explained).</p>
+        </div>
+        <div class="space-y-1 md:border-l md:border-slate-300 dark:md:border-slate-800 md:pl-6">
+          <div class="font-mono text-xs uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-bold">03. Evaluasi Terpadu</div>
+          <h3 class="font-bold text-slate-900 dark:text-white text-base">Refleksi Kritis Mahasiswa</h3>
+          <p class="text-xs text-slate-600 dark:text-slate-400">Mendorong peserta didik bukan sekadar penghafal pasal, melainkan pemecah masalah (problem solver) kebangsaan.</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-950/70 backdrop-blur-md py-8 transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-slate-700 dark:text-slate-300">PJBL Pendidikan Kewarganegaraan (DIKWAR)</span>
+        <span>•</span>
+        <span>Proyek Kolaboratif Mahasiswa</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="artikel.html" class="hover:text-crimson transition-colors">Majalah Digital</a>
+        <a href="kuis.html" class="hover:text-indigo-600 transition-colors">Civic Quest</a>
+        <a href="README.md" class="hover:text-slate-900 dark:hover:text-white transition-colors">Dokumentasi (README.md)</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script Controller -->
+  <script src="js/portal.js"></script>
+</body>
+</html>

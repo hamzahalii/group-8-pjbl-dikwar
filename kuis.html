@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CIVIC QUEST — Arena Uji Pemahaman: Apatisme Publik &amp; Demokrasi</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Fredoka, Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=JetBrains+Mono:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Fredoka"', '"Plus Jakarta Sans"', 'sans-serif'],
+            sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- External Stylesheet -->
+  <link rel="stylesheet" href="css/kuis.css">
+</head>
+<body class="gamified-bg min-h-screen text-slate-900 dark:text-slate-100 font-sans antialiased selection:bg-indigo-600 selection:text-white flex flex-col justify-between">
+
+  <!-- CONFETTI CELEBRATION CANVAS -->
+  <canvas id="confettiCanvas" class="fixed inset-0 pointer-events-none z-50 hidden"></canvas>
+
+  <!-- STICKY TOP GAMIFIED HUD / NAVIGATION BAR -->
+  <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b-2 border-slate-200 dark:border-slate-800 transition-colors">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-2 sm:gap-3">
+
+      <!-- Brand Logo & Quest Title -->
+      <div class="flex items-center gap-2.5">
+        <button id="btnBrandHome" type="button" onclick="window.confirmReturnHome()" class="flex items-center gap-2.5 group focus:outline-none cursor-pointer" title="Kembali ke Beranda Kuis">
+          <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+          </div>
+          <div class="text-left">
+            <span class="font-display font-bold text-lg tracking-tight text-slate-900 dark:text-white block leading-none">
+              CIVIC<span class="text-indigo-600 dark:text-indigo-400">QUEST</span>
+            </span>
+            <span class="font-mono text-[10px] uppercase tracking-widest text-slate-500 dark:text-slate-400 block mt-0.5">
+              Apatisme Publik &amp; Demokrasi
+            </span>
+          </div>
+        </button>
+      </div>
+
+      <!-- Center HUD: Progress Bar (Visible during Quiz) -->
+      <div id="hudProgressContainer" class="hidden md:flex items-center gap-3 flex-1 max-w-md mx-4">
+        <span id="hudStageBadge" class="px-2.5 py-1 rounded-lg bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-mono text-xs font-bold shrink-0">
+          BAGIAN A
+        </span>
+        <div class="w-full h-3.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden p-0.5">
+          <div id="hudProgressBar" class="h-full bg-gradient-to-r from-indigo-500 via-cyan-500 to-emerald-500 rounded-full transition-all duration-500 ease-out" style="width: 10%;"></div>
+        </div>
+        <span id="hudStepCounter" class="font-mono text-xs font-bold text-slate-600 dark:text-slate-300 shrink-0">
+          1/10
+        </span>
+      </div>
+
+      <!-- Right HUD: Student Pill, Streak, XP, Article Cheat-Sheet, Moderator, Sound & Theme -->
+      <div class="flex items-center gap-1.5 sm:gap-2">
+
+        <!-- Student Profile Pill (Visible during Quiz & Results - NO Persona) -->
+        <div id="hudPlayerBadge" class="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/70 border-2 border-indigo-200 dark:border-indigo-800 text-indigo-800 dark:text-indigo-200 font-sans text-xs font-bold max-w-[240px] truncate" title="Identitas Peserta Kuis">
+          <span class="text-sm leading-none">🎓</span>
+          <span id="hudPlayerIdentity" class="truncate">Mahasiswa • Matematika/SS18</span>
+        </div>
+
+        <!-- Combo Streak Counter -->
+        <div id="hudStreakPill" class="hidden sm:flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-amber-50 dark:bg-amber-950/60 border-2 border-amber-300 dark:border-amber-700/70 text-amber-700 dark:text-amber-300 font-mono text-xs font-extrabold transition-transform">
+          <span class="text-sm leading-none">🔥</span>
+          <span id="hudStreakValue">0</span>
+        </div>
+
+        <!-- XP Score Counter -->
+        <div id="hudXpPill" class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border-2 border-emerald-300 dark:border-emerald-700/70 text-emerald-700 dark:text-emerald-300 font-mono text-xs font-extrabold">
+          <span class="text-sm leading-none">⚡</span>
+          <span id="hudXpValue">0</span>
+          <span class="text-[10px]">XP</span>
+        </div>
+
+        <!-- Quick Article Reference Button -->
+        <button id="btnToggleArticle" type="button" onclick="window.toggleReviewModal()" class="btn-3d btn-3d-neutral px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5" title="Buka Intisari Materi Artikel">
+          <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+          </svg>
+          <span class="hidden sm:inline">Ringkasan Artikel</span>
+        </button>
+
+        <!-- Moderator Panel Button (PIN: kel8juara) -->
+        <button id="btnOpenModerator" type="button" onclick="window.openModeratorAuth()" class="btn-3d btn-3d-amber px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5" title="Buka Panel Moderator (Rekap Jawaban Mahasiswa)">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+          </svg>
+          <span class="hidden sm:inline">Panel Moderator</span>
+          <span id="navModSubCount" class="px-1.5 py-0.2 rounded-md bg-amber-900/30 text-white font-mono text-[10px]">0</span>
+        </button>
+
+        <!-- Sound FX Mute/Unmute Toggle -->
+        <button id="btnToggleAudio" type="button" onclick="window.toggleAudio()" class="btn-3d btn-3d-neutral p-2 rounded-xl" title="Suara Efek Interaktif (Aktif/Bisu)" aria-label="Toggle Suara">
+          <svg id="soundOnIcon" class="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+          </svg>
+          <svg id="soundOffIcon" class="w-4 h-4 text-slate-400 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15zM17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>
+          </svg>
+        </button>
+
+        <!-- Dark/Light Theme Toggle -->
+        <button id="btnToggleTheme" type="button" onclick="window.toggleTheme()" class="btn-3d btn-3d-neutral p-2 rounded-xl" title="Ganti Mode Terang / Gelap" aria-label="Ganti Tema">
+          <svg id="themeSunIcon" class="w-4 h-4 text-amber-400 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+          </svg>
+          <svg id="themeMoonIcon" class="w-4 h-4 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+          </svg>
+        </button>
+
+        <!-- Portal Hub Button -->
+        <a href="index.html" class="btn-3d btn-3d-neutral px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 text-slate-700 dark:text-slate-200" title="Kembali ke Portal Beranda">
+          <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+          </svg>
+          <span class="hidden sm:inline">Portal</span>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- Mobile Progress Bar -->
+    <div id="mobileProgressBarWrapper" class="hidden md:hidden px-4 pb-2.5">
+      <div class="flex items-center justify-between text-xs font-mono font-bold mb-1">
+        <span id="mobileStageLabel" class="text-indigo-600 dark:text-indigo-400">BAGIAN A — PILIHAN GANDA</span>
+        <span id="mobileStepCounter" class="text-slate-500">Soal 1 / 10</span>
+      </div>
+      <div class="w-full h-2.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+        <div id="mobileProgressBar" class="h-full bg-gradient-to-r from-indigo-500 to-emerald-500 rounded-full transition-all duration-300" style="width: 10%;"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN APPLICATION CONTAINER -->
+  <main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 md:py-12">
+
+    <!-- ===================================================================
+         SCREEN 1: GAMIFIED ONBOARDING & PLAYER SETUP (START SCREEN)
+         =================================================================== -->
+    <section id="screenStart" class="animate-pop-in space-y-8">
+
+      <!-- Hero Banner Card -->
+      <div class="relative rounded-3xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-xl overflow-hidden">
+
+        <div class="hidden lg:block absolute -right-10 -top-10 w-56 h-56 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="hidden lg:block absolute right-12 bottom-6 w-40 h-40 bg-emerald-500/10 rounded-full blur-xl pointer-events-none"></div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+
+          <!-- Left Intro Column (7 cols) -->
+          <div class="lg:col-span-7 space-y-5">
+            <div class="inline-flex flex-wrap items-center gap-2">
+              <span class="px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-mono text-xs font-extrabold uppercase tracking-wider">
+                🎯 Interactive Civic Challenge
+              </span>
+              <span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-mono text-xs font-bold">
+                8 Pilihan Ganda + 2 Studi Kasus
+              </span>
+            </div>
+
+            <h1 class="font-display font-bold text-3xl sm:text-5xl text-slate-900 dark:text-white leading-[1.12] tracking-tight">
+              Apatisme Publik: <span class="text-indigo-600 dark:text-indigo-400">Ketika Suara Masyarakat</span> Diuji!
+            </h1>
+
+            <p class="text-slate-600 dark:text-slate-300 text-base sm:text-lg leading-relaxed">
+              Uji ketajaman analisismu tentang <strong>demokrasi pasca-bilik suara</strong>, temuan riset pemuda <strong>Putri, Marlina, &amp; Zain (2025)</strong>, konsep <strong>Political Efficacy</strong>, hingga jaminan hukum <strong>Meaningful Participation</strong> dalam pengalaman kuis interaktif.
+            </p>
+
+            <!-- Feature Highlights Pills -->
+            <div class="grid grid-cols-3 gap-3 pt-2">
+              <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700/70 text-center">
+                <span class="text-xl block">⚡</span>
+                <span class="font-display font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-200 mt-1 block">Combo &amp; XP</span>
+                <span class="font-sans text-[11px] text-slate-500 dark:text-slate-400">Streak Multiplier</span>
+              </div>
+              <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700/70 text-center">
+                <span class="text-xl block">🛡️</span>
+                <span class="font-display font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-200 mt-1 block">2 Power-Ups</span>
+                <span class="font-sans text-[11px] text-slate-500 dark:text-slate-400">50:50 &amp; Petunjuk</span>
+              </div>
+              <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700/70 text-center">
+                <span class="text-xl block">🧠</span>
+                <span class="font-display font-bold text-xs sm:text-sm text-slate-800 dark:text-slate-200 mt-1 block">Think-Tank</span>
+                <span class="font-sans text-[11px] text-slate-500 dark:text-slate-400">Radar Analisis Esai</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Setup Card (5 cols): Clean Player Profile (NO Persona Selector) -->
+          <div id="onboardingFormCard" class="lg:col-span-5 bg-slate-50 dark:bg-slate-800/90 rounded-2xl p-6 sm:p-7 border-2 border-slate-200 dark:border-slate-700 space-y-5">
+            <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-3">
+              <div>
+                <h2 class="font-display font-bold text-xl text-slate-900 dark:text-white">
+                  Identitas Peserta Kuis
+                </h2>
+                <p class="font-sans text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                  Data otomatis direkam ke rekap kelas
+                </p>
+              </div>
+              <span class="px-2.5 py-1 rounded-lg bg-indigo-100 dark:bg-indigo-950 font-mono text-[11px] text-indigo-700 dark:text-indigo-300 font-extrabold">
+                Wajib Diisi
+              </span>
+            </div>
+
+            <!-- Input 1: Nama Lengkap (Required) -->
+            <div class="space-y-1.5">
+              <label for="playerNameInput" class="block font-sans text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300">
+                Nama Lengkap <span class="text-rose-500">*</span>
+              </label>
+              <input
+                id="playerNameInput"
+                type="text"
+                placeholder="Contoh: Nadia Maharani"
+                maxlength="60"
+                class="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-900 border-2 border-slate-300 dark:border-slate-700 focus:border-indigo-600 dark:focus:border-indigo-400 focus:outline-none font-sans text-sm font-semibold text-slate-900 dark:text-white transition-colors"
+              />
+            </div>
+
+            <!-- Input 2: Program Studi / Kelas (Required, NO "(Opsional)", Placeholder "Matematika/SS18") -->
+            <div class="space-y-1.5">
+              <label for="playerCampusInput" class="block font-sans text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300">
+                Program Studi / Kelas <span class="text-rose-500">*</span>
+              </label>
+              <input
+                id="playerCampusInput"
+                type="text"
+                placeholder="Matematika/SS18"
+                maxlength="60"
+                class="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-900 border-2 border-slate-300 dark:border-slate-700 focus:border-indigo-600 dark:focus:border-indigo-400 focus:outline-none font-sans text-sm font-semibold text-slate-900 dark:text-white transition-colors"
+              />
+            </div>
+
+            <!-- Validation Error Banner -->
+            <div id="onboardingErrorMsg" class="hidden p-3 rounded-xl bg-rose-50 dark:bg-rose-950/70 border-2 border-rose-300 dark:border-rose-700 text-rose-700 dark:text-rose-300 font-sans text-xs font-bold flex items-center gap-2">
+              <span>⚠️</span>
+              <span id="onboardingErrorText">Mohon isi Nama Lengkap dan Program Studi / Kelas terlebih dahulu.</span>
+            </div>
+
+            <!-- Primary CTA Button -->
+            <button
+              id="btnStartQuiz"
+              type="button"
+              onclick="window.startQuiz()"
+              class="btn-3d btn-3d-indigo w-full py-4 px-6 rounded-2xl font-display font-bold text-base sm:text-lg tracking-wide flex items-center justify-center gap-2.5"
+            >
+              <span>🚀 Mulai Tantangan (10 Soal)</span>
+            </button>
+
+            <p class="text-center font-mono text-[11px] text-slate-500 dark:text-slate-400">
+              💡 Pintasan Keyboard: <kbd class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200">A</kbd> <kbd class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200">B</kbd> <kbd class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200">C</kbd> <kbd class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200">D</kbd> &amp; <kbd class="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200">Enter ↵</kbd>
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Structure Overview Cards (Bagian A & Bagian B) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-start gap-4">
+          <div class="w-12 h-12 rounded-2xl bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-display font-bold text-xl shrink-0">
+            A
+          </div>
+          <div>
+            <span class="font-mono text-xs font-extrabold uppercase text-indigo-600 dark:text-indigo-400">Bagian A • Soal 1 – 8</span>
+            <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mt-0.5">Arena Pilihan Ganda</h3>
+            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+              8 soal skenario dan konsep kunci tentang apatisme vs sikap kritis, riset pemuda 2025, <em>political efficacy</em>, tahapan kebijakan publik, Pasal 96 UU 13/2022, dan <em>meaningful participation</em>.
+            </p>
+          </div>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 flex items-start gap-4">
+          <div class="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-display font-bold text-xl shrink-0">
+            B
+          </div>
+          <div>
+            <span class="font-mono text-xs font-extrabold uppercase text-emerald-600 dark:text-emerald-400">Bagian B • Soal 9 – 10</span>
+            <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white mt-0.5">Studio Isian: Analisis Kasus &amp; Proyeksi Aksi</h3>
+            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+              2 tantangan esai reflektif dilengkapi <strong>Radar Kualitas Argumen Real-Time</strong>, kartu pemantik konsep, serta perbandingan langsung dengan referensi jawaban ideal.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ===================================================================
+         SCREEN 2: BAGIAN A — PILIHAN GANDA (QUESTIONS 1 TO 8)
+         =================================================================== -->
+    <section id="screenMultipleChoice" class="hidden space-y-6">
+
+      <!-- Top Bar Inside Arena: Question Meta & Lifelines (Power-Ups) -->
+      <div class="flex flex-wrap items-center justify-between gap-3 bg-white dark:bg-slate-900 p-4 rounded-2xl border-2 border-slate-200 dark:border-slate-800 shadow-sm">
+        <div class="flex items-center gap-2.5">
+          <span id="mcQuestionNumberBadge" class="px-3 py-1.5 rounded-xl bg-indigo-600 text-white font-display font-bold text-sm">
+            SOAL 1 / 8
+          </span>
+          <span id="mcCategoryTag" class="px-3 py-1 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-mono text-xs font-bold">
+            Kritik vs. Apatisme
+          </span>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button
+            id="btnLifeline5050"
+            type="button"
+            onclick="window.useFiftyFifty()"
+            class="btn-3d btn-3d-neutral px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5"
+            title="Eliminasi 2 Pilihan Jawaban yang Salah (Pintasan: F)"
+          >
+            <span>✂️ 50:50</span>
+            <span id="count5050" class="px-1.5 py-0.2 rounded-md bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-mono text-[11px]">2x</span>
+          </button>
+
+          <button
+            id="btnLifelineHint"
+            type="button"
+            onclick="window.useHint()"
+            class="btn-3d btn-3d-neutral px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5"
+            title="Tampilkan Petunjuk Konsep Artikel (Pintasan: H)"
+          >
+            <span>💡 Petunjuk</span>
+            <span id="countHint" class="px-1.5 py-0.2 rounded-md bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 font-mono text-[11px]">2x</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Active Concept Hint Banner -->
+      <div id="mcHintBanner" class="hidden animate-pop-in p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/70 border-2 border-amber-300 dark:border-amber-700 text-amber-900 dark:text-amber-200 flex items-start gap-3">
+        <span class="text-xl leading-none mt-0.5">💡</span>
+        <div class="text-xs sm:text-sm space-y-0.5">
+          <span class="font-mono text-[11px] font-extrabold uppercase tracking-wider text-amber-700 dark:text-amber-400 block">Petunjuk Konsep Artikel:</span>
+          <p id="mcHintText" class="font-medium leading-relaxed"></p>
+        </div>
+      </div>
+
+      <!-- Main Question Prompt Card -->
+      <div id="mcQuestionCard" class="rounded-3xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-lg space-y-6">
+        <div id="mcPromptContainer" class="space-y-4"></div>
+        <div id="mcOptionsGrid" class="grid grid-cols-1 gap-3.5 pt-2"></div>
+
+        <div id="mcActionRow" class="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between gap-4">
+          <span class="font-mono text-xs text-slate-400 dark:text-slate-500 hidden sm:inline">
+            Pilih satu jawaban lalu tekan <strong>PERIKSA JAWABAN</strong> (atau tombol Enter ↵)
+          </span>
+          <button
+            id="btnSubmitMc"
+            type="button"
+            onclick="window.checkAnswer()"
+            disabled
+            class="btn-3d btn-3d-indigo w-full sm:w-auto ml-auto px-8 py-3.5 rounded-2xl font-display font-bold text-base tracking-wide flex items-center justify-center gap-2"
+          >
+            <span>PERIKSA JAWABAN</span>
+            <span class="font-mono text-xs opacity-80">[Enter ↵]</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Instant Pedagogical Feedback Drawer -->
+      <div id="mcFeedbackDrawer" class="hidden animate-pop-in rounded-3xl border-2 p-6 sm:p-8 shadow-xl space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="flex items-center gap-3.5">
+            <div id="mcFeedbackIcon" class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl font-bold shrink-0">
+              ✓
+            </div>
+            <div>
+              <span id="mcFeedbackXpTag" class="font-mono text-xs font-extrabold uppercase tracking-wider block">
+                +100 XP • JAWABAN TEPAT
+              </span>
+              <h3 id="mcFeedbackTitle" class="font-display font-bold text-2xl">
+                Tepat Sekali!
+              </h3>
+            </div>
+          </div>
+
+          <button
+            id="btnNextMc"
+            type="button"
+            onclick="window.nextQuestion()"
+            class="btn-3d btn-3d-emerald px-7 py-3.5 rounded-2xl font-display font-bold text-base tracking-wide flex items-center justify-center gap-2 shrink-0"
+          >
+            <span id="btnNextMcLabel">LANJUTKAN</span>
+            <span>→</span>
+          </button>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-white/80 dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-700/80 space-y-1.5">
+          <span class="font-mono text-[11px] font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 block">
+            📖 Mengapa Demikian? (Insight Artikel):
+          </span>
+          <p id="mcFeedbackExplanation" class="text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed"></p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ===================================================================
+         SCREEN 3: STAGE TRANSITION (BAGIAN A COMPLETED -> ENTER BAGIAN B)
+         =================================================================== -->
+    <section id="screenTransitionB" class="hidden animate-pop-in">
+      <div class="rounded-3xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 p-8 sm:p-12 text-center max-w-2xl mx-auto shadow-xl space-y-6">
+        <div class="w-20 h-20 rounded-3xl bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 mx-auto flex items-center justify-center text-4xl animate-float shadow-md">
+          🏛️
+        </div>
+        <div class="space-y-2">
+          <span class="px-3.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-mono text-xs font-extrabold uppercase">
+            BAGIAN A SELESAI!
+          </span>
+          <h2 class="font-display font-bold text-3xl sm:text-4xl text-slate-900 dark:text-white">
+            Selamat Datang di Bagian B: <br/>
+            <span class="text-indigo-600 dark:text-indigo-400">Studio Analisis Kasus &amp; Proyeksi Aksi</span>
+          </h2>
+          <p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
+            Kamu telah menyelesaikan 8 soal Pilihan Ganda dengan skor sementara <strong id="transitionMcScoreText" class="text-indigo-600 dark:text-indigo-400">0/8</strong>. Sekarang saatnya menguji daya kritis dan gagasan aksimu pada <strong>Soal 9 (Analisis Kasus)</strong> dan <strong>Soal 10 (Refleksi &amp; Proyeksi Aksi)</strong>!
+          </p>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3 max-w-md mx-auto">
+          <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+            <span class="font-mono text-[11px] text-slate-500 block">Akurasi PG</span>
+            <span id="transitionAccuracyVal" class="font-display font-bold text-xl text-slate-900 dark:text-white">0%</span>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+            <span class="font-mono text-[11px] text-slate-500 block">XP Terkumpul</span>
+            <span id="transitionXpVal" class="font-display font-bold text-xl text-emerald-600 dark:text-emerald-400">0 XP</span>
+          </div>
+          <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+            <span class="font-mono text-[11px] text-slate-500 block">Rekor Streak</span>
+            <span id="transitionStreakVal" class="font-display font-bold text-xl text-amber-500">0x 🔥</span>
+          </div>
+        </div>
+
+        <button
+          id="btnEnterBagianB"
+          type="button"
+          onclick="window.enterBagianB()"
+          class="btn-3d btn-3d-indigo px-8 py-4 rounded-2xl font-display font-bold text-lg tracking-wide inline-flex items-center gap-3"
+        >
+          <span>MASUK KE BAGIAN B (SOAL 9 &amp; 10)</span>
+          <span>→</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SCREEN 4: BAGIAN B — ISIAN (QUESTIONS 9 & 10 INTERACTIVE STUDIO)
+         =================================================================== -->
+    <section id="screenEssayStudio" class="hidden space-y-6">
+
+      <div class="flex flex-wrap items-center justify-between gap-3 bg-white dark:bg-slate-900 p-4 rounded-2xl border-2 border-slate-200 dark:border-slate-800 shadow-sm">
+        <div class="flex items-center gap-2.5">
+          <span id="essayNumberBadge" class="px-3 py-1.5 rounded-xl bg-emerald-600 text-white font-display font-bold text-sm">
+            BAGIAN B • SOAL 9
+          </span>
+          <span id="essayCategoryBadge" class="px-3 py-1 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-mono text-xs font-bold">
+            ANALISIS KASUS
+          </span>
+        </div>
+        <div class="flex items-center gap-2 font-mono text-xs font-bold text-emerald-600 dark:text-emerald-400">
+          <span>⚡ Potensi Bonus: Hingga +250 XP</span>
+        </div>
+      </div>
+
+      <div class="rounded-3xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-lg space-y-6">
+        <div id="essayPromptBox" class="p-5 sm:p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border-l-4 border-indigo-600 space-y-3"></div>
+
+        <!-- Clickable Concept Inspiration Chips -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-mono text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+              💡 Klik Kartu Pemantik Konsep (Menambahkan Kata Kunci ke Jawabanmu):
+            </span>
+          </div>
+          <div id="essayConceptChips" class="flex flex-wrap gap-2"></div>
+        </div>
+
+        <!-- Structured Sub-Inputs -->
+        <div class="space-y-5">
+          <div class="space-y-2">
+            <label id="essaySubLabel1" for="essayInput1" class="block font-display font-bold text-base text-slate-900 dark:text-white">
+              1. Mengapa kondisi tersebut dapat mendorong munculnya apatisme politik?
+            </label>
+            <textarea
+              id="essayInput1"
+              rows="4"
+              oninput="window.analyzeEssayQuality()"
+              placeholder="Tuliskan analisis kamu di sini..."
+              class="w-full p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border-2 border-slate-300 dark:border-slate-700 focus:border-indigo-600 dark:focus:border-indigo-400 focus:bg-white dark:focus:bg-slate-900 focus:outline-none font-sans text-sm sm:text-base text-slate-900 dark:text-white leading-relaxed transition-colors"
+            ></textarea>
+          </div>
+
+          <div class="space-y-2">
+            <label id="essaySubLabel2" for="essayInput2" class="block font-display font-bold text-base text-slate-900 dark:text-white">
+              2. Apa dua tindakan konkret yang dapat dilakukan mahasiswa untuk berpartisipasi dalam persoalan tersebut?
+            </label>
+            <textarea
+              id="essayInput2"
+              rows="4"
+              oninput="window.analyzeEssayQuality()"
+              placeholder="Tuliskan langkah atau rencana aksi konkretmu di sini..."
+              class="w-full p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border-2 border-slate-300 dark:border-slate-700 focus:border-indigo-600 dark:focus:border-indigo-400 focus:bg-white dark:focus:bg-slate-900 focus:outline-none font-sans text-sm sm:text-base text-slate-900 dark:text-white leading-relaxed transition-colors"
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- Real-Time Argument Quality Radar -->
+        <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <span class="text-lg">📡</span>
+              <span class="font-display font-bold text-sm text-slate-900 dark:text-white">
+                Radar Kualitas Argumen (Real-Time)
+              </span>
+            </div>
+            <span id="essayLiveXpPreview" class="px-2.5 py-1 rounded-lg bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-mono text-xs font-extrabold">
+              +0 XP Terdeteksi
+            </span>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            <div id="rubricPill-depth" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 flex items-center gap-2 opacity-50 transition-all">
+              <span id="rubricIcon-depth" class="w-5 h-5 rounded-full bg-slate-200 dark:bg-slate-700 text-xs flex items-center justify-center font-bold">1</span>
+              <div class="min-w-0">
+                <span class="font-sans font-bold text-xs block truncate">Kedalaman Analisis</span>
+                <span class="font-mono text-[10px] text-slate-500 block">Min. 25 kata</span>
+              </div>
+            </div>
+
+            <div id="rubricPill-concept" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 flex items-center gap-2 opacity-50 transition-all">
+              <span id="rubricIcon-concept" class="w-5 h-5 rounded-full bg-slate-200 dark:bg-slate-700 text-xs flex items-center justify-center font-bold">2</span>
+              <div class="min-w-0">
+                <span class="font-sans font-bold text-xs block truncate">Konsep Artikel</span>
+                <span class="font-mono text-[10px] text-slate-500 block">Efikasi / Hak</span>
+              </div>
+            </div>
+
+            <div id="rubricPill-action" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 flex items-center gap-2 opacity-50 transition-all">
+              <span id="rubricIcon-action" class="w-5 h-5 rounded-full bg-slate-200 dark:bg-slate-700 text-xs flex items-center justify-center font-bold">3</span>
+              <div class="min-w-0">
+                <span class="font-sans font-bold text-xs block truncate">Solusi Konkret</span>
+                <span class="font-mono text-[10px] text-slate-500 block">Langkah Nyata</span>
+              </div>
+            </div>
+
+            <div id="rubricPill-complete" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 flex items-center gap-2 opacity-50 transition-all">
+              <span id="rubricIcon-complete" class="w-5 h-5 rounded-full bg-slate-200 dark:bg-slate-700 text-xs flex items-center justify-center font-bold">4</span>
+              <div class="min-w-0">
+                <span class="font-sans font-bold text-xs block truncate">Dua Bagian Terisi</span>
+                <span class="font-mono text-[10px] text-slate-500 block">Lengkap &amp; Utuh</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="essaySubmitRow" class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
+          <span id="essayValidationMsg" class="font-sans text-xs text-slate-500 dark:text-slate-400">
+            Isi kedua kolom analisis di atas (minimal beberapa kalimat) untuk mengunci jawaban.
+          </span>
+          <button
+            id="btnSubmitEssay"
+            type="button"
+            onclick="window.submitEssay()"
+            class="btn-3d btn-3d-indigo px-8 py-3.5 rounded-2xl font-display font-bold text-base tracking-wide flex items-center justify-center gap-2 shrink-0"
+          >
+            <span>KUNCI JAWABAN &amp; LIHAT REFERENSI</span>
+            <span>✓</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Benchmark / Model Answer Feedback Card -->
+      <div id="essayFeedbackCard" class="hidden animate-pop-in rounded-3xl bg-emerald-50 dark:bg-emerald-950/50 border-2 border-emerald-400 dark:border-emerald-600 p-6 sm:p-8 shadow-xl space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-emerald-200 dark:border-emerald-800 pb-4">
+          <div class="flex items-center gap-3.5">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center text-2xl font-bold shrink-0">
+              🌟
+            </div>
+            <div>
+              <span id="essayEarnedXpLabel" class="font-mono text-xs font-extrabold uppercase text-emerald-700 dark:text-emerald-300 block">
+                +200 XP • ANALISIS TERSIMPAN
+              </span>
+              <h3 class="font-display font-bold text-2xl text-slate-900 dark:text-white">
+                Refleksi Kritis yang Sangat Baik!
+              </h3>
+            </div>
+          </div>
+
+          <button
+            id="btnNextEssay"
+            type="button"
+            onclick="window.nextQuestion()"
+            class="btn-3d btn-3d-emerald px-7 py-3.5 rounded-2xl font-display font-bold text-base tracking-wide flex items-center justify-center gap-2 shrink-0"
+          >
+            <span id="btnNextEssayLabel">LANJUT KE SOAL 10</span>
+            <span>→</span>
+          </button>
+        </div>
+
+        <div class="space-y-3">
+          <span class="font-mono text-xs font-extrabold uppercase tracking-wider text-emerald-800 dark:text-emerald-300 block">
+            📌 Referensi Analisis Ideal Berdasarkan Artikel (Sebagai Pembanding):
+          </span>
+          <div id="essayBenchmarkContent" class="p-4 sm:p-5 rounded-2xl bg-white dark:bg-slate-900 border border-emerald-200 dark:border-emerald-800/80 text-xs sm:text-sm text-slate-700 dark:text-slate-200 space-y-2.5 leading-relaxed"></div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ===================================================================
+         SCREEN 5: RESULTS, CIVIC CERTIFICATE & PORTFOLIO EXPORT
+         =================================================================== -->
+    <section id="screenResults" class="hidden animate-pop-in space-y-8">
+
+      <div class="rounded-3xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-10 shadow-xl space-y-8 relative overflow-hidden">
+
+        <!-- Student Certificate Header (NO Persona) -->
+        <div class="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b-2 border-slate-100 dark:border-slate-800">
+          <div class="flex flex-col sm:flex-row items-center text-center sm:text-left gap-5">
+            <div class="w-20 h-20 rounded-3xl bg-indigo-600 text-white flex items-center justify-center text-4xl shadow-lg shrink-0">
+              🏆
+            </div>
+            <div class="space-y-1.5">
+              <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                <span class="px-3 py-1 rounded-full bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-mono text-xs font-extrabold uppercase">
+                  SERTIFIKAT PENCAPAIAN CIVIC QUEST
+                </span>
+                <span id="resultPlayerCampusBadge" class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-mono text-xs font-extrabold">
+                  Matematika/SS18
+                </span>
+              </div>
+              <h2 id="resultPlayerName" class="font-display font-bold text-3xl sm:text-4xl text-slate-900 dark:text-white">
+                Mahasiswa Kritis
+              </h2>
+              <p id="resultCivicTitle" class="font-sans font-bold text-base text-emerald-600 dark:text-emerald-400">
+                Predikat: Arsitek Demokrasi &amp; Pengawal Kebijakan Kampus
+              </p>
+            </div>
+          </div>
+
+          <div class="px-6 py-4 rounded-2xl bg-gradient-to-br from-indigo-600 to-indigo-800 text-white text-center shadow-md shrink-0">
+            <span class="font-mono text-[11px] uppercase tracking-widest text-indigo-200 block">TOTAL SKOR AKHIR</span>
+            <span id="resultTotalXp" class="font-display font-bold text-4xl sm:text-5xl block mt-0.5">0 XP</span>
+            <span id="resultAccuracySummary" class="font-mono text-xs text-emerald-300 block mt-1">Pilihan Ganda: 0/8 (0%)</span>
+          </div>
+        </div>
+
+        <!-- DATABASE SYNC STATUS BANNER -->
+        <div id="cloudSyncStatusBanner" class="no-print p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/50 border-2 border-emerald-300 dark:border-emerald-700/80 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div id="cloudSyncSpinner" class="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-base shrink-0">
+              ✓
+            </div>
+            <div class="text-left">
+              <span id="cloudSyncTitle" class="font-display font-bold text-sm text-emerald-900 dark:text-emerald-200 block">
+                Jawaban Tersimpan Otomatis ✓
+              </span>
+              <span id="cloudSyncSubtitle" class="font-mono text-[11px] text-emerald-700 dark:text-emerald-300 block">
+                Jawaban Bagian A (1–8) &amp; Bagian B (9–10) telah terekam di Rekap Moderator.
+              </span>
+            </div>
+          </div>
+          <button
+            id="btnManualResync"
+            type="button"
+            onclick="window.manualResyncSubmission()"
+            class="btn-3d btn-3d-neutral px-3.5 py-2 rounded-xl font-sans text-xs font-bold flex items-center gap-1.5 shrink-0"
+          >
+            <span>🔄 Kirim Ulang / Sinkronkan</span>
+          </button>
+        </div>
+
+        <!-- MANDATORY CLOSING MESSAGE FROM PROMPT -->
+        <div class="p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-indigo-50 via-emerald-50 to-amber-50 dark:from-indigo-950/60 dark:via-emerald-950/40 dark:to-slate-800/80 border-2 border-indigo-200 dark:border-indigo-800/80 text-center space-y-3">
+          <span class="text-3xl block">🇮🇩</span>
+          <h3 class="font-display font-bold text-xl sm:text-2xl text-slate-900 dark:text-white">
+            Terima kasih telah berpartisipasi!
+          </h3>
+          <p class="font-sans font-medium text-base sm:text-lg text-slate-700 dark:text-slate-200 max-w-3xl mx-auto leading-relaxed">
+            “Ingat, demokrasi bukan hanya tentang menggunakan hak pilih, tetapi juga tentang memahami, mengawasi, dan turut mengambil bagian dalam menentukan arah kebijakan negara.”
+          </p>
+        </div>
+
+        <!-- 4 Performance Metrics Grid -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700">
+            <span class="font-mono text-xs text-slate-500 dark:text-slate-400 block">Skor Bagian A (PG)</span>
+            <span id="statMcScore" class="font-display font-bold text-2xl sm:text-3xl text-indigo-600 dark:text-indigo-400 mt-1 block">0 / 8</span>
+            <span class="font-sans text-xs text-slate-500">Pemahaman Konsep &amp; Hukum</span>
+          </div>
+          <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700">
+            <span class="font-mono text-xs text-slate-500 dark:text-slate-400 block">Rekor Streak Terbaik</span>
+            <span id="statMaxStreak" class="font-display font-bold text-2xl sm:text-3xl text-amber-500 mt-1 block">0x 🔥</span>
+            <span class="font-sans text-xs text-slate-500">Konsistensi Jawaban</span>
+          </div>
+          <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700">
+            <span class="font-mono text-xs text-slate-500 dark:text-slate-400 block">Bagian B (Studi Kasus)</span>
+            <span id="statEssayStatus" class="font-display font-bold text-2xl sm:text-3xl text-emerald-600 dark:text-emerald-400 mt-1 block">2 / 2</span>
+            <span class="font-sans text-xs text-slate-500">Analisis &amp; Proyeksi Aksi</span>
+          </div>
+          <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200 dark:border-slate-700">
+            <span class="font-mono text-xs text-slate-500 dark:text-slate-400 block">Indeks Efikasi Warga</span>
+            <span id="statCivicGrade" class="font-display font-bold text-2xl sm:text-3xl text-rose-500 mt-1 block">A+</span>
+            <span class="font-sans text-xs text-slate-500">Siap Mengawal Kebijakan</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons: Copy Full Report, Print PDF, Play Again -->
+        <div class="no-print flex flex-wrap items-center justify-center sm:justify-between gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+          <div class="flex flex-wrap items-center gap-3">
+            <button
+              id="btnCopyFullReport"
+              type="button"
+              onclick="window.copyResultReport()"
+              class="btn-3d btn-3d-emerald px-5 py-3 rounded-2xl font-display font-bold text-sm flex items-center gap-2"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/>
+              </svg>
+              <span>Salin Lembar Jawaban Lengkap (Ke Dosen / LMS)</span>
+            </button>
+
+            <button
+              id="btnPrintPdf"
+              type="button"
+              onclick="window.print()"
+              class="btn-3d btn-3d-neutral px-5 py-3 rounded-2xl font-display font-bold text-sm flex items-center gap-2"
+            >
+              <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+              </svg>
+              <span>Cetak / Simpan PDF</span>
+            </button>
+          </div>
+
+          <button
+            id="btnRestartQuiz"
+            type="button"
+            onclick="window.restartQuiz()"
+            class="btn-3d btn-3d-indigo px-6 py-3 rounded-2xl font-display font-bold text-sm flex items-center gap-2"
+          >
+            <span>🔄 Main Lagi</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- COMPLETE INTERACTIVE ANSWER REVIEW (BAGIAN A & BAGIAN B) -->
+      <div class="rounded-3xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-lg space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
+          <div>
+            <span class="font-mono text-xs font-extrabold uppercase text-indigo-600 dark:text-indigo-400">
+              PORTFOLIO &amp; EVALUASI PEMBELAJARAN
+            </span>
+            <h3 class="font-display font-bold text-2xl text-slate-900 dark:text-white mt-0.5">
+              Tinjauan Lengkap Jawabanmu (Soal 1 – 10)
+            </h3>
+          </div>
+
+          <div class="no-print inline-flex rounded-xl bg-slate-100 dark:bg-slate-800 p-1">
+            <button type="button" onclick="window.switchReviewTab('all')" id="revTab-all" class="px-3.5 py-1.5 rounded-lg font-sans text-xs font-bold bg-indigo-600 text-white transition-all cursor-pointer">
+              Semua (1–10)
+            </button>
+            <button type="button" onclick="window.switchReviewTab('bagianA')" id="revTab-bagianA" class="px-3.5 py-1.5 rounded-lg font-sans text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-slate-900 transition-all cursor-pointer">
+              Bagian A (1–8)
+            </button>
+            <button type="button" onclick="window.switchReviewTab('bagianB')" id="revTab-bagianB" class="px-3.5 py-1.5 rounded-lg font-sans text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-slate-900 transition-all cursor-pointer">
+              Bagian B (9–10)
+            </button>
+          </div>
+        </div>
+
+        <div id="reviewContainerBagianB" class="space-y-4"></div>
+        <div id="reviewContainerBagianA" class="space-y-4"></div>
+      </div>
+
+    </section>
+
+    <!-- ===================================================================
+         SCREEN 6: MODERATOR COMMAND CENTER DASHBOARD (PIN: kel8juara)
+         =================================================================== -->
+    <section id="screenModerator" class="hidden animate-pop-in space-y-6">
+
+      <!-- Top Moderator Header Banner -->
+      <div class="rounded-3xl bg-slate-900 text-white border-2 border-slate-800 p-6 sm:p-8 shadow-xl flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+        <div class="space-y-2">
+          <div class="inline-flex flex-wrap items-center gap-2">
+            <span class="px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 font-mono text-xs font-extrabold uppercase tracking-wider">
+              🛡️ MODERATOR COMMAND CENTER
+            </span>
+            <span id="modCloudBadge" class="px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 font-mono text-xs font-bold flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>Database Aktif</span>
+            </span>
+          </div>
+          <h2 class="font-display font-bold text-2xl sm:text-4xl tracking-tight">
+            Rekapitulasi &amp; Analisis Jawaban Mahasiswa
+          </h2>
+          <p class="text-slate-300 text-xs sm:text-sm max-w-2xl leading-relaxed">
+            Pantau seluruh mahasiswa yang telah mengerjakan kuis <strong>Apatisme Publik &amp; Demokrasi</strong>, berikan penilaian tambahan &amp; komentar pada esai Soal 9 &amp; 10, sinkronkan dengan Google Sheets, atau unduh CSV/Excel.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2.5 shrink-0">
+          <button
+            id="btnModFetchSheets"
+            type="button"
+            onclick="window.testAndSyncSheets()"
+            class="btn-3d btn-3d-indigo px-4 py-2.5 rounded-xl font-display font-bold text-xs flex items-center gap-1.5"
+          >
+            <span>🔄 Tarik Data Sheets</span>
+          </button>
+
+          <button
+            id="btnModSeedDemo"
+            type="button"
+            onclick="window.seedDemoSubmission()"
+            class="btn-3d btn-3d-neutral px-4 py-2.5 rounded-xl font-display font-bold text-xs flex items-center gap-1.5"
+          >
+            <span>🧪 + Data Simulasi</span>
+          </button>
+
+          <button
+            id="btnModExportCsv"
+            type="button"
+            onclick="window.exportModeratorCSV()"
+            class="btn-3d btn-3d-emerald px-5 py-2.5 rounded-xl font-display font-bold text-xs sm:text-sm flex items-center gap-2"
+          >
+            <span>📥 Unduh CSV / Excel</span>
+          </button>
+
+          <button
+            id="btnModCloseDash"
+            type="button"
+            onclick="window.closeModeratorDashboard()"
+            class="btn-3d btn-3d-rose px-4 py-2.5 rounded-xl font-display font-bold text-xs sm:text-sm flex items-center gap-1.5"
+          >
+            <span>✕ Tutup Moderator</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- PUSAT KONEKSI DATABASE GOOGLE SHEETS (2-WAY SYNC & CODE.GS GENERATOR) -->
+      <div class="rounded-3xl bg-white dark:bg-slate-900 border-2 border-emerald-300 dark:border-emerald-800/80 p-6 shadow-md space-y-5">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
+          <div class="flex items-start gap-3.5">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center text-2xl shadow-sm shrink-0">
+              📊
+            </div>
+            <div>
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="font-mono text-xs font-extrabold uppercase text-emerald-700 dark:text-emerald-400">
+                  INTEGRASI GOOGLE SHEETS REAL-TIME (2 ARAH)
+                </span>
+                <span id="gsheetsConnectionBadge" class="px-2.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 font-mono text-[11px] font-bold">
+                  ⚪ URL Belum Diatur
+                </span>
+              </div>
+              <h3 class="font-display font-bold text-lg sm:text-xl text-slate-900 dark:text-white mt-0.5">
+                Pusat Koneksi Database Google Sheets Moderator
+              </h3>
+              <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mt-0.5">
+                Tempelkan <strong>URL Web App Google Apps Script</strong> di bawah ini (atau isi konstanta <code class="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 font-mono text-indigo-600 dark:text-indigo-400">DEFAULT_GOOGLE_SHEETS_WEBAPP_URL</code> di baris atas kode HTML sebelum menyebarkan file).
+              </p>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2 shrink-0">
+            <button
+              id="btnToggleCodeGs"
+              type="button"
+              onclick="window.toggleAppsScriptModal()"
+              class="btn-3d btn-3d-neutral px-4 py-2.5 rounded-xl font-display font-bold text-xs flex items-center gap-1.5 text-indigo-700 dark:text-indigo-300"
+            >
+              <span>📜 Lihat &amp; Salin Kode Google Apps Script (Code.gs)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Input URL Web App Google Apps Script -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 items-center">
+          <div class="lg:col-span-8">
+            <label for="gsheetsWebAppUrlInput" class="block font-mono text-[11px] font-bold uppercase text-slate-500 dark:text-slate-400 mb-1">
+              URL Web App Google Apps Script (Berakhiran /exec):
+            </label>
+            <input
+              id="gsheetsWebAppUrlInput"
+              type="url"
+              placeholder="https://script.google.com/macros/s/AKfycb.../exec"
+              class="w-full px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 focus:border-emerald-600 focus:outline-none font-mono text-xs sm:text-sm text-slate-900 dark:text-white"
+            />
+          </div>
+          <div class="lg:col-span-4 flex flex-wrap sm:flex-nowrap items-end gap-2 pt-1 lg:pt-5">
+            <button
+              id="btnSaveSheetsUrl"
+              type="button"
+              onclick="window.saveGoogleSheetsUrl()"
+              class="btn-3d btn-3d-emerald flex-1 py-2.5 px-4 rounded-xl font-display font-bold text-xs flex items-center justify-center gap-1.5"
+            >
+              <span>🔗 Simpan &amp; Hubungkan</span>
+            </button>
+            <button
+              id="btnSyncSheetsNow"
+              type="button"
+              onclick="window.testAndSyncSheets()"
+              class="btn-3d btn-3d-indigo py-2.5 px-3.5 rounded-xl font-display font-bold text-xs flex items-center justify-center gap-1"
+            >
+              <span>🔄 Sinkronkan</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="gsheetsSyncLogBar" class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 flex flex-wrap items-center justify-between gap-2 text-xs">
+          <span id="gsheetsSyncLogText" class="font-mono text-slate-600 dark:text-slate-300">
+            💡 Klik tombol "📜 Lihat &amp; Salin Kode Google Apps Script (Code.gs)" untuk memasang script penerima di Google Sheets Anda.
+          </span>
+          <span id="gsheetsLastSyncTime" class="font-mono text-[11px] text-emerald-600 dark:text-emerald-400 font-bold"></span>
+        </div>
+
+        <!-- Panel Panduan & Generator Kode Google Apps Script (Code.gs) -->
+        <div id="appsScriptGuidePanel" class="hidden p-5 rounded-2xl bg-slate-900 text-slate-100 border-2 border-indigo-500/40 space-y-4 animate-pop-in">
+          <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-3">
+            <div>
+              <span class="font-mono text-[11px] font-extrabold uppercase text-amber-400 block">
+                PANDUAN INSTALASI 2 MENIT • GOOGLE SHEETS BACKEND
+              </span>
+              <h4 class="font-display font-bold text-base sm:text-lg text-white">
+                Cara Menghubungkan Kuis CIVIC QUEST ke Google Sheets Anda
+              </h4>
+            </div>
+            <div class="flex items-center gap-2">
+              <button
+                id="btnCopyCodeGs"
+                type="button"
+                onclick="window.copyAppsScriptCode()"
+                class="btn-3d btn-3d-emerald px-4 py-2 rounded-xl font-display font-bold text-xs flex items-center gap-1.5"
+              >
+                <span>📋 Salin Kode Code.gs</span>
+              </button>
+              <button
+                id="btnCloseCodeGs"
+                type="button"
+                onclick="window.toggleAppsScriptModal()"
+                class="btn-3d btn-3d-neutral px-3 py-1.5 rounded-xl font-mono text-xs"
+              >
+                Tutup ✕
+              </button>
+            </div>
+          </div>
+
+          <ol class="list-decimal pl-5 space-y-1.5 text-xs sm:text-sm text-slate-300 leading-relaxed">
+            <li>Buka <a href="https://sheets.new" target="_blank" rel="noopener noreferrer" class="text-emerald-400 underline font-bold">Google Sheets Baru (sheets.new)</a>, lalu beri nama misalnya <strong>"Database Kuis Civic Quest"</strong>.</li>
+            <li>Klik menu <strong>Ekstensi (Extensions)</strong> &rarr; <strong>Apps Script</strong>.</li>
+            <li>Hapus seluruh kode bawaan, lalu klik <strong>"📋 Salin Kode Code.gs"</strong> dan tempelkan (Paste) ke editor Apps Script, kemudian simpan (Ctrl+S).</li>
+            <li>Klik <strong>Terapkan (Deploy)</strong> &rarr; <strong>Deployment baru (New deployment)</strong> &rarr; pilih jenis <strong>Aplikasi web (Web app)</strong>.</li>
+            <li>Set <strong>Jalankan sebagai: Saya (Me)</strong> dan <strong>Siapa yang memiliki akses: Siapa saja (Anyone)</strong>.</li>
+            <li>Klik <strong>Terapkan (Deploy)</strong>, salin <strong>URL Aplikasi Web (/exec)</strong>, dan tempelkan di input di atas (atau di dalam <code class="text-emerald-300">DEFAULT_GOOGLE_SHEETS_WEBAPP_URL</code> pada kode HTML sebelum Anda bagikan).</li>
+          </ol>
+
+          <div class="relative">
+            <pre id="appsScriptCodeBlock" class="p-4 rounded-xl bg-slate-950 border border-slate-800 font-mono text-[11px] text-emerald-300 overflow-x-auto max-h-72 leading-relaxed select-all"></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 Real-Time Summary Metric Cards -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 shadow-xs">
+          <span class="font-mono text-xs text-slate-500 dark:text-slate-400 uppercase font-bold block">Total Mahasiswa Mengisi</span>
+          <span id="modStatTotalCount" class="font-display font-bold text-3xl sm:text-4xl text-indigo-600 dark:text-indigo-400 mt-1 block">0</span>
+          <span class="font-sans text-xs text-slate-500">Data Masuk Real-Time</span>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 shadow-xs">
+          <span class="font-mono text-xs text-slate-500 dark:text-slate-400 uppercase font-bold block">Rata-Rata Skor Bagian A</span>
+          <span id="modStatAvgMcq" class="font-display font-bold text-3xl sm:text-4xl text-emerald-600 dark:text-emerald-400 mt-1 block">0.0 / 8</span>
+          <span id="modStatAvgPct" class="font-sans text-xs text-slate-500">Akurasi Kelas: 0%</span>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 shadow-xs">
+          <span class="font-mono text-xs text-slate-500 dark:text-slate-400 uppercase font-bold block">Rata-Rata Total XP</span>
+          <span id="modStatAvgXp" class="font-display font-bold text-3xl sm:text-4xl text-amber-500 mt-1 block">0 XP</span>
+          <span class="font-sans text-xs text-slate-500">Termasuk Bonus Esai &amp; Moderator</span>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 shadow-xs">
+          <span class="font-mono text-xs text-slate-500 dark:text-slate-400 uppercase font-bold block">Partisipasi Esai (Soal 9–10)</span>
+          <span id="modStatEssayRate" class="font-display font-bold text-3xl sm:text-4xl text-rose-500 mt-1 block">0%</span>
+          <span class="font-sans text-xs text-slate-500">Kelengkapan Studi Kasus</span>
+        </div>
+      </div>
+
+      <!-- Analisis Akurasi Per Soal (Soal 1 - 8) -->
+      <div class="rounded-3xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 p-6 shadow-sm space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <span class="font-mono text-xs font-extrabold uppercase text-indigo-600 dark:text-indigo-400">
+              📊 ANALITIK PEMAHAMAN KONSEP
+            </span>
+            <h3 class="font-display font-bold text-lg sm:text-xl text-slate-900 dark:text-white">
+              Persentase Menjawab Benar Per Soal (Bagian A: Soal 1 – 8)
+            </h3>
+          </div>
+          <span class="font-mono text-xs text-slate-500">Diperbarui otomatis saat data masuk</span>
+        </div>
+
+        <div id="modQuestionAnalyticsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3"></div>
+      </div>
+
+      <!-- Search, Filter & Student Submissions Table -->
+      <div class="rounded-3xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 p-6 shadow-sm space-y-5">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div class="relative flex-1">
+            <input
+              id="modSearchInput"
+              type="text"
+              oninput="window.renderModeratorDashboard()"
+              placeholder="Cari nama mahasiswa atau program studi/kelas (contoh: Matematika/SS18)..."
+              class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 focus:border-indigo-600 focus:outline-none font-sans text-sm text-slate-900 dark:text-white"
+            />
+            <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2.5">
+            <label for="modSortSelect" class="font-mono text-xs font-bold text-slate-500">Urutkan:</label>
+            <select
+              id="modSortSelect"
+              onchange="window.renderModeratorDashboard()"
+              class="px-3.5 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 font-sans text-xs font-bold text-slate-800 dark:text-slate-100 focus:outline-none"
+            >
+              <option value="newest">Waktu Terbaru</option>
+              <option value="oldest">Waktu Terlama</option>
+              <option value="highest_mcq">Skor PG Tertinggi</option>
+              <option value="highest_xp">Total XP Tertinggi</option>
+              <option value="name_asc">Nama Mahasiswa (A–Z)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-100 dark:bg-slate-800/90 text-slate-600 dark:text-slate-300 font-mono text-[11px] uppercase tracking-wider border-b border-slate-200 dark:border-slate-700">
+                <th class="py-3.5 px-4">No</th>
+                <th class="py-3.5 px-4">Waktu Submit</th>
+                <th class="py-3.5 px-4">Nama Lengkap</th>
+                <th class="py-3.5 px-4">Program Studi / Kelas</th>
+                <th class="py-3.5 px-4">Skor PG (1–8)</th>
+                <th class="py-3.5 px-4">Total XP</th>
+                <th class="py-3.5 px-4 text-right">Aksi Moderator</th>
+              </tr>
+            </thead>
+            <tbody id="modSubmissionsTableBody" class="divide-y divide-slate-200 dark:divide-slate-800 font-sans text-xs sm:text-sm"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ===================================================================
+       MODAL: PIN AUTHENTICATION MODERATOR (PIN: kel8juara)
+       =================================================================== -->
+  <div id="moderatorPinModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div id="moderatorPinBackdrop" onclick="window.closeModeratorAuth()" class="fixed inset-0 bg-slate-950/75 backdrop-blur-xs"></div>
+    <div id="moderatorPinCard" class="relative z-10 w-full max-w-md rounded-3xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 p-6 sm:p-8 shadow-2xl space-y-5 animate-pop-in">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center text-2xl shadow-md">
+            🔐
+          </div>
+          <div>
+            <span class="font-mono text-[11px] font-extrabold uppercase text-amber-600 dark:text-amber-400 block">
+              AKSES KHUSUS TIM MODERATOR
+            </span>
+            <h3 class="font-display font-bold text-xl text-slate-900 dark:text-white">
+              Masukkan Kode PIN
+            </h3>
+          </div>
+        </div>
+        <button id="btnClosePinModalX" type="button" onclick="window.closeModeratorAuth()" class="btn-3d btn-3d-neutral p-2 rounded-xl text-slate-500">
+          ✕
+        </button>
+      </div>
+
+      <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+        Halaman ini memuat data real-time seluruh mahasiswa yang telah mengerjakan kuis beserta jawaban lengkapnya. Masukkan PIN Moderator untuk melanjutkan.
+      </p>
+
+      <div class="space-y-2">
+        <label for="moderatorPinInput" class="block font-mono text-xs font-bold uppercase text-slate-600 dark:text-slate-300">
+          PIN Moderator
+        </label>
+        <div class="relative">
+          <input
+            id="moderatorPinInput"
+            type="password"
+            placeholder="Masukkan PIN Moderator..."
+            class="w-full px-4 py-3 pr-20 rounded-xl bg-slate-50 dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 focus:border-indigo-600 focus:outline-none font-mono text-sm font-bold text-slate-900 dark:text-white"
+          />
+          <button
+            type="button"
+            onclick="window.togglePinVisibility()"
+            id="btnTogglePinVis"
+            class="absolute right-2.5 top-2.5 px-2.5 py-1 rounded-lg bg-slate-200 dark:bg-slate-700 font-mono text-[11px] font-bold text-slate-700 dark:text-slate-200 cursor-pointer"
+          >
+            Lihat
+          </button>
+        </div>
+        <p id="moderatorPinError" class="hidden font-sans text-xs font-bold text-rose-600 dark:text-rose-400 pt-1">
+          ⚠️ Kode PIN tidak sesuai! Silakan periksa kembali PIN Moderator Anda.
+        </p>
+      </div>
+
+      <div class="flex items-center justify-end gap-3 pt-2">
+        <button id="btnCancelPinModal" type="button" onclick="window.closeModeratorAuth()" class="btn-3d btn-3d-neutral px-5 py-2.5 rounded-xl font-display font-bold text-sm">
+          Batal
+        </button>
+        <button id="btnVerifyPinModal" type="button" onclick="window.verifyModeratorPin()" class="btn-3d btn-3d-indigo px-6 py-2.5 rounded-xl font-display font-bold text-sm">
+          Buka Dashboard →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       MODAL: STUDENT ANSWER INSPECTOR & ESSAY GRADING (SOAL 1 - 10)
+       =================================================================== -->
+  <div id="studentDetailModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div id="studentDetailBackdrop" onclick="window.closeInspectModal()" class="fixed inset-0 bg-slate-950/75 backdrop-blur-xs"></div>
+    <div class="relative z-10 w-full max-w-4xl max-h-[88vh] overflow-y-auto rounded-3xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 p-6 sm:p-8 shadow-2xl space-y-6 animate-pop-in">
+
+      <div class="flex flex-wrap items-start justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
+        <div class="flex items-center gap-3.5">
+          <div class="w-14 h-14 rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-2xl shadow-md shrink-0">
+            🎓
+          </div>
+          <div>
+            <div class="flex flex-wrap items-center gap-2">
+              <span id="inspClassBadge" class="px-2.5 py-0.5 rounded-lg bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-mono text-xs font-extrabold">
+                Matematika/SS18
+              </span>
+              <span id="inspTimeBadge" class="font-mono text-xs text-slate-500">
+                -
+              </span>
+            </div>
+            <h3 id="inspStudentName" class="font-display font-bold text-2xl text-slate-900 dark:text-white mt-0.5">
+              Nama Mahasiswa
+            </h3>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button
+            id="btnCopySingleStudent"
+            type="button"
+            onclick="window.copyInspectedStudentReport()"
+            class="btn-3d btn-3d-emerald px-4 py-2 rounded-xl font-display font-bold text-xs flex items-center gap-1.5"
+          >
+            <span>📋 Salin Jawaban Mahasiswa Ini</span>
+          </button>
+          <button id="btnCloseInspectX" type="button" onclick="window.closeInspectModal()" class="btn-3d btn-3d-neutral p-2 rounded-xl text-slate-500">
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <!-- Summary Strip inside Modal -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+          <span class="font-mono text-[11px] text-slate-500 block">Skor Pilihan Ganda</span>
+          <span id="inspMcqScore" class="font-display font-bold text-xl text-indigo-600 dark:text-indigo-400">8/8 (100%)</span>
+        </div>
+        <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+          <span class="font-mono text-[11px] text-slate-500 block">Total XP &amp; Streak</span>
+          <span id="inspXpStreak" class="font-display font-bold text-xl text-emerald-600 dark:text-emerald-400">1200 XP</span>
+        </div>
+        <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+          <span class="font-mono text-[11px] text-slate-500 block">Status Esai (9 &amp; 10)</span>
+          <span id="inspEssayStatusBadge" class="font-display font-bold text-xl text-amber-500">Lengkap ✓</span>
+        </div>
+        <div class="p-3.5 rounded-2xl bg-indigo-50/70 dark:bg-indigo-950/50 border border-indigo-200 dark:border-indigo-800">
+          <span class="font-mono text-[11px] text-indigo-600 dark:text-indigo-300 block">Nilai Tambahan Esai</span>
+          <span id="inspModBonusTotal" class="font-display font-bold text-xl text-indigo-700 dark:text-indigo-300">+0 Poin</span>
+        </div>
+      </div>
+
+      <!-- Bagian B: Jawaban Esai Soal 9 & Soal 10 -->
+      <div class="space-y-4">
+        <h4 class="font-display font-bold text-lg text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-800 pb-1.5">
+          ✍️ Bagian B — Jawaban Isian &amp; Studi Kasus (Soal 9 &amp; 10)
+        </h4>
+        <div id="inspEssayContainer" class="space-y-4"></div>
+      </div>
+
+      <!-- FORM PENILAIAN & CATATAN KOMENTAR MODERATOR UNTUK ESAI SOAL 9 & SOAL 10 -->
+      <div class="p-5 sm:p-6 rounded-2xl bg-amber-50/70 dark:bg-amber-950/30 border-2 border-amber-300 dark:border-amber-700/80 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-amber-200 dark:border-amber-800/80 pb-3">
+          <div class="flex items-center gap-2.5">
+            <span class="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center text-lg shadow-xs">📝</span>
+            <div>
+              <span class="font-mono text-[10px] font-extrabold uppercase tracking-wider text-amber-700 dark:text-amber-300 block">
+                EVALUASI &amp; APRESIASI MODERATOR
+              </span>
+              <h4 class="font-display font-bold text-base sm:text-lg text-slate-900 dark:text-white">
+                Berikan Nilai Tambahan &amp; Catatan Komentar Esai (Soal 9 &amp; 10)
+              </h4>
+            </div>
+          </div>
+          <span id="modReviewSavedBadge" class="hidden px-3 py-1 rounded-full bg-emerald-600 text-white font-mono text-xs font-bold">
+            ✓ Tersimpan
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Evaluasi Soal 9 -->
+          <div class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-amber-200 dark:border-amber-800/70 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="font-display font-bold text-xs sm:text-sm text-indigo-700 dark:text-indigo-300">
+                Evaluasi Esai Soal 9 (Analisis Kasus)
+              </span>
+              <span class="font-mono text-[11px] text-slate-400">Maks. +100 Poin</span>
+            </div>
+            <div class="space-y-1">
+              <label for="modScoreEssay9" class="block font-mono text-[11px] font-bold text-slate-600 dark:text-slate-300">
+                Nilai Tambahan Soal 9 (Poin / XP Bonus):
+              </label>
+              <input
+                id="modScoreEssay9"
+                type="number"
+                min="0"
+                max="500"
+                step="5"
+                placeholder="Contoh: 85"
+                class="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 focus:border-indigo-600 focus:outline-none font-mono text-sm font-bold text-slate-900 dark:text-white"
+              />
+            </div>
+            <div class="space-y-1">
+              <label for="modCommentEssay9" class="block font-mono text-[11px] font-bold text-slate-600 dark:text-slate-300">
+                Catatan Komentar Moderator (Soal 9):
+              </label>
+              <textarea
+                id="modCommentEssay9"
+                rows="2"
+                placeholder="Tulis komentar/apresiasi atas analisis kasus transportasi mahasiswa ini..."
+                class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 focus:border-indigo-600 focus:outline-none font-sans text-xs sm:text-sm text-slate-900 dark:text-white"
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- Evaluasi Soal 10 -->
+          <div class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-amber-200 dark:border-amber-800/70 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="font-display font-bold text-xs sm:text-sm text-emerald-700 dark:text-emerald-300">
+                Evaluasi Esai Soal 10 (Proyeksi Aksi)
+              </span>
+              <span class="font-mono text-[11px] text-slate-400">Maks. +100 Poin</span>
+            </div>
+            <div class="space-y-1">
+              <label for="modScoreEssay10" class="block font-mono text-[11px] font-bold text-slate-600 dark:text-slate-300">
+                Nilai Tambahan Soal 10 (Poin / XP Bonus):
+              </label>
+              <input
+                id="modScoreEssay10"
+                type="number"
+                min="0"
+                max="500"
+                step="5"
+                placeholder="Contoh: 90"
+                class="w-full px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 focus:border-emerald-600 focus:outline-none font-mono text-sm font-bold text-slate-900 dark:text-white"
+              />
+            </div>
+            <div class="space-y-1">
+              <label for="modCommentEssay10" class="block font-mono text-[11px] font-bold text-slate-600 dark:text-slate-300">
+                Catatan Komentar Moderator (Soal 10):
+              </label>
+              <textarea
+                id="modCommentEssay10"
+                rows="2"
+                placeholder="Tulis komentar/masukan atas gagasan aksi edukasi kampus mahasiswa ini..."
+                class="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 focus:border-emerald-600 focus:outline-none font-sans text-xs sm:text-sm text-slate-900 dark:text-white"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-1">
+          <span id="modEvaluationStatusText" class="font-mono text-xs text-amber-800 dark:text-amber-300">
+            💡 Nilai tambahan &amp; komentar akan tersimpan &amp; ikut tersinkron ke Google Sheets.
+          </span>
+          <button
+            id="btnSaveModeratorEvaluation"
+            type="button"
+            onclick="window.saveModeratorFeedback()"
+            class="btn-3d btn-3d-amber px-5 py-2.5 rounded-xl font-display font-bold text-xs sm:text-sm flex items-center gap-2"
+          >
+            <span>💾 Simpan Nilai &amp; Komentar Moderator</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Bagian A: Rincian Pilihan Ganda Soal 1 - 8 -->
+      <div class="space-y-4">
+        <h4 class="font-display font-bold text-lg text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-800 pb-1.5">
+          ☑️ Bagian A — Rincian Jawaban Pilihan Ganda (Soal 1 – 8)
+        </h4>
+        <div id="inspMcqContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+      </div>
+
+      <div class="flex justify-end pt-2 border-t border-slate-200 dark:border-slate-800">
+        <button id="btnCloseInspectBottom" type="button" onclick="window.closeInspectModal()" class="btn-3d btn-3d-indigo px-6 py-2.5 rounded-xl font-display font-bold text-sm">
+          Tutup Detail Jawaban
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       MODAL: RINGKASAN MATERI ARTIKEL ("APATISME PUBLIK")
+       =================================================================== -->
+  <div id="articleReferenceModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div id="articleRefBackdrop" onclick="window.toggleReviewModal()" class="fixed inset-0 bg-slate-950/70 backdrop-blur-xs"></div>
+    <div class="relative z-10 w-full max-w-3xl max-h-[85vh] overflow-y-auto rounded-3xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 p-6 sm:p-8 shadow-2xl space-y-6 animate-pop-in">
+      <div class="flex items-start justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
+        <div>
+          <span class="font-mono text-xs font-extrabold uppercase text-indigo-600 dark:text-indigo-400">
+            📖 INTISARI ARTIKEL ACUAN KUIS
+          </span>
+          <h3 class="font-display font-bold text-xl sm:text-2xl text-slate-900 dark:text-white mt-0.5">
+            Apatisme Publik: Ketika Masyarakat Merasa Suaranya Tak Lagi Berarti
+          </h3>
+        </div>
+        <button id="btnCloseArticleX" type="button" onclick="window.toggleReviewModal()" class="btn-3d btn-3d-neutral p-2 rounded-xl text-slate-500 hover:text-slate-900">
+          ✕
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-1.5">
+          <span class="font-mono text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase">1. Apatisme vs. Kritik Demokratis</span>
+          <p class="text-slate-700 dark:text-slate-300 leading-relaxed">
+            <strong>Apatisme politik</strong> adalah sikap kurang tertarik atau tidak peduli terhadap persoalan dan proses politik. Sebaliknya, <strong>mengkritik pemerintah bukanlah apatisme</strong>—menyampaikan kritik, mempertanyakan keputusan, dan menolak kebijakan dengan alasan yang jelas merupakan bagian dari kehidupan demokrasi.
+          </p>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-1.5">
+          <span class="font-mono text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase">2. Riset Putri, Marlina, &amp; Zain (2025)</span>
+          <p class="text-slate-700 dark:text-slate-300 leading-relaxed">
+            Survei terhadap <strong>567 pemuda Indonesia (16–30 tahun)</strong> dalam jurnal <em>Administratio</em> menemukan: <strong>96,3%</strong> mengenal konsep partisipasi kebijakan publik, namun hanya <strong>43,7%</strong> yang memahami prosesnya, dan <strong>19,2%</strong> yang terlibat langsung. Ada kesenjangan antara mengetahui, memahami, dan melakukan.
+          </p>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-1.5">
+          <span class="font-mono text-xs font-bold text-amber-600 dark:text-amber-400 uppercase">3. Political Efficacy &amp; Siklus Kebijakan</span>
+          <p class="text-slate-700 dark:text-slate-300 leading-relaxed">
+            <strong>Political efficacy (efikasi politik)</strong> adalah keyakinan bahwa seseorang mampu memahami dan berpartisipasi dalam politik serta suaranya berpotensi membawa pengaruh. Tahapan kebijakan publik meliputi: (1) <strong>Identifikasi masalah</strong>, (2) <strong>Perumusan alternatif penyelesaian</strong>, (3) <strong>Pengambilan keputusan</strong>, (4) <strong>Pelaksanaan dan evaluasi</strong>.
+          </p>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 space-y-1.5">
+          <span class="font-mono text-xs font-bold text-rose-600 dark:text-rose-400 uppercase">4. Landasan Hukum &amp; Meaningful Participation</span>
+          <p class="text-slate-700 dark:text-slate-300 leading-relaxed">
+            <strong>Pasal 96 UU No. 13 Tahun 2022</strong> menjamin hak masyarakat menyampaikan masukan lisan/tertulis dalam setiap tahapan pembentukan peraturan (daring/luring). <strong>Putusan MK No. 91/PUU-XVIII/2020</strong> menegaskan 3 hak <em>meaningful participation</em>: <strong>Right to be heard</strong> (hak didengar), <strong>Right to be considered</strong> (hak dipertimbangkan), dan <strong>Right to be explained</strong> (hak memperoleh penjelasan).
+          </p>
+        </div>
+      </div>
+
+      <div class="flex justify-end pt-2">
+        <button id="btnCloseArticleBottom" type="button" onclick="window.toggleReviewModal()" class="btn-3d btn-3d-indigo px-6 py-2.5 rounded-xl font-display font-bold text-sm">
+          Tutup &amp; Lanjutkan Kuis
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       CUSTOM CONFIRM RESET MODAL (NO NATIVE ALERT/CONFIRM)
+       =================================================================== -->
+  <div id="resetConfirmModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div id="resetConfirmBackdrop" onclick="window.closeResetModal()" class="fixed inset-0 bg-slate-950/70 backdrop-blur-xs"></div>
+    <div class="relative z-10 w-full max-w-md rounded-3xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 p-6 shadow-2xl space-y-4 text-center animate-pop-in">
+      <div class="w-14 h-14 rounded-2xl bg-amber-100 dark:bg-amber-950 text-amber-600 mx-auto flex items-center justify-center text-2xl">
+        ⚠️
+      </div>
+      <h3 class="font-display font-bold text-xl text-slate-900 dark:text-white">
+        Kembali ke Layar Utama?
+      </h3>
+      <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+        Progres kuis kamu saat ini akan diatur ulang dari awal. Apakah kamu yakin ingin kembali ke menu utama?
+      </p>
+      <div class="flex items-center justify-center gap-3 pt-2">
+        <button id="btnCancelResetModal" type="button" onclick="window.closeResetModal()" class="btn-3d btn-3d-neutral px-5 py-2.5 rounded-xl font-display font-bold text-sm">
+          Batal
+        </button>
+        <button id="btnConfirmResetModal" type="button" onclick="window.restartQuiz()" class="btn-3d btn-3d-rose px-5 py-2.5 rounded-xl font-display font-bold text-sm">
+          Ya, Atur Ulang
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="no-print border-t border-slate-200 dark:border-slate-800/80 py-6 text-center text-xs text-slate-500 dark:text-slate-400">
+    <div class="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <span class="font-display font-bold text-slate-700 dark:text-slate-300">
+        CIVIC QUEST • Media Pembelajaran Interaktif Kewarganegaraan
+      </span>
+      <span class="font-mono text-[11px]">
+        Bagian A (8 Pilihan Ganda) &amp; Bagian B (2 Isian Studi Kasus)
+      </span>
+    </div>
+  </footer>
+
+  <!-- ===================================================================
+  <!-- External Production Script -->
+  <script src="js/kuis.js"></script>
+</body>
+</html>

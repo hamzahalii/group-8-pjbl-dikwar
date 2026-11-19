@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apatisme Publik: Ketika Masyarakat Merasa Suaranya Tak Lagi Berarti — Esai Editorial Interaktif</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Playfair Display (Display Serif), Source Serif 4 (Body Editorial), Plus Jakarta Sans (UI & Infographics), JetBrains Mono (Data & Legal Codes) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;0,900;1,400;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,600&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Playfair Display"', 'Georgia', 'serif'],
+            serif: ['"Source Serif 4"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            paper: {
+              light: '#FAF8F5',
+              card: '#F2EFE9',
+              elevated: '#EBE6DD',
+              border: '#DEDAD2',
+              ink: '#141413',
+              muted: '#5C5A55',
+            },
+            night: {
+              bg: '#121211',
+              card: '#1C1B19',
+              elevated: '#262522',
+              border: '#2E2D29',
+              ink: '#EAE6DF',
+              muted: '#9E9B93',
+            },
+            crimson: {
+              DEFAULT: '#C8102E',
+              bright: '#E63946',
+              dark: '#9B0B22',
+            },
+            navy: {
+              DEFAULT: '#1B365D',
+              light: '#2B528C',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Editorial Design Tokens & Micro-Typography */
+    :root {
+      --body-font-size: 1.1875rem; /* 19px default */
+      --body-line-height: 1.78;
+    }
+
+    body {
+      background-color: #FAF8F5;
+      color: #141413;
+      transition: background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1), color 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-x: hidden;
+      font-feature-settings: "kern" 1, "liga" 1, "onum" 0;
+    }
+
+    html.dark body {
+      background-color: #121211;
+      color: #EAE6DF;
+    }
+
+    /* Authentic Editorial Drop Cap */
+    .editorial-dropcap::first-letter {
+      float: left;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 4.85rem;
+      line-height: 0.82;
+      padding-top: 4px;
+      padding-right: 14px;
+      padding-bottom: 4px;
+      font-weight: 800;
+      color: #C8102E;
+    }
+
+    html.dark .editorial-dropcap::first-letter {
+      color: #E63946;
+    }
+
+    /* Dynamic Reading Font Size Control */
+    .article-prose p {
+      font-size: var(--body-font-size);
+      line-height: var(--body-line-height);
+      margin-bottom: 1.55em;
+    }
+
+    /* Subtle Paper Grain Overlay */
+    .paper-grain {
+      background-image: radial-gradient(rgba(20, 20, 19, 0.03) 1px, transparent 0);
+      background-size: 24px 24px;
+    }
+
+    html.dark .paper-grain {
+      background-image: radial-gradient(rgba(234, 230, 223, 0.03) 1px, transparent 0);
+      background-size: 24px 24px;
+    }
+
+    /* Economist-inspired Top Red Rubric Bar */
+    .economist-rubric-bar {
+      position: relative;
+    }
+    .economist-rubric-bar::before {
+      content: "";
+      display: block;
+      width: 48px;
+      height: 4px;
+      background-color: #C8102E;
+      margin-bottom: 0.75rem;
+    }
+    html.dark .economist-rubric-bar::before {
+      background-color: #E63946;
+    }
+
+    /* Bar Chart Smooth Animation */
+    .bar-fill {
+      transition: width 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F2EFE9;
+    }
+    html.dark ::-webkit-scrollbar-track {
+      background: #1C1B19;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #C4BEB3;
+      border-radius: 4px;
+    }
+    html.dark ::-webkit-scrollbar-thumb {
+      background: #3D3B36;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #C8102E;
+    }
+
+    /* Pulse Keyframe for Interactive Nodes */
+    @keyframes subtlePulse {
+      0%, 100% { transform: scale(1); opacity: 0.85; }
+      50% { transform: scale(1.06); opacity: 1; }
+    }
+    .animate-subtle-pulse {
+      animation: subtlePulse 4s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="paper-grain antialiased selection:bg-crimson selection:text-white dark:selection:bg-crimson-bright dark:selection:text-white">
+
+  <!-- TOP READING PROGRESS BAR -->
+  <div class="fixed top-0 left-0 right-0 z-50 h-1 bg-transparent">
+    <div id="readingProgressBar" class="h-full bg-crimson dark:bg-crimson-bright transition-all duration-100 ease-out" style="width: 0%;"></div>
+  </div>
+
+  <!-- STICKY EDITORIAL MASTHEAD / NAVIGATION -->
+  <header class="sticky top-0 z-40 border-b border-paper-border dark:border-night-border bg-paper-light/95 dark:bg-night-bg/95 backdrop-blur-md transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
+      
+      <!-- Left: Publication Identity & Rubric -->
+      <div class="flex items-center gap-3 min-w-0">
+        <a href="#hero" class="flex items-center gap-2.5 group focus:outline-none">
+          <span class="w-3 h-7 bg-crimson dark:bg-crimson-bright inline-block rounded-sm transition-transform group-hover:scale-y-110"></span>
+          <div class="flex flex-col">
+            <span class="font-display font-black tracking-tight text-sm sm:text-base uppercase text-paper-ink dark:text-night-ink leading-none">
+              Jurnal Warga
+            </span>
+            <span class="font-mono text-[10px] tracking-widest uppercase text-paper-muted dark:text-night-muted mt-0.5 truncate">
+              Tinjauan Kewarganegaraan &amp; Demokrasi
+            </span>
+          </div>
+        </a>
+        <span class="hidden md:inline-block text-paper-border dark:text-night-border">|</span>
+        <span id="activeSectionLabel" class="hidden md:inline-block font-sans text-xs font-medium text-paper-muted dark:text-night-muted truncate max-w-xs">
+          Edisi Khusus • Esai Interaktif
+        </span>
+      </div>
+
+      <!-- Right: Reading Controls (Time, Font Size, TOC Mobile Trigger, Dark Mode) -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Dynamic Reading Time Badge -->
+        <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border text-xs font-mono text-paper-muted dark:text-night-muted">
+          <svg class="w-3.5 h-3.5 text-crimson dark:text-crimson-bright" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <span id="readingTimeDisplay">~5 mnt baca</span>
+        </div>
+
+        <!-- Font Size Controller (A- / A+) -->
+        <div class="flex items-center rounded-lg bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border p-0.5" role="group" aria-label="Pengatur Ukuran Teks">
+          <button id="fontDecreaseBtn" onclick="adjustFontSize(-1)" title="Perkecil ukuran teks" class="px-2 py-1 text-xs font-sans font-bold text-paper-muted dark:text-night-muted hover:text-paper-ink dark:hover:text-night-ink rounded transition-colors">
+            A-
+          </button>
+          <span class="text-paper-border dark:text-night-border text-xs">|</span>
+          <button id="fontResetBtn" onclick="adjustFontSize(0)" title="Ukuran teks standar" class="px-1.5 py-1 text-[11px] font-mono text-paper-muted dark:text-night-muted hover:text-crimson dark:hover:text-crimson-bright rounded transition-colors">
+            100%
+          </button>
+          <span class="text-paper-border dark:text-night-border text-xs">|</span>
+          <button id="fontIncreaseBtn" onclick="adjustFontSize(1)" title="Perbesar ukuran teks" class="px-2 py-1 text-sm font-sans font-bold text-paper-muted dark:text-night-muted hover:text-paper-ink dark:hover:text-night-ink rounded transition-colors">
+            A+
+          </button>
+        </div>
+
+        <!-- Dark / Light Mode Toggle -->
+        <button id="themeToggleBtn" onclick="toggleEditorialTheme()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-paper-card dark:bg-night-card hover:bg-paper-elevated dark:hover:bg-night-elevated border border-paper-border dark:border-night-border text-xs font-sans font-semibold text-paper-ink dark:text-night-ink transition-all" aria-label="Ganti Mode Baca">
+          <!-- Sun Icon (shown in Dark Mode) -->
+          <svg id="sunIcon" class="w-4 h-4 text-amber-400 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+          </svg>
+          <!-- Moon Icon (shown in Light Mode) -->
+          <svg id="moonIcon" class="w-4 h-4 text-paper-ink" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+          </svg>
+          <span id="themeToggleText" class="hidden md:inline">Mode Malam</span>
+        </button>
+
+        <!-- Mobile TOC Drawer Button -->
+        <button onclick="toggleMobileTOC()" class="lg:hidden p-2 rounded-lg bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border text-paper-ink dark:text-night-ink" aria-label="Daftar Isi">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE TABLE OF CONTENTS DRAWER -->
+  <div id="mobileTocDrawer" class="fixed inset-0 z-50 hidden lg:hidden">
+    <div onclick="toggleMobileTOC()" class="fixed inset-0 bg-black/60 backdrop-blur-xs"></div>
+    <div class="fixed bottom-0 left-0 right-0 bg-paper-light dark:bg-night-card border-t border-paper-border dark:border-night-border rounded-t-2xl p-6 max-h-[80vh] overflow-y-auto shadow-2xl">
+      <div class="flex items-center justify-between pb-4 mb-4 border-b border-paper-border dark:border-night-border">
+        <span class="font-mono text-xs uppercase tracking-widest text-crimson dark:text-crimson-bright font-bold">Daftar Isi Artikel</span>
+        <button onclick="toggleMobileTOC()" class="p-1.5 rounded-lg text-paper-muted dark:text-night-muted hover:text-paper-ink">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <nav class="space-y-3 font-sans text-sm">
+        <a href="#section-pengantar" onclick="toggleMobileTOC()" class="block py-2 px-3 rounded-lg hover:bg-paper-card dark:hover:bg-night-elevated font-medium">01. Pengantar: Ketika Suara Dianggap Tak Berarti</a>
+        <a href="#section-kritik-vs-apatis" onclick="toggleMobileTOC()" class="block py-2 px-3 rounded-lg hover:bg-paper-card dark:hover:bg-night-elevated font-medium">02. Meluruskan Persepsi: Kritik Bukan Apatisme</a>
+        <a href="#section-data-pemuda" onclick="toggleMobileTOC()" class="block py-2 px-3 rounded-lg hover:bg-paper-card dark:hover:bg-night-elevated font-medium">03. Bukan Tidak Tahu Politik, Belum Paham Caranya</a>
+        <a href="#section-bilik-suara" onclick="toggleMobileTOC()" class="block py-2 px-3 rounded-lg hover:bg-paper-card dark:hover:bg-night-elevated font-medium">04. Demokrasi Tidak Berhenti di Bilik Suara</a>
+        <a href="#section-landasan-hukum" onclick="toggleMobileTOC()" class="block py-2 px-3 rounded-lg hover:bg-paper-card dark:hover:bg-night-elevated font-medium">05. Suara Masyarakat Memiliki Landasan Hukum</a>
+        <a href="#section-mahasiswa" onclick="toggleMobileTOC()" class="block py-2 px-3 rounded-lg hover:bg-paper-card dark:hover:bg-night-elevated font-medium">06. Mahasiswa Bukan Sekadar Penonton</a>
+        <a href="#section-referensi" onclick="toggleMobileTOC()" class="block py-2 px-3 rounded-lg hover:bg-paper-card dark:hover:bg-night-elevated font-medium">07. Referensi &amp; Dokumen Hukum</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- HERO MAGAZINE COVER SECTION -->
+  <section id="hero" class="relative border-b border-paper-border dark:border-night-border overflow-hidden pt-10 pb-14 md:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+        
+        <!-- Left Column: Editorial Cover Typography (7 cols) -->
+        <div class="lg:col-span-7 space-y-6">
+          
+          <!-- Rubric & Edition Meta -->
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-sm bg-crimson text-white font-mono text-xs uppercase tracking-widest font-semibold">
+              Esai Utama • Kewarganegaraan
+            </span>
+            <span class="font-mono text-xs uppercase tracking-wider text-paper-muted dark:text-night-muted">
+              Laporan Visual Interaktif
+            </span>
+          </div>
+
+          <!-- Monumental Display Headline -->
+          <h1 class="font-display font-black text-4xl sm:text-5xl xl:text-6xl text-paper-ink dark:text-night-ink tracking-tight leading-[1.08]">
+            Apatisme Publik: <br class="hidden sm:inline" />
+            <span class="italic font-normal text-crimson dark:text-crimson-bright">Ketika Masyarakat Merasa</span> Suaranya Tak Lagi Berarti
+          </h1>
+
+          <!-- Standfirst / Lead Deck -->
+          <p class="font-serif text-xl sm:text-2xl text-paper-muted dark:text-night-muted leading-relaxed border-l-4 border-crimson dark:border-crimson-bright pl-5 py-1">
+            Demokrasi tidak hanya tentang memilih pemimpin, tetapi juga tentang bagaimana masyarakat memahami, mengawasi, dan turut memengaruhi kebijakan yang menentukan kehidupan bersama.
+          </p>
+
+          <!-- Editorial Metadata & Key Numbers Preview -->
+          <div class="pt-4 border-t border-paper-border dark:border-night-border grid grid-cols-3 gap-4 max-w-xl">
+            <div>
+              <span class="block font-mono text-xs uppercase text-paper-muted dark:text-night-muted">Responden Riset</span>
+              <span class="font-display font-bold text-xl sm:text-2xl text-paper-ink dark:text-night-ink">567 Pemuda</span>
+              <span class="block font-sans text-[11px] text-paper-muted dark:text-night-muted">Usia 16–30 Tahun (2025)</span>
+            </div>
+            <div class="border-l border-paper-border dark:border-night-border pl-4">
+              <span class="block font-mono text-xs uppercase text-paper-muted dark:text-night-muted">Pemilih Pilpres</span>
+              <span class="font-display font-bold text-xl sm:text-2xl text-crimson dark:text-crimson-bright">81,48%</span>
+              <span class="block font-sans text-[11px] text-paper-muted dark:text-night-muted">Keputusan KPU 1043/2024</span>
+            </div>
+            <div class="border-l border-paper-border dark:border-night-border pl-4">
+              <span class="block font-mono text-xs uppercase text-paper-muted dark:text-night-muted">Payung Hukum</span>
+              <span class="font-display font-bold text-xl sm:text-2xl text-paper-ink dark:text-night-ink">3 Hak Utama</span>
+              <span class="block font-sans text-[11px] text-paper-muted dark:text-night-muted">Meaningful Participation</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column: Interactive Editorial Vector Artwork (5 cols) -->
+        <div class="lg:col-span-5">
+          <div class="relative rounded-2xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border p-6 sm:p-8 shadow-sm group">
+            
+            <!-- Top Caption Label -->
+            <div class="flex items-center justify-between mb-4 pb-3 border-b border-paper-border dark:border-night-border">
+              <span class="font-mono text-[11px] uppercase tracking-widest text-paper-muted dark:text-night-muted">
+                FIG. 01 — ARSITEKTUR SUARA PUBLIK
+              </span>
+              <span class="inline-flex items-center gap-1.5 font-mono text-[11px] text-crimson dark:text-crimson-bright">
+                <span class="w-2 h-2 rounded-full bg-crimson animate-ping"></span>
+                Sentuh Elemen Visual
+              </span>
+            </div>
+
+            <!-- Custom Interactive SVG Editorial Illustration -->
+            <div class="relative w-full aspect-[4/3] select-none">
+              <svg id="heroEditorialSvg" viewBox="0 0 500 380" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <pattern id="editorialGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                    <path d="M 20 0 L 0 0 0 20" fill="none" stroke="currentColor" stroke-width="0.6" class="text-paper-border dark:text-night-border" />
+                  </pattern>
+                </defs>
+
+                <!-- Background Grid -->
+                <rect width="500" height="380" fill="url(#editorialGrid)" rx="12" />
+
+                <!-- Background Geometric Sun / Constitutional Circle -->
+                <circle cx="340" cy="185" r="115" class="fill-paper-elevated dark:fill-night-elevated transition-all duration-500" />
+                <circle cx="340" cy="185" r="85" fill="none" stroke="#C8102E" stroke-width="1.5" stroke-dasharray="4 4" class="animate-subtle-pulse" />
+
+                <!-- Soundwaves Morphing into Data & Constitutional Pillars -->
+                <!-- Megaphone / Civic Voice Cone (Left) -->
+                <g class="cursor-pointer transition-transform duration-300 hover:translate-x-1" onclick="highlightHeroCaption('suara')">
+                  <polygon points="45,175 125,135 125,235 45,195" fill="#141413" class="dark:fill-paper-light" />
+                  <rect x="28" y="168" width="20" height="34" rx="4" fill="#C8102E" />
+                  <path d="M 55 195 L 70 245 L 92 245 L 82 195 Z" fill="#5C5A55" />
+                </g>
+
+                <!-- Acoustic Waves emanating from Megaphone -->
+                <g stroke="#C8102E" fill="none" stroke-linecap="round">
+                  <path d="M 145 145 Q 168 185 145 225" stroke-width="3" />
+                  <path d="M 168 125 Q 200 185 168 245" stroke-width="2.5" stroke-dasharray="6 4" />
+                  <path d="M 192 105 Q 235 185 192 265" stroke-width="1.75" opacity="0.7" />
+                </g>
+
+                <!-- Three Pillars of Meaningful Participation / Gap Bars (Right) -->
+                <!-- Pillar 1: 96.3% Mengenal Konsep -->
+                <g class="cursor-pointer group/bar" onclick="highlightHeroCaption('mengenal')">
+                  <rect x="240" y="70" width="48" height="230" rx="4" fill="#1B365D" class="transition-all duration-300 hover:opacity-90" />
+                  <text x="264" y="58" text-anchor="middle" class="font-mono text-[11px] font-bold fill-current text-paper-ink dark:text-night-ink">96,3%</text>
+                  <text x="264" y="285" text-anchor="middle" class="font-mono text-[9px] fill-white tracking-wider">KENAL</text>
+                </g>
+
+                <!-- Pillar 2: 43.7% Memahami Proses -->
+                <g class="cursor-pointer group/bar" onclick="highlightHeroCaption('memahami')">
+                  <rect x="315" y="185" width="48" height="115" rx="4" fill="#5C5A55" class="transition-all duration-300 hover:opacity-90" />
+                  <rect x="315" y="70" width="48" height="110" rx="4" fill="none" stroke="#5C5A55" stroke-width="1.2" stroke-dasharray="3 3" />
+                  <text x="339" y="175" text-anchor="middle" class="font-mono text-[11px] font-bold fill-current text-paper-ink dark:text-night-ink">43,7%</text>
+                  <text x="339" y="285" text-anchor="middle" class="font-mono text-[9px] fill-white tracking-wider">PAHAM</text>
+                </g>
+
+                <!-- Pillar 3: 19.2% Terlibat Langsung -->
+                <g class="cursor-pointer group/bar" onclick="highlightHeroCaption('terlibat')">
+                  <rect x="390" y="242" width="48" height="58" rx="4" fill="#C8102E" class="transition-all duration-300 hover:opacity-90" />
+                  <rect x="390" y="70" width="48" height="167" rx="4" fill="none" stroke="#C8102E" stroke-width="1.2" stroke-dasharray="3 3" />
+                  <text x="414" y="232" text-anchor="middle" class="font-mono text-[11px] font-bold fill-[#C8102E]">19,2%</text>
+                  <text x="414" y="285" text-anchor="middle" class="font-mono text-[9px] fill-white tracking-wider">AKSI</text>
+                </g>
+
+                <!-- Constitutional Base Plinth -->
+                <rect x="220" y="302" width="240" height="12" rx="2" class="fill-paper-ink dark:fill-night-ink" />
+                <text x="340" y="335" text-anchor="middle" class="font-mono text-[10px] uppercase tracking-widest fill-current text-paper-muted dark:text-night-muted">
+                  PASAL 96 UU 13/2022 • PUTUSAN MK 91/2020
+                </text>
+              </svg>
+            </div>
+
+            <!-- Interactive SVG Feedback Caption Box -->
+            <div id="heroSvgCaption" class="mt-4 pt-3 border-t border-paper-border dark:border-night-border text-xs font-sans text-paper-muted dark:text-night-muted flex items-start gap-2.5">
+              <span class="inline-block w-2 h-2 rounded-full bg-crimson mt-1.5 shrink-0"></span>
+              <p id="heroSvgCaptionText">
+                <strong class="text-paper-ink dark:text-night-ink">Kesenjangan Partisipasi:</strong> Klik pada megafon atau pilar grafik di atas untuk menelusuri mengapa 96,3% pemuda mengenal konsep partisipasi, namun hanya 19,2% yang terlibat langsung.
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN EDITORIAL LAYOUT: STICKY SIDEBAR TOC + ARTICLE COLUMN -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+
+      <!-- LEFT COLUMN: STICKY TABLE OF CONTENTS & QUICK STATS (3 COLS) -->
+      <aside class="hidden lg:block lg:col-span-3">
+        <div class="sticky top-24 space-y-8">
+          
+          <!-- Interactive Table of Contents -->
+          <div class="p-5 rounded-xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border">
+            <div class="economist-rubric-bar">
+              <h2 class="font-mono text-xs uppercase tracking-widest font-bold text-paper-ink dark:text-night-ink">
+                Daftar Isi Editorial
+              </h2>
+            </div>
+            <nav id="desktopTocNav" class="mt-4 space-y-1.5 font-sans text-xs">
+              <a href="#section-pengantar" data-toc="section-pengantar" class="toc-link flex items-center gap-2.5 py-2 px-2.5 rounded-lg text-crimson dark:text-crimson-bright font-bold bg-paper-elevated/70 dark:bg-night-elevated/70 transition-all">
+                <span class="font-mono text-[10px] opacity-75">01</span>
+                <span>Ketika Suara Dianggap Tak Berarti</span>
+              </a>
+              <a href="#section-kritik-vs-apatis" data-toc="section-kritik-vs-apatis" class="toc-link flex items-center gap-2.5 py-2 px-2.5 rounded-lg text-paper-muted dark:text-night-muted hover:text-paper-ink dark:hover:text-night-ink transition-all">
+                <span class="font-mono text-[10px] opacity-75">02</span>
+                <span>Kritik Bukanlah Apatisme</span>
+              </a>
+              <a href="#section-data-pemuda" data-toc="section-data-pemuda" class="toc-link flex items-center gap-2.5 py-2 px-2.5 rounded-lg text-paper-muted dark:text-night-muted hover:text-paper-ink dark:hover:text-night-ink transition-all">
+                <span class="font-mono text-[10px] opacity-75">03</span>
+                <span>Kesenjangan Partisipasi Pemuda</span>
+              </a>
+              <a href="#section-bilik-suara" data-toc="section-bilik-suara" class="toc-link flex items-center gap-2.5 py-2 px-2.5 rounded-lg text-paper-muted dark:text-night-muted hover:text-paper-ink dark:hover:text-night-ink transition-all">
+                <span class="font-mono text-[10px] opacity-75">04</span>
+                <span>Tak Berhenti di Bilik Suara</span>
+              </a>
+              <a href="#section-landasan-hukum" data-toc="section-landasan-hukum" class="toc-link flex items-center gap-2.5 py-2 px-2.5 rounded-lg text-paper-muted dark:text-night-muted hover:text-paper-ink dark:hover:text-night-ink transition-all">
+                <span class="font-mono text-[10px] opacity-75">05</span>
+                <span>Landasan Hukum &amp; MK</span>
+              </a>
+              <a href="#section-mahasiswa" data-toc="section-mahasiswa" class="toc-link flex items-center gap-2.5 py-2 px-2.5 rounded-lg text-paper-muted dark:text-night-muted hover:text-paper-ink dark:hover:text-night-ink transition-all">
+                <span class="font-mono text-[10px] opacity-75">06</span>
+                <span>Mahasiswa Bukan Penonton</span>
+              </a>
+              <a href="#section-referensi" data-toc="section-referensi" class="toc-link flex items-center gap-2.5 py-2 px-2.5 rounded-lg text-paper-muted dark:text-night-muted hover:text-paper-ink dark:hover:text-night-ink transition-all">
+                <span class="font-mono text-[10px] opacity-75">07</span>
+                <span>Referensi &amp; Dokumen Resmi</span>
+              </a>
+            </nav>
+          </div>
+
+          <!-- Glossary Quick Card -->
+          <div class="p-5 rounded-xl border border-paper-border dark:border-night-border bg-paper-light dark:bg-night-bg space-y-3">
+            <span class="font-mono text-[10px] uppercase tracking-widest text-crimson dark:text-crimson-bright font-bold">
+              Kamus Politik Ringkas
+            </span>
+            <h3 class="font-display font-bold text-base text-paper-ink dark:text-night-ink">
+              Apa itu Political Efficacy?
+            </h3>
+            <p class="font-sans text-xs text-paper-muted dark:text-night-muted leading-relaxed">
+              Keyakinan bahwa seseorang mampu memahami dan berpartisipasi dalam politik serta bahwa suaranya berpotensi membawa pengaruh.
+            </p>
+          </div>
+
+        </div>
+      </aside>
+
+      <!-- RIGHT/CENTER COLUMN: ARTICLE BODY & INTERACTIVE MODULES (9 COLS) -->
+      <article id="articleBody" class="lg:col-span-9 max-w-[72ch] mx-auto lg:mx-0 space-y-16">
+
+        <!-- ==========================================
+             SECTION 01: PENGANTAR & FENOMENA APATISME
+             ========================================== -->
+        <section id="section-pengantar" class="scroll-mt-24 article-prose">
+          <p class="editorial-dropcap font-serif text-paper-ink dark:text-night-ink">
+            Pernahkah kamu membaca berita mengenai kebijakan pemerintah, merasa tidak setuju, tetapi akhirnya memilih untuk mengabaikannya? Atau mendengar seseorang berkata, <em>"Untuk apa menyampaikan pendapat? Toh, pemerintah belum tentu mendengarkan."</em> Sekilas, sikap tersebut mungkin terlihat biasa. Namun, apabila ketidakpedulian semacam ini terus berkembang, muncul persoalan yang lebih besar: apakah masyarakat masih merasa memiliki peran dalam menentukan arah negaranya?
+          </p>
+
+          <!-- Monumental Editorial Pull-Quote -->
+          <figure class="my-10 py-8 px-6 sm:px-10 rounded-2xl bg-paper-card dark:bg-night-card border-l-4 border-crimson dark:border-crimson-bright relative overflow-hidden">
+            <svg class="w-16 h-16 text-crimson/10 dark:text-crimson-bright/10 absolute top-4 right-6 pointer-events-none" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+            </svg>
+            <blockquote class="font-display italic font-semibold text-2xl sm:text-3xl text-paper-ink dark:text-night-ink leading-snug relative z-10">
+              “Untuk apa menyampaikan pendapat? Toh, pemerintah belum tentu mendengarkan.”
+            </blockquote>
+            <figcaption class="mt-4 font-sans text-xs uppercase tracking-wider text-paper-muted dark:text-night-muted">
+              — Gejala percakapan sehari-hari yang menandai melemahnya efikasi politik warga
+            </figcaption>
+          </figure>
+
+          <p class="font-serif text-paper-ink dark:text-night-ink">
+            Fenomena tersebut berkaitan dengan <strong class="font-semibold text-crimson dark:text-crimson-bright">apatisme politik</strong>, yaitu sikap kurang tertarik atau tidak peduli terhadap persoalan dan proses politik. Sikap ini dapat terlihat ketika seseorang tidak lagi berusaha mengikuti perkembangan kebijakan, memahami persoalan publik, ataupun menggunakan kesempatan untuk berpartisipasi.
+          </p>
+        </section>
+
+        <!-- ==========================================
+             SECTION 02: KRITIK VS APATISME (INTERACTIVE WIDGET)
+             ========================================== -->
+        <section id="section-kritik-vs-apatis" class="scroll-mt-24 space-y-8">
+          <div class="article-prose">
+            <p class="font-serif text-paper-ink dark:text-night-ink">
+              Namun, ada satu hal yang perlu diluruskan: <strong class="underline decoration-crimson decoration-2 underline-offset-4">mengkritik pemerintah bukanlah bentuk apatisme.</strong> Justru, menyampaikan kritik, mempertanyakan keputusan, dan menolak kebijakan dengan alasan yang jelas merupakan bagian dari kehidupan demokrasi. Apatisme lebih terlihat ketika seseorang memilih tidak peduli terhadap persoalan publik dan merasa tidak perlu mengambil bagian di dalamnya.
+            </p>
+          </div>
+
+          <!-- INTERACTIVE MODULE 1: KRITIK VS APATISME EXPLORER -->
+          <div class="rounded-2xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border p-6 sm:p-8 shadow-sm">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-paper-border dark:border-night-border">
+              <div>
+                <span class="font-mono text-[11px] uppercase tracking-widest text-crimson dark:text-crimson-bright font-bold">
+                  INSTRUMEN KONSEPTUAL 01
+                </span>
+                <h3 class="font-display font-bold text-2xl text-paper-ink dark:text-night-ink mt-1">
+                  Membedakan Sikap Kritis vs. Apatisme Politik
+                </h3>
+              </div>
+              <!-- Filter Tabs -->
+              <div class="inline-flex rounded-xl bg-paper-light dark:bg-night-bg p-1 border border-paper-border dark:border-night-border self-start">
+                <button onclick="switchComparisonMode('all')" id="compBtn-all" class="px-3 py-1.5 rounded-lg font-sans text-xs font-bold bg-crimson text-white transition-all">
+                  Sandingkan
+                </button>
+                <button onclick="switchComparisonMode('kritis')" id="compBtn-kritis" class="px-3 py-1.5 rounded-lg font-sans text-xs font-semibold text-paper-muted dark:text-night-muted hover:text-paper-ink transition-all">
+                  Sikap Kritis
+                </button>
+                <button onclick="switchComparisonMode('apatis')" id="compBtn-apatis" class="px-3 py-1.5 rounded-lg font-sans text-xs font-semibold text-paper-muted dark:text-night-muted hover:text-paper-ink transition-all">
+                  Sikap Apatis
+                </button>
+              </div>
+            </div>
+
+            <!-- Two-Column Comparison Cards -->
+            <div id="comparisonGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+              
+              <!-- Card: Sikap Kritis -->
+              <div id="cardKritis" class="rounded-xl bg-paper-light dark:bg-night-bg border-2 border-navy/30 dark:border-blue-400/30 p-5 space-y-4 transition-all">
+                <div class="flex items-center justify-between">
+                  <span class="px-2.5 py-1 rounded-md bg-navy text-white font-mono text-[11px] font-bold uppercase tracking-wider">
+                    Partisipasi Aktif
+                  </span>
+                  <span class="font-mono text-xs text-navy dark:text-blue-300 font-semibold">Bagian Kehidupan Demokrasi</span>
+                </div>
+                <h4 class="font-display font-bold text-xl text-paper-ink dark:text-night-ink">
+                  Mengkritik &amp; Menguji Kebijakan
+                </h4>
+                <p class="font-sans text-sm text-paper-muted dark:text-night-muted leading-relaxed">
+                  Berangkat dari rasa peduli terhadap kepentingan bersama. Warga mengikuti perkembangan isu dan menggunakan nalar publiknya.
+                </p>
+                <ul class="space-y-2.5 pt-2 border-t border-paper-border dark:border-night-border font-sans text-xs text-paper-ink dark:text-night-ink">
+                  <li class="flex items-start gap-2">
+                    <span class="text-emerald-600 dark:text-emerald-400 font-bold">✓</span>
+                    <span>Menyampaikan kritik terhadap program atau regulasi pemerintah.</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-emerald-600 dark:text-emerald-400 font-bold">✓</span>
+                    <span>Mempertanyakan keputusan pejabat publik secara terbuka.</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-emerald-600 dark:text-emerald-400 font-bold">✓</span>
+                    <span>Menolak kebijakan dengan alasan dan argumen yang jelas.</span>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Card: Sikap Apatis -->
+              <div id="cardApatis" class="rounded-xl bg-paper-light dark:bg-night-bg border-2 border-crimson/30 p-5 space-y-4 transition-all">
+                <div class="flex items-center justify-between">
+                  <span class="px-2.5 py-1 rounded-md bg-crimson text-white font-mono text-[11px] font-bold uppercase tracking-wider">
+                    Ketidakpedulian
+                  </span>
+                  <span class="font-mono text-xs text-crimson dark:text-crimson-bright font-semibold">Ancaman Kualitas Demokrasi</span>
+                </div>
+                <h4 class="font-display font-bold text-xl text-paper-ink dark:text-night-ink">
+                  Apatisme Politik
+                </h4>
+                <p class="font-sans text-sm text-paper-muted dark:text-night-muted leading-relaxed">
+                  Sikap kurang tertarik atau tidak peduli terhadap persoalan dan proses politik karena merasa tidak perlu mengambil bagian di dalamnya.
+                </p>
+                <ul class="space-y-2.5 pt-2 border-t border-paper-border dark:border-night-border font-sans text-xs text-paper-ink dark:text-night-ink">
+                  <li class="flex items-start gap-2">
+                    <span class="text-crimson dark:text-crimson-bright font-bold">✕</span>
+                    <span>Tidak lagi berusaha mengikuti perkembangan kebijakan publik.</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-crimson dark:text-crimson-bright font-bold">✕</span>
+                    <span>Enggan memahami persoalan publik yang berdampak pada masyarakat.</span>
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-crimson dark:text-crimson-bright font-bold">✕</span>
+                    <span>Mengabaikan kesempatan berpartisipasi walaupun merasa tidak setuju.</span>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+
+            <!-- Interactive Scenario Quiz inside Widget -->
+            <div class="mt-6 pt-5 border-t border-paper-border dark:border-night-border">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <span class="font-sans text-xs font-bold uppercase tracking-wider text-paper-muted dark:text-night-muted">
+                  Uji Kasus Singkat: Klik situasi di bawah untuk melihat klasifikasinya
+                </span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+                <button onclick="evaluateScenario(1)" class="text-left p-3.5 rounded-xl bg-paper-elevated/60 dark:bg-night-elevated/60 hover:bg-paper-elevated dark:hover:bg-night-elevated border border-paper-border dark:border-night-border transition-all">
+                  <span class="block font-mono text-[10px] uppercase text-crimson dark:text-crimson-bright font-bold">Kasus A</span>
+                  <span class="font-sans text-xs font-medium text-paper-ink dark:text-night-ink mt-1 block">
+                    “Membaca berita kenaikan biaya pendidikan, tidak setuju, lalu menutup berita dan memilih diam.”
+                  </span>
+                </button>
+                <button onclick="evaluateScenario(2)" class="text-left p-3.5 rounded-xl bg-paper-elevated/60 dark:bg-night-elevated/60 hover:bg-paper-elevated dark:hover:bg-night-elevated border border-paper-border dark:border-night-border transition-all">
+                  <span class="block font-mono text-[10px] uppercase text-navy dark:text-blue-400 font-bold">Kasus B</span>
+                  <span class="font-sans text-xs font-medium text-paper-ink dark:text-night-ink mt-1 block">
+                    “Membuat kajian singkat dan menolak rancangan peraturan daerah dengan alasan tertulis yang jelas.”
+                  </span>
+                </button>
+              </div>
+              <div id="scenarioFeedback" class="hidden mt-3 p-3.5 rounded-xl bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border font-sans text-xs text-paper-ink dark:text-night-ink"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             SECTION 03: BUKAN TIDAK TAHU POLITIK (YOUTH DATA VISUALIZATION)
+             ========================================== -->
+        <section id="section-data-pemuda" class="scroll-mt-24 space-y-8">
+          <div class="economist-rubric-bar">
+            <span class="font-mono text-xs uppercase tracking-widest text-crimson dark:text-crimson-bright font-bold">
+              TEMUAN RISET &amp; KESENJANGAN KAPASITAS
+            </span>
+            <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-paper-ink dark:text-night-ink mt-1 leading-tight">
+              Bukan Tidak Tahu Politik, tetapi Belum Memahami Cara Berpartisipasi
+            </h2>
+          </div>
+
+          <div class="article-prose">
+            <p class="font-serif text-paper-ink dark:text-night-ink">
+              Menariknya, persoalan partisipasi tidak selalu muncul karena generasi muda sama sekali tidak mengenal politik. Penelitian <strong>Putri, Marlina, dan Zain (2025)</strong> dalam jurnal <em>Administratio</em> terhadap <strong>567 pemuda Indonesia berusia 16–30 tahun</strong> menemukan bahwa <strong>96,3%</strong> responden mengenal konsep partisipasi kebijakan publik. Namun, hanya <strong>43,7%</strong> yang memahami prosesnya, sedangkan keterlibatan langsung tercatat sebesar <strong>19,2%</strong>.
+            </p>
+          </div>
+
+          <!-- INTERACTIVE DATA VISUALIZATION: JURNAL ADMINISTRATIO (2025) -->
+          <div class="rounded-2xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border p-6 sm:p-8 shadow-sm space-y-6">
+            
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-paper-border dark:border-night-border pb-5">
+              <div>
+                <span class="font-mono text-[11px] uppercase tracking-widest text-crimson dark:text-crimson-bright font-bold">
+                  INFOGRAFIS INTERAKTIF • N = 567 PEMUDA (16–30 TAHUN)
+                </span>
+                <h3 class="font-display font-bold text-2xl text-paper-ink dark:text-night-ink mt-1">
+                  Jurang Antara Mengetahui, Memahami, dan Melakukan
+                </h3>
+                <p class="font-sans text-xs text-paper-muted dark:text-night-muted mt-1">
+                  Sumber: Putri, Marlina, &amp; Zain (2025), Jurnal <em>Administratio</em> Vol. 16 No. 2. Klik setiap tahapan untuk melihat analisis.
+                </p>
+              </div>
+              <button onclick="toggleMethodModal()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border font-mono text-xs text-paper-ink dark:text-night-ink hover:border-crimson transition-colors shrink-0">
+                <svg class="w-3.5 h-3.5 text-crimson" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span>Catatan Metodologis</span>
+              </button>
+            </div>
+
+            <!-- Interactive Horizontal Funnel Bars -->
+            <div class="space-y-5">
+              
+              <!-- Bar 1: 96.3% -->
+              <div onclick="selectDataStage('mengetahui')" id="stageRow-mengetahui" class="cursor-pointer p-4 rounded-xl bg-paper-light dark:bg-night-bg border-2 border-crimson transition-all">
+                <div class="flex items-baseline justify-between mb-2">
+                  <div>
+                    <span class="font-mono text-xs uppercase font-bold text-navy dark:text-blue-400">TAHAP 1 • MENGETAHUI</span>
+                    <h4 class="font-sans font-bold text-base text-paper-ink dark:text-night-ink">Mengenal Konsep Partisipasi Kebijakan Publik</h4>
+                  </div>
+                  <div class="text-right">
+                    <span class="font-mono font-bold text-2xl sm:text-3xl text-paper-ink dark:text-night-ink">96,3%</span>
+                    <span class="block font-mono text-[11px] text-paper-muted dark:text-night-muted">~546 dari 567 responden</span>
+                  </div>
+                </div>
+                <div class="w-full h-4 bg-paper-elevated dark:bg-night-elevated rounded-full overflow-hidden">
+                  <div class="bar-fill h-full bg-navy dark:bg-blue-500 rounded-full" style="width: 96.3%;"></div>
+                </div>
+              </div>
+
+              <!-- Dropoff Indicator 1 -->
+              <div class="flex items-center gap-3 px-4">
+                <div class="h-5 border-l-2 border-dashed border-crimson"></div>
+                <span class="font-mono text-xs text-crimson dark:text-crimson-bright font-semibold">
+                  ▼ Menyusut 52,6 poin persentase dari sekadar mengenal ke memahami proses
+                </span>
+              </div>
+
+              <!-- Bar 2: 43.7% -->
+              <div onclick="selectDataStage('memahami')" id="stageRow-memahami" class="cursor-pointer p-4 rounded-xl bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border hover:border-crimson/60 transition-all">
+                <div class="flex items-baseline justify-between mb-2">
+                  <div>
+                    <span class="font-mono text-xs uppercase font-bold text-paper-muted dark:text-night-muted">TAHAP 2 • MEMAHAMI</span>
+                    <h4 class="font-sans font-bold text-base text-paper-ink dark:text-night-ink">Memahami Proses &amp; Mekanisme Partisipasi</h4>
+                  </div>
+                  <div class="text-right">
+                    <span class="font-mono font-bold text-2xl sm:text-3xl text-paper-ink dark:text-night-ink">43,7%</span>
+                    <span class="block font-mono text-[11px] text-paper-muted dark:text-night-muted">~248 dari 567 responden</span>
+                  </div>
+                </div>
+                <div class="w-full h-4 bg-paper-elevated dark:bg-night-elevated rounded-full overflow-hidden">
+                  <div class="bar-fill h-full bg-amber-600 dark:bg-amber-500 rounded-full" style="width: 43.7%;"></div>
+                </div>
+              </div>
+
+              <!-- Dropoff Indicator 2 -->
+              <div class="flex items-center gap-3 px-4">
+                <div class="h-5 border-l-2 border-dashed border-crimson"></div>
+                <span class="font-mono text-xs text-crimson dark:text-crimson-bright font-semibold">
+                  ▼ Menyusut lagi 24,5 poin persentase saat harus terlibat secara langsung
+                </span>
+              </div>
+
+              <!-- Bar 3: 19.2% -->
+              <div onclick="selectDataStage('melakukan')" id="stageRow-melakukan" class="cursor-pointer p-4 rounded-xl bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border hover:border-crimson/60 transition-all">
+                <div class="flex items-baseline justify-between mb-2">
+                  <div>
+                    <span class="font-mono text-xs uppercase font-bold text-crimson dark:text-crimson-bright">TAHAP 3 • MELAKUKAN</span>
+                    <h4 class="font-sans font-bold text-base text-paper-ink dark:text-night-ink">Keterlibatan Langsung dalam Proses Kebijakan</h4>
+                  </div>
+                  <div class="text-right">
+                    <span class="font-mono font-bold text-2xl sm:text-3xl text-crimson dark:text-crimson-bright">19,2%</span>
+                    <span class="block font-mono text-[11px] text-paper-muted dark:text-night-muted">~109 dari 567 responden</span>
+                  </div>
+                </div>
+                <div class="w-full h-4 bg-paper-elevated dark:bg-night-elevated rounded-full overflow-hidden">
+                  <div class="bar-fill h-full bg-crimson dark:bg-crimson-bright rounded-full" style="width: 19.2%;"></div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Dynamic Detail Box for Selected Bar -->
+            <div id="dataStageDetail" class="p-4 rounded-xl bg-paper-elevated/70 dark:bg-night-elevated/70 border border-paper-border dark:border-night-border font-sans text-sm text-paper-ink dark:text-night-ink">
+              <strong class="text-crimson dark:text-crimson-bright font-mono uppercase text-xs block mb-1">Analisis Tahap 1 (96,3% — Mengetahui):</strong>
+              Mayoritas mutlak pemuda berusia 16–30 tahun yang diteliti sudah mengenal istilah dan konsep bahwa masyarakat memiliki hak untuk menyampaikan aspirasi dalam kebijakan publik. Artinya, generasi muda sama sekali tidak buta politik.
+            </div>
+
+            <!-- Collapsible Methodological Note -->
+            <div id="methodNoteBox" class="hidden p-4 rounded-xl bg-paper-light dark:bg-night-bg border-l-4 border-amber-600 font-sans text-xs text-paper-muted dark:text-night-muted space-y-1.5">
+              <div class="font-bold text-paper-ink dark:text-night-ink uppercase font-mono">Catatan Metodologis Penelitian:</div>
+              <p>
+                Penelitian Putri, Marlina, dan Zain (2025) menggunakan metode <em>convenience sampling</em> terhadap 567 pemuda berusia 16–30 tahun, sehingga hasilnya tidak dapat dianggap mewakili seluruh pemuda Indonesia secara populasi. Meski demikian, temuan ini secara tajam menunjukkan adanya kesenjangan nyata antara <strong>mengetahui</strong>, <strong>memahami</strong>, dan <strong>melakukan</strong>.
+              </p>
+            </div>
+
+          </div>
+
+          <div class="article-prose">
+            <p class="font-serif text-paper-ink dark:text-night-ink">
+              Penelitian tersebut menggunakan metode <em>convenience sampling</em>, sehingga hasilnya tidak dapat dianggap mewakili seluruh pemuda Indonesia. Meski demikian, temuan ini menunjukkan adanya kesenjangan antara mengetahui, memahami, dan melakukan. Seseorang mungkin mengetahui bahwa masyarakat memiliki hak untuk menyampaikan aspirasi, tetapi belum tentu memahami kepada siapa aspirasi harus disampaikan atau bagaimana proses kebijakan dapat dipengaruhi.
+            </p>
+            <p class="font-serif text-paper-ink dark:text-night-ink">
+              Selain keterbatasan pemahaman, rasa tidak percaya juga dapat menjadi penghambat. Ketika masyarakat merasa pendapatnya tidak akan dipertimbangkan, keinginan untuk berpartisipasi dapat melemah. Dalam kajian politik, hal ini berkaitan dengan <strong class="text-crimson dark:text-crimson-bright">political efficacy</strong> atau <strong>efikasi politik</strong>, yaitu keyakinan bahwa seseorang mampu memahami dan berpartisipasi dalam politik serta bahwa suaranya berpotensi membawa pengaruh.
+            </p>
+          </div>
+
+          <!-- Spotlight Card: 2 Dimensions of Political Efficacy -->
+          <div class="p-6 rounded-2xl bg-navy text-white space-y-4 shadow-sm">
+            <div class="flex items-center justify-between">
+              <span class="font-mono text-[11px] uppercase tracking-widest text-amber-300 font-bold">
+                KONSEP KUNCI ILMU POLITIK
+              </span>
+              <span class="font-mono text-xs text-blue-200">Efikasi Politik</span>
+            </div>
+            <h3 class="font-display font-bold text-2xl">
+              Dua Wajah Political Efficacy (Efikasi Politik)
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+              <div class="p-4 rounded-xl bg-white/10 backdrop-blur-xs border border-white/15">
+                <span class="font-mono text-xs text-amber-300 uppercase font-bold">01. Dimensi Internal</span>
+                <h4 class="font-sans font-bold text-base mt-1">Keyakinan Memahami &amp; Bertindak</h4>
+                <p class="font-sans text-xs text-blue-100 mt-1.5 leading-relaxed">
+                  Keyakinan warga bahwa dirinya memiliki pengetahuan yang cukup untuk memahami persoalan kebijakan dan tahu cara berpartisipasi.
+                </p>
+              </div>
+              <div class="p-4 rounded-xl bg-white/10 backdrop-blur-xs border border-white/15">
+                <span class="font-mono text-xs text-amber-300 uppercase font-bold">02. Dimensi Eksternal</span>
+                <h4 class="font-sans font-bold text-base mt-1">Keyakinan Suaranya Didengar</h4>
+                <p class="font-sans text-xs text-blue-100 mt-1.5 leading-relaxed">
+                  Keyakinan bahwa institusi pemerintah akan merespons dan mempertimbangkan aspirasi sehingga suara warga berpotensi membawa pengaruh.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             SECTION 04: DEMOKRASI TIDAK BERHENTI DI BILIK SUARA
+             ========================================== -->
+        <section id="section-bilik-suara" class="scroll-mt-24 space-y-8">
+          <div class="economist-rubric-bar">
+            <span class="font-mono text-xs uppercase tracking-widest text-crimson dark:text-crimson-bright font-bold">
+              PARTISIPASI PASCA-PEMILU
+            </span>
+            <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-paper-ink dark:text-night-ink mt-1 leading-tight">
+              Demokrasi Tidak Berhenti di Bilik Suara
+            </h2>
+          </div>
+
+          <div class="article-prose">
+            <p class="font-serif text-paper-ink dark:text-night-ink">
+              Partisipasi dalam pemilihan umum memang penting. Pada Pemilu 2024, tingkat partisipasi pemilih dalam Pemilihan Presiden dan Wakil Presiden mencapai <strong>81,48%</strong>, berdasarkan <strong>Keputusan KPU Nomor 1043 Tahun 2024</strong>. Angka ini menunjukkan bahwa sebagian besar pemilih telah menggunakan hak pilihnya.
+            </p>
+          </div>
+
+          <!-- Big Stat Callout & Contrast Card -->
+          <div class="grid grid-cols-1 md:grid-cols-12 rounded-2xl overflow-hidden border border-paper-border dark:border-night-border shadow-sm">
+            <!-- Left Stat Box (5 cols) -->
+            <div class="md:col-span-5 bg-crimson text-white p-6 sm:p-8 flex flex-col justify-between">
+              <div>
+                <span class="font-mono text-[11px] uppercase tracking-widest text-red-100 font-bold">
+                  KEPUTUSAN KPU NO. 1043 TAHUN 2024
+                </span>
+                <div class="font-display font-black text-5xl sm:text-6xl mt-3 tracking-tight">
+                  81,48%
+                </div>
+                <p class="font-sans text-sm font-semibold text-red-100 mt-2">
+                  Tingkat Partisipasi Pemilih dalam Pemilihan Presiden &amp; Wakil Presiden 2024
+                </p>
+              </div>
+              <div class="mt-6 pt-4 border-t border-white/20 font-mono text-[11px] text-red-100">
+                Momentum Elektoral 5 Tahunan
+              </div>
+            </div>
+
+            <!-- Right Explanation & Daily Impact (7 cols) -->
+            <div class="md:col-span-7 bg-paper-card dark:bg-night-card p-6 sm:p-8 flex flex-col justify-between space-y-4">
+              <div class="space-y-2">
+                <span class="font-mono text-xs uppercase tracking-wider text-crimson dark:text-crimson-bright font-bold">
+                  Tanggung Jawab Setelah Pemimpin Terpilih
+                </span>
+                <h3 class="font-display font-bold text-xl text-paper-ink dark:text-night-ink">
+                  Mengawasi Kebijakan yang Menyentuh Hidup Sehari-hari
+                </h3>
+                <p class="font-sans text-xs sm:text-sm text-paper-muted dark:text-night-muted leading-relaxed">
+                  Angka 81,48% hanya mengukur penggunaan hak pilih pada hari pemungutan suara. Setelah itu, keputusan pemerintah memengaruhi warga secara langsung pada empat sektor krusial:
+                </p>
+              </div>
+
+              <!-- 4 Daily Life Impact Pills -->
+              <div class="grid grid-cols-2 gap-2.5 pt-2">
+                <div class="p-3 rounded-xl bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border flex items-center gap-2.5">
+                  <span class="w-2 h-2 rounded-full bg-crimson shrink-0"></span>
+                  <span class="font-sans text-xs font-bold text-paper-ink dark:text-night-ink">Biaya Pendidikan</span>
+                </div>
+                <div class="p-3 rounded-xl bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border flex items-center gap-2.5">
+                  <span class="w-2 h-2 rounded-full bg-navy dark:bg-blue-400 shrink-0"></span>
+                  <span class="font-sans text-xs font-bold text-paper-ink dark:text-night-ink">Transportasi Publik</span>
+                </div>
+                <div class="p-3 rounded-xl bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border flex items-center gap-2.5">
+                  <span class="w-2 h-2 rounded-full bg-amber-600 shrink-0"></span>
+                  <span class="font-sans text-xs font-bold text-paper-ink dark:text-night-ink">Pelayanan Kesehatan</span>
+                </div>
+                <div class="p-3 rounded-xl bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border flex items-center gap-2.5">
+                  <span class="w-2 h-2 rounded-full bg-emerald-600 shrink-0"></span>
+                  <span class="font-sans text-xs font-bold text-paper-ink dark:text-night-ink">Pengelolaan Lingkungan</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="article-prose">
+            <p class="font-serif text-paper-ink dark:text-night-ink">
+              Namun, angka tersebut hanya mengukur penggunaan hak pilih pada hari pemungutan suara, bukan seluruh bentuk keterlibatan masyarakat dalam kehidupan demokrasi. Setelah pemimpin terpilih, masyarakat tetap memiliki tanggung jawab untuk mengawasi pemerintahan, memberikan masukan, dan mengevaluasi kebijakan.
+            </p>
+            <p class="font-serif text-paper-ink dark:text-night-ink">
+              Mengapa hal ini penting? Karena kebijakan publik sangat dekat dengan kehidupan sehari-hari. Keputusan mengenai biaya pendidikan, transportasi, pelayanan kesehatan, hingga pengelolaan lingkungan dapat memengaruhi masyarakat secara langsung.
+            </p>
+            <p class="font-serif text-paper-ink dark:text-night-ink">
+              Sebuah kebijakan juga tidak muncul begitu saja. Secara sederhana, prosesnya dimulai dari identifikasi masalah, dilanjutkan dengan perumusan alternatif penyelesaian, pengambilan keputusan, hingga pelaksanaan dan evaluasi. Pada setiap tahapan tersebut, masyarakat memiliki kepentingan untuk memperoleh informasi dan, sesuai mekanisme yang berlaku, menyampaikan masukan.
+            </p>
+          </div>
+
+          <!-- INTERACTIVE MODULE 2: 4-STAGE PUBLIC POLICY CYCLE STEPPER -->
+          <div class="rounded-2xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border p-6 sm:p-8 shadow-sm space-y-6">
+            <div>
+              <span class="font-mono text-[11px] uppercase tracking-widest text-crimson dark:text-crimson-bright font-bold">
+                PETA INTERAKTIF • SIKLUS KEBIJAKAN PUBLIK
+              </span>
+              <h3 class="font-display font-bold text-2xl text-paper-ink dark:text-night-ink mt-1">
+                Di Mana Masyarakat Dapat Masuk &amp; Menyampaikan Masukan?
+              </h3>
+              <p class="font-sans text-xs text-paper-muted dark:text-night-muted mt-1">
+                Klik setiap tahapan di bawah untuk melihat bagaimana kebijakan disusun dan ruang keterlibatan warga.
+              </p>
+            </div>
+
+            <!-- 4 Stepper Buttons -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              <button onclick="selectPolicyStep(0)" id="policyTab-0" class="policy-tab text-left p-3.5 rounded-xl border-2 border-crimson bg-paper-light dark:bg-night-bg transition-all">
+                <span class="font-mono text-[10px] font-bold uppercase text-crimson dark:text-crimson-bright block">Tahap 01</span>
+                <span class="font-sans font-bold text-xs sm:text-sm text-paper-ink dark:text-night-ink mt-0.5 block">Identifikasi Masalah</span>
+              </button>
+              <button onclick="selectPolicyStep(1)" id="policyTab-1" class="policy-tab text-left p-3.5 rounded-xl border border-paper-border dark:border-night-border bg-paper-light/60 dark:bg-night-bg/60 hover:border-crimson/50 transition-all">
+                <span class="font-mono text-[10px] font-bold uppercase text-paper-muted dark:text-night-muted block">Tahap 02</span>
+                <span class="font-sans font-bold text-xs sm:text-sm text-paper-ink dark:text-night-ink mt-0.5 block">Perumusan Alternatif</span>
+              </button>
+              <button onclick="selectPolicyStep(2)" id="policyTab-2" class="policy-tab text-left p-3.5 rounded-xl border border-paper-border dark:border-night-border bg-paper-light/60 dark:bg-night-bg/60 hover:border-crimson/50 transition-all">
+                <span class="font-mono text-[10px] font-bold uppercase text-paper-muted dark:text-night-muted block">Tahap 03</span>
+                <span class="font-sans font-bold text-xs sm:text-sm text-paper-ink dark:text-night-ink mt-0.5 block">Pengambilan Keputusan</span>
+              </button>
+              <button onclick="selectPolicyStep(3)" id="policyTab-3" class="policy-tab text-left p-3.5 rounded-xl border border-paper-border dark:border-night-border bg-paper-light/60 dark:bg-night-bg/60 hover:border-crimson/50 transition-all">
+                <span class="font-mono text-[10px] font-bold uppercase text-paper-muted dark:text-night-muted block">Tahap 04</span>
+                <span class="font-sans font-bold text-xs sm:text-sm text-paper-ink dark:text-night-ink mt-0.5 block">Pelaksanaan &amp; Evaluasi</span>
+              </button>
+            </div>
+
+            <!-- Dynamic Stepper Content -->
+            <div id="policyStepContent" class="p-5 sm:p-6 rounded-xl bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+              <!-- Populated by JS on load & click -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             SECTION 05: SUARA MASYARAKAT MEMILIKI LANDASAN HUKUM
+             ========================================== -->
+        <section id="section-landasan-hukum" class="scroll-mt-24 space-y-8">
+          <div class="economist-rubric-bar">
+            <span class="font-mono text-xs uppercase tracking-widest text-crimson dark:text-crimson-bright font-bold">
+              JAMINAN KONSTITUSIONAL &amp; UNDANG-UNDANG
+            </span>
+            <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-paper-ink dark:text-night-ink mt-1 leading-tight">
+              Suara Masyarakat Memiliki Landasan Hukum
+            </h2>
+          </div>
+
+          <div class="article-prose">
+            <p class="font-serif text-paper-ink dark:text-night-ink">
+              Partisipasi publik bukan sekadar ajakan moral. Di Indonesia, hak masyarakat untuk terlibat dalam pembentukan peraturan memiliki landasan melalui <strong>Pasal 96 Undang-Undang Nomor 13 Tahun 2022</strong>. Ketentuan tersebut memberikan hak kepada masyarakat untuk menyampaikan masukan secara lisan maupun tertulis dalam setiap tahapan pembentukan peraturan perundang-undangan, baik secara daring maupun luring.
+            </p>
+            <p class="font-serif text-paper-ink dark:text-night-ink">
+              Selain itu, <strong>Mahkamah Konstitusi melalui Putusan Nomor 91/PUU-XVIII/2020</strong> menegaskan prinsip <strong class="text-crimson dark:text-crimson-bright">meaningful participation</strong> atau partisipasi yang bermakna. Prinsip ini mencakup tiga hak utama:
+            </p>
+          </div>
+
+          <!-- LEGAL ARCHITECTURE SHOWCASE: PASAL 96 + 3 PILLARS OF MEANINGFUL PARTICIPATION -->
+          <div class="space-y-6">
+            
+            <!-- Pasal 96 UU 13/2022 Banner -->
+            <div class="p-6 rounded-2xl bg-paper-card dark:bg-night-card border-l-4 border-navy dark:border-blue-400 flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div class="space-y-1">
+                <span class="font-mono text-xs uppercase tracking-widest text-navy dark:text-blue-400 font-bold">
+                  UNDANG-UNDANG NOMOR 13 TAHUN 2022 • PASAL 96
+                </span>
+                <h3 class="font-display font-bold text-xl text-paper-ink dark:text-night-ink">
+                  Hak Masukan di Setiap Tahapan Pembentukan Peraturan
+                </h3>
+                <p class="font-sans text-xs sm:text-sm text-paper-muted dark:text-night-muted">
+                  Menjamin hak masyarakat menyampaikan masukan secara <strong>lisan maupun tertulis</strong>, baik secara <strong>daring (online) maupun luring (tatap muka)</strong>.
+                </p>
+              </div>
+              <div class="flex gap-2 shrink-0 font-mono text-xs">
+                <span class="px-3 py-1.5 rounded-lg bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border font-semibold">Lisan &amp; Tertulis</span>
+                <span class="px-3 py-1.5 rounded-lg bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border font-semibold">Daring &amp; Luring</span>
+              </div>
+            </div>
+
+            <!-- 3 Interactive Pillar Cards: Putusan MK Nomor 91/PUU-XVIII/2020 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+              
+              <!-- Pillar 1: Right to be heard -->
+              <div class="group rounded-2xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border hover:border-crimson p-6 flex flex-col justify-between transition-all shadow-xs hover:shadow-md">
+                <div class="space-y-4">
+                  <div class="flex items-center justify-between">
+                    <span class="font-mono text-xs font-bold px-2.5 py-1 rounded bg-crimson/10 text-crimson dark:bg-crimson-bright/20 dark:text-crimson-bright">
+                      PILAR 01
+                    </span>
+                    <span class="font-mono text-[11px] text-paper-muted dark:text-night-muted">Putusan MK 91/2020</span>
+                  </div>
+                  <h4 class="font-display font-bold text-2xl text-paper-ink dark:text-night-ink group-hover:text-crimson dark:group-hover:text-crimson-bright transition-colors">
+                    Right to be heard
+                  </h4>
+                  <p class="font-serif italic text-base text-paper-ink dark:text-night-ink">
+                    “Hak masyarakat untuk didengar pendapatnya.”
+                  </p>
+                  <p class="font-sans text-xs text-paper-muted dark:text-night-muted leading-relaxed">
+                    Pemerintah dan pembentuk undang-undang wajib membuka ruang serta kanal resmi agar masyarakat dapat menyampaikan aspirasi tanpa hambatan.
+                  </p>
+                </div>
+                <div class="mt-6 pt-3 border-t border-paper-border dark:border-night-border font-mono text-[11px] text-crimson dark:text-crimson-bright font-semibold">
+                  Tahap Buka Ruang Aspirasi →
+                </div>
+              </div>
+
+              <!-- Pillar 2: Right to be considered -->
+              <div class="group rounded-2xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border hover:border-crimson p-6 flex flex-col justify-between transition-all shadow-xs hover:shadow-md">
+                <div class="space-y-4">
+                  <div class="flex items-center justify-between">
+                    <span class="font-mono text-xs font-bold px-2.5 py-1 rounded bg-crimson/10 text-crimson dark:bg-crimson-bright/20 dark:text-crimson-bright">
+                      PILAR 02
+                    </span>
+                    <span class="font-mono text-[11px] text-paper-muted dark:text-night-muted">Putusan MK 91/2020</span>
+                  </div>
+                  <h4 class="font-display font-bold text-2xl text-paper-ink dark:text-night-ink group-hover:text-crimson dark:group-hover:text-crimson-bright transition-colors">
+                    Right to be considered
+                  </h4>
+                  <p class="font-serif italic text-base text-paper-ink dark:text-night-ink">
+                    “Hak agar pendapatnya dipertimbangkan.”
+                  </p>
+                  <p class="font-sans text-xs text-paper-muted dark:text-night-muted leading-relaxed">
+                    Setiap masukan warga tidak boleh sekadar dicatat sebagai daftar hadir, melainkan wajib ditimbang secara substansial dalam pengambilan keputusan.
+                  </p>
+                </div>
+                <div class="mt-6 pt-3 border-t border-paper-border dark:border-night-border font-mono text-[11px] text-crimson dark:text-crimson-bright font-semibold">
+                  Tahap Penimbangan Substansi →
+                </div>
+              </div>
+
+              <!-- Pillar 3: Right to be explained -->
+              <div class="group rounded-2xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border hover:border-crimson p-6 flex flex-col justify-between transition-all shadow-xs hover:shadow-md">
+                <div class="space-y-4">
+                  <div class="flex items-center justify-between">
+                    <span class="font-mono text-xs font-bold px-2.5 py-1 rounded bg-crimson/10 text-crimson dark:bg-crimson-bright/20 dark:text-crimson-bright">
+                      PILAR 03
+                    </span>
+                    <span class="font-mono text-[11px] text-paper-muted dark:text-night-muted">Putusan MK 91/2020</span>
+                  </div>
+                  <h4 class="font-display font-bold text-2xl text-paper-ink dark:text-night-ink group-hover:text-crimson dark:group-hover:text-crimson-bright transition-colors">
+                    Right to be explained
+                  </h4>
+                  <p class="font-serif italic text-base text-paper-ink dark:text-night-ink">
+                    “Hak memperoleh penjelasan atau jawaban atas pendapat yang disampaikan.”
+                  </p>
+                  <p class="font-sans text-xs text-paper-muted dark:text-night-muted leading-relaxed">
+                    Pemerintah perlu memberikan penjelasan mengenai bagaimana masukan masyarakat tersebut ditanggapi dalam rumusan kebijakan akhir.
+                  </p>
+                </div>
+                <div class="mt-6 pt-3 border-t border-paper-border dark:border-night-border font-mono text-[11px] text-crimson dark:text-crimson-bright font-semibold">
+                  Tahap Akuntabilitas Jawaban →
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="article-prose">
+            <p class="font-serif text-paper-ink dark:text-night-ink">
+              Ketiga prinsip ini menegaskan bahwa partisipasi masyarakat tidak seharusnya hanya menjadi formalitas. Pemerintah perlu membuka ruang bagi masyarakat untuk menyampaikan aspirasi dan memberikan penjelasan mengenai bagaimana masukan tersebut ditanggapi.
+            </p>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             SECTION 06: MAHASISWA BUKAN SEKADAR PENONTON
+             ========================================== -->
+        <section id="section-mahasiswa" class="scroll-mt-24 space-y-8">
+          <div class="economist-rubric-bar">
+            <span class="font-mono text-xs uppercase tracking-widest text-crimson dark:text-crimson-bright font-bold">
+              AGEN PERUBAHAN &amp; LANGKAH NYATA
+            </span>
+            <h2 class="font-display font-extrabold text-3xl sm:text-4xl text-paper-ink dark:text-night-ink mt-1 leading-tight">
+              Mahasiswa Bukan Sekadar Penonton
+            </h2>
+          </div>
+
+          <div class="article-prose">
+            <p class="font-serif text-paper-ink dark:text-night-ink">
+              Lantas, bagaimana mahasiswa dapat mengambil bagian? Partisipasi tidak harus selalu diwujudkan melalui demonstrasi atau keterlibatan dalam politik praktis. Langkah sederhana pun dapat memberikan kontribusi.
+            </p>
+            <p class="font-serif text-paper-ink dark:text-night-ink">
+              Mulailah dengan membiasakan diri membaca informasi dari sumber resmi, memeriksa fakta sebelum membagikan berita, dan memahami dampak suatu kebijakan sebelum memberikan penilaian. Mahasiswa juga dapat mengikuti diskusi atau konsultasi publik, menyampaikan aspirasi kepada lembaga yang berwenang, serta melakukan kajian sederhana untuk mengawasi pelaksanaan kebijakan.
+            </p>
+          </div>
+
+          <!-- INTERACTIVE MODULE 3: CIVIC ACTION CHECKLIST ("SEBERAPA BERMAKNA PARTISIPASIMU?") -->
+          <div class="rounded-2xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border p-6 sm:p-8 shadow-sm space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-paper-border dark:border-night-border pb-5">
+              <div>
+                <span class="font-mono text-[11px] uppercase tracking-widest text-crimson dark:text-crimson-bright font-bold">
+                  REFLEKSI INTERAKTIF • 6 LANGKAH PARTISIPASI
+                </span>
+                <h3 class="font-display font-bold text-2xl text-paper-ink dark:text-night-ink mt-1">
+                  Seberapa Bermakna Partisipasimu Saat Ini?
+                </h3>
+                <p class="font-sans text-xs text-paper-muted dark:text-night-muted mt-1">
+                  Centang kebiasaan kewarganegaraan di bawah ini yang sudah mulai kamu lakukan.
+                </p>
+              </div>
+              <div class="text-left sm:text-right shrink-0">
+                <span id="checklistScoreLabel" class="font-mono font-bold text-2xl text-crimson dark:text-crimson-bright">0 / 6</span>
+                <span class="block font-mono text-[10px] uppercase text-paper-muted dark:text-night-muted">Kebiasaan Aktif</span>
+              </div>
+            </div>
+
+            <!-- Progress Meter -->
+            <div class="w-full h-2.5 bg-paper-elevated dark:bg-night-elevated rounded-full overflow-hidden">
+              <div id="checklistProgressBar" class="h-full bg-crimson dark:bg-crimson-bright transition-all duration-300" style="width: 0%;"></div>
+            </div>
+
+            <!-- 6 Actionable Checkboxes based strictly on the article text -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+              
+              <label class="flex items-start gap-3.5 p-4 rounded-xl bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border cursor-pointer hover:border-crimson transition-all select-none">
+                <input type="checkbox" onchange="updateCivicChecklist()" class="civic-check mt-1 w-4 h-4 accent-crimson rounded cursor-pointer" />
+                <div>
+                  <span class="font-sans font-bold text-sm text-paper-ink dark:text-night-ink block">Membaca Informasi dari Sumber Resmi</span>
+                  <span class="font-sans text-xs text-paper-muted dark:text-night-muted mt-0.5 block">Merujuk langsung pada naskah regulasi atau dokumen lembaga resmi.</span>
+                </div>
+              </label>
+
+              <label class="flex items-start gap-3.5 p-4 rounded-xl bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border cursor-pointer hover:border-crimson transition-all select-none">
+                <input type="checkbox" onchange="updateCivicChecklist()" class="civic-check mt-1 w-4 h-4 accent-crimson rounded cursor-pointer" />
+                <div>
+                  <span class="font-sans font-bold text-sm text-paper-ink dark:text-night-ink block">Memeriksa Fakta Sebelum Membagikan Berita</span>
+                  <span class="font-sans text-xs text-paper-muted dark:text-night-muted mt-0.5 block">Mencegah disinformasi dengan memverifikasi kebenaran isu publik.</span>
+                </div>
+              </label>
+
+              <label class="flex items-start gap-3.5 p-4 rounded-xl bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border cursor-pointer hover:border-crimson transition-all select-none">
+                <input type="checkbox" onchange="updateCivicChecklist()" class="civic-check mt-1 w-4 h-4 accent-crimson rounded cursor-pointer" />
+                <div>
+                  <span class="font-sans font-bold text-sm text-paper-ink dark:text-night-ink block">Memahami Dampak Kebijakan Sebelum Menilai</span>
+                  <span class="font-sans text-xs text-paper-muted dark:text-night-muted mt-0.5 block">Mempelajari implikasi kebijakan terhadap masyarakat luas secara objektif.</span>
+                </div>
+              </label>
+
+              <label class="flex items-start gap-3.5 p-4 rounded-xl bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border cursor-pointer hover:border-crimson transition-all select-none">
+                <input type="checkbox" onchange="updateCivicChecklist()" class="civic-check mt-1 w-4 h-4 accent-crimson rounded cursor-pointer" />
+                <div>
+                  <span class="font-sans font-bold text-sm text-paper-ink dark:text-night-ink block">Mengikuti Diskusi atau Konsultasi Publik</span>
+                  <span class="font-sans text-xs text-paper-muted dark:text-night-muted mt-0.5 block">Hadir dan terlibat dalam forum pembahasan kebijakan publik.</span>
+                </div>
+              </label>
+
+              <label class="flex items-start gap-3.5 p-4 rounded-xl bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border cursor-pointer hover:border-crimson transition-all select-none">
+                <input type="checkbox" onchange="updateCivicChecklist()" class="civic-check mt-1 w-4 h-4 accent-crimson rounded cursor-pointer" />
+                <div>
+                  <span class="font-sans font-bold text-sm text-paper-ink dark:text-night-ink block">Menyampaikan Aspirasi ke Lembaga Berwenang</span>
+                  <span class="font-sans text-xs text-paper-muted dark:text-night-muted mt-0.5 block">Menggunakan kanal daring maupun luring sesuai Pasal 96 UU 13/2022.</span>
+                </div>
+              </label>
+
+              <label class="flex items-start gap-3.5 p-4 rounded-xl bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border cursor-pointer hover:border-crimson transition-all select-none">
+                <input type="checkbox" onchange="updateCivicChecklist()" class="civic-check mt-1 w-4 h-4 accent-crimson rounded cursor-pointer" />
+                <div>
+                  <span class="font-sans font-bold text-sm text-paper-ink dark:text-night-ink block">Melakukan Kajian Sederhana Pengawasan</span>
+                  <span class="font-sans text-xs text-paper-muted dark:text-night-muted mt-0.5 block">Mengawasi dan mengevaluasi pelaksanaan kebijakan di lapangan.</span>
+                </div>
+              </label>
+
+            </div>
+
+            <!-- Live Feedback Status -->
+            <div id="checklistFeedbackBox" class="p-4 rounded-xl bg-paper-elevated/70 dark:bg-night-elevated/70 font-sans text-xs text-paper-ink dark:text-night-ink">
+              Mulai centang langkah-langkah di atas untuk melihat profil partisipasi kewarganegaraanmu.
+            </div>
+          </div>
+
+          <div class="article-prose">
+            <p class="font-serif text-paper-ink dark:text-night-ink">
+              Pada akhirnya, semangat kebangsaan tidak hanya ditunjukkan melalui rasa bangga terhadap negara atau kegiatan seremonial. Semangat tersebut juga tercermin dari kepedulian terhadap persoalan bangsa dan kesediaan untuk memperjuangkan kepentingan bersama.
+            </p>
+          </div>
+
+          <!-- Monumental Closing Editorial Pull-Quote -->
+          <figure class="my-12 p-8 sm:p-12 rounded-2xl bg-paper-ink dark:bg-night-card text-paper-light dark:text-night-ink border border-paper-border dark:border-night-border relative overflow-hidden shadow-lg">
+            <div class="w-16 h-1 bg-crimson mb-6"></div>
+            <blockquote class="font-display font-bold text-2xl sm:text-3xl lg:text-4xl leading-snug tracking-tight">
+              “Mencintai Indonesia bukan berarti harus selalu menyetujui setiap keputusan pemerintah. Terkadang, bentuk kepedulian terbesar justru hadir melalui keberanian untuk bertanya, mengkritik, dan mengawal perubahan.”
+            </blockquote>
+            <p class="mt-6 font-serif text-lg sm:text-xl text-paper-border dark:text-night-muted leading-relaxed">
+              Sebab, demokrasi yang kuat tidak dibangun oleh masyarakat yang selalu diam, melainkan oleh masyarakat yang mau memahami, berani bersuara, dan tidak berhenti peduli.
+            </p>
+          </figure>
+        </section>
+
+        <!-- ==========================================
+             SECTION 07: REFERENSI & DOKUMEN HUKUM
+             ========================================== -->
+        <section id="section-referensi" class="scroll-mt-24 pt-10 border-t-2 border-paper-ink dark:border-night-ink space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <span class="font-mono text-xs uppercase tracking-widest text-crimson dark:text-crimson-bright font-bold">
+                DOSSIER AKADEMIK &amp; REGULASI
+              </span>
+              <h2 class="font-display font-bold text-2xl sm:text-3xl text-paper-ink dark:text-night-ink mt-1">
+                Referensi
+              </h2>
+            </div>
+            <span class="font-mono text-xs text-paper-muted dark:text-night-muted">
+              Klik "Salin Sitasi" untuk mengutip referensi
+            </span>
+          </div>
+
+          <div class="grid grid-cols-1 gap-4">
+            
+            <!-- Ref 1 -->
+            <div class="p-5 rounded-xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                  <span class="font-mono text-xs font-bold px-2 py-0.5 rounded bg-crimson text-white">01</span>
+                  <span class="font-mono text-xs uppercase text-paper-muted dark:text-night-muted">Jurnal Ilmiah • Administratio (2025)</span>
+                </div>
+                <p id="refText-1" class="font-serif text-sm sm:text-base text-paper-ink dark:text-night-ink pt-1">
+                  Putri, R. A., Marlina, &amp; Zain, D. (2025). Reimagining Public Policy and Legal Education for Youth Civic Engagement in Indonesia: Bridging Structural Capacity Gaps. <em>Administratio</em>, 16(2), 171–186.
+                </p>
+              </div>
+              <button onclick="copyCitation(1)" id="copyBtn-1" class="self-start sm:self-center shrink-0 px-3 py-1.5 rounded-lg bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border hover:border-crimson font-mono text-xs font-semibold text-paper-ink dark:text-night-ink transition-all">
+                Salin Sitasi
+              </button>
+            </div>
+
+            <!-- Ref 2 -->
+            <div class="p-5 rounded-xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                  <span class="font-mono text-xs font-bold px-2 py-0.5 rounded bg-navy text-white">02</span>
+                  <span class="font-mono text-xs uppercase text-paper-muted dark:text-night-muted">Dokumen Resmi KPU</span>
+                </div>
+                <p id="refText-2" class="font-serif text-sm sm:text-base text-paper-ink dark:text-night-ink pt-1">
+                  Komisi Pemilihan Umum RI. (2024). Keputusan KPU Nomor 1043 Tahun 2024 tentang Tingkat Partisipasi Pemilih Pemilu 2024.
+                </p>
+              </div>
+              <button onclick="copyCitation(2)" id="copyBtn-2" class="self-start sm:self-center shrink-0 px-3 py-1.5 rounded-lg bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border hover:border-crimson font-mono text-xs font-semibold text-paper-ink dark:text-night-ink transition-all">
+                Salin Sitasi
+              </button>
+            </div>
+
+            <!-- Ref 3 -->
+            <div class="p-5 rounded-xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                  <span class="font-mono text-xs font-bold px-2 py-0.5 rounded bg-navy text-white">03</span>
+                  <span class="font-mono text-xs uppercase text-paper-muted dark:text-night-muted">Dokumen Resmi Undang-Undang</span>
+                </div>
+                <p id="refText-3" class="font-serif text-sm sm:text-base text-paper-ink dark:text-night-ink pt-1">
+                  Republik Indonesia. (2022). Undang-Undang Nomor 13 Tahun 2022 tentang Pembentukan Peraturan Perundang-Undangan.
+                </p>
+              </div>
+              <button onclick="copyCitation(3)" id="copyBtn-3" class="self-start sm:self-center shrink-0 px-3 py-1.5 rounded-lg bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border hover:border-crimson font-mono text-xs font-semibold text-paper-ink dark:text-night-ink transition-all">
+                Salin Sitasi
+              </button>
+            </div>
+
+            <!-- Ref 4 -->
+            <div class="p-5 rounded-xl bg-paper-card dark:bg-night-card border border-paper-border dark:border-night-border flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                  <span class="font-mono text-xs font-bold px-2 py-0.5 rounded bg-navy text-white">04</span>
+                  <span class="font-mono text-xs uppercase text-paper-muted dark:text-night-muted">Dokumen Putusan Mahkamah Konstitusi</span>
+                </div>
+                <p id="refText-4" class="font-serif text-sm sm:text-base text-paper-ink dark:text-night-ink pt-1">
+                  Mahkamah Konstitusi RI. (2021). Putusan Nomor 91/PUU-XVIII/2020.
+                </p>
+              </div>
+              <button onclick="copyCitation(4)" id="copyBtn-4" class="self-start sm:self-center shrink-0 px-3 py-1.5 rounded-lg bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border hover:border-crimson font-mono text-xs font-semibold text-paper-ink dark:text-night-ink transition-all">
+                Salin Sitasi
+              </button>
+            </div>
+
+          </div>
+        </section>
+
+      </article>
+    </div>
+  </main>
+
+  <!-- EDITORIAL FOOTER -->
+  <footer class="border-t border-paper-border dark:border-night-border bg-paper-card dark:bg-night-card py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+      <div class="space-y-1">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-5 bg-crimson inline-block rounded-xs"></span>
+          <span class="font-display font-black tracking-tight text-base uppercase text-paper-ink dark:text-night-ink">
+            Jurnal Warga • Publikasi Editorial Interaktif
+          </span>
+        </div>
+        <p class="font-sans text-xs text-paper-muted dark:text-night-muted">
+          Dirancang untuk literasi kebijakan publik, pendidikan hukum, dan partisipasi bermakna.
+        </p>
+      </div>
+      <a href="#hero" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border font-mono text-xs text-paper-ink dark:text-night-ink hover:border-crimson transition-all">
+        <span>Kembali ke Atas</span>
+        <span>↑</span>
+      </a>
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT: INTERACTIVITY, DATA VISUALIZATION & EDITORIAL UX -->
+  <script>
+    // =========================================================
+    // 1. DYNAMIC READING TIME & SCROLL PROGRESS BAR
+    // =========================================================
+    function initReadingMetrics() {
+      const articleEl = document.getElementById('articleBody');
+      if (articleEl) {
+        const text = articleEl.innerText || '';
+        const wordCount = text.trim().split(/\s+/).length;
+        const minutes = Math.max(3, Math.ceil(wordCount / 190));
+        document.getElementById('readingTimeDisplay').textContent = `~${minutes} mnt baca`;
+      }
+
+      window.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = docHeight > 0 ? Math.min(100, (scrollTop / docHeight) * 100) : 0;
+        document.getElementById('readingProgressBar').style.width = `${progress}%`;
+        updateActiveTocOnScroll();
+      });
+    }
+
+    // =========================================================
+    // 2. FONT SIZE CONTROLLER (A- / 100% / A+)
+    // =========================================================
+    let currentFontScale = 0; // -2 to +3
+    const baseRem = 1.1875; // 19px
+
+    function adjustFontSize(direction) {
+      if (direction === 0) {
+        currentFontScale = 0;
+      } else {
+        currentFontScale = Math.max(-2, Math.min(3, currentFontScale + direction));
+      }
+      const newSize = (baseRem + currentFontScale * 0.09).toFixed(3);
+      document.documentElement.style.setProperty('--body-font-size', `${newSize}rem`);
+      const pct = Math.round((newSize / baseRem) * 100);
+      document.getElementById('fontResetBtn').textContent = `${pct}%`;
+    }
+
+    // =========================================================
+    // 3. DARK / LIGHT EDITORIAL MODE TOGGLE
+    // =========================================================
+    function toggleEditorialTheme() {
+      const htmlEl = document.documentElement;
+      const isDark = htmlEl.classList.toggle('dark');
+      const sunIcon = document.getElementById('sunIcon');
+      const moonIcon = document.getElementById('moonIcon');
+      const themeText = document.getElementById('themeToggleText');
+
+      if (isDark) {
+        sunIcon.classList.remove('hidden');
+        moonIcon.classList.add('hidden');
+        themeText.textContent = 'Mode Kertas';
+      } else {
+        sunIcon.classList.add('hidden');
+        moonIcon.classList.remove('hidden');
+        themeText.textContent = 'Mode Malam';
+      }
+    }
+
+    // =========================================================
+    // 4. MOBILE TOC DRAWER & SCROLLSPY
+    // =========================================================
+    function toggleMobileTOC() {
+      const drawer = document.getElementById('mobileTocDrawer');
+      drawer.classList.toggle('hidden');
+    }
+
+    const sectionTitles = {
+      'section-pengantar': '01 • Ketika Suara Dianggap Tak Berarti',
+      'section-kritik-vs-apatis': '02 • Kritik Bukanlah Apatisme',
+      'section-data-pemuda': '03 • Kesenjangan Partisipasi Pemuda',
+      'section-bilik-suara': '04 • Demokrasi Tak Berhenti di Bilik Suara',
+      'section-landasan-hukum': '05 • Landasan Hukum & Putusan MK',
+      'section-mahasiswa': '06 • Mahasiswa Bukan Sekadar Penonton',
+      'section-referensi': '07 • Referensi & Dokumen Hukum'
+    };
+
+    function updateActiveTocOnScroll() {
+      const sections = Object.keys(sectionTitles);
+      let currentSection = sections[0];
+
+      for (const id of sections) {
+        const el = document.getElementById(id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= 180) {
+            currentSection = id;
+          }
+        }
+      }
+
+      // Update Top Masthead Active Label
+      const labelEl = document.getElementById('activeSectionLabel');
+      if (labelEl) {
+        labelEl.textContent = sectionTitles[currentSection];
+      }
+
+      // Update Desktop Sidebar TOC highlight
+      document.querySelectorAll('.toc-link').forEach(link => {
+        const target = link.getAttribute('data-toc');
+        if (target === currentSection) {
+          link.className = 'toc-link flex items-center gap-2.5 py-2 px-2.5 rounded-lg text-crimson dark:text-crimson-bright font-bold bg-paper-elevated/70 dark:bg-night-elevated/70 transition-all';
+        } else {
+          link.className = 'toc-link flex items-center gap-2.5 py-2 px-2.5 rounded-lg text-paper-muted dark:text-night-muted hover:text-paper-ink dark:hover:text-night-ink transition-all';
+        }
+      });
+    }
+
+    // =========================================================
+    // 5. HERO SVG INTERACTIVE ILLUSTRATION CAPTIONS
+    // =========================================================
+    function highlightHeroCaption(key) {
+      const captionEl = document.getElementById('heroSvgCaptionText');
+      const messages = {
+        suara: '<strong class="text-crimson dark:text-crimson-bright">Suara & Kritik Warga:</strong> Menyampaikan kritik, mempertanyakan keputusan, dan menolak kebijakan dengan alasan yang jelas merupakan bagian sah dari demokrasi, bukan apatisme.',
+        mengenal: '<strong class="text-navy dark:text-blue-400">96,3% Mengenal Konsep:</strong> Dari 567 pemuda Indonesia usia 16–30 tahun yang diteliti (Putri dkk., 2025), hampir seluruhnya mengenal konsep partisipasi kebijakan publik.',
+        memahami: '<strong class="text-paper-ink dark:text-night-ink">43,7% Memahami Proses:</strong> Kurang dari separuh responden yang memahami alur dan mekanisme bagaimana sebuah kebijakan publik dapat dipengaruhi.',
+        terlibat: '<strong class="text-crimson dark:text-crimson-bright">19,2% Keterlibatan Langsung:</strong> Hanya sekitar 1 dari 5 pemuda dalam survei yang pernah terlibat langsung dalam proses kebijakan publik.'
+      };
+      if (messages[key]) {
+        captionEl.innerHTML = messages[key];
+      }
+    }
+
+    // =========================================================
+    // 6. MODULE 1: KRITIK VS APATISME COMPARISON & QUIZ
+    // =========================================================
+    function switchComparisonMode(mode) {
+      const cardKritis = document.getElementById('cardKritis');
+      const cardApatis = document.getElementById('cardApatis');
+      const grid = document.getElementById('comparisonGrid');
+
+      ['all', 'kritis', 'apatis'].forEach(m => {
+        const btn = document.getElementById(`compBtn-${m}`);
+        if (m === mode) {
+          btn.className = 'px-3 py-1.5 rounded-lg font-sans text-xs font-bold bg-crimson text-white transition-all';
+        } else {
+          btn.className = 'px-3 py-1.5 rounded-lg font-sans text-xs font-semibold text-paper-muted dark:text-night-muted hover:text-paper-ink transition-all';
+        }
+      });
+
+      if (mode === 'all') {
+        grid.className = 'grid grid-cols-1 md:grid-cols-2 gap-6 mt-6';
+        cardKritis.classList.remove('hidden');
+        cardApatis.classList.remove('hidden');
+      } else if (mode === 'kritis') {
+        grid.className = 'grid grid-cols-1 gap-6 mt-6';
+        cardKritis.classList.remove('hidden');
+        cardApatis.classList.add('hidden');
+      } else {
+        grid.className = 'grid grid-cols-1 gap-6 mt-6';
+        cardKritis.classList.add('hidden');
+        cardApatis.classList.remove('hidden');
+      }
+    }
+
+    function evaluateScenario(caseNum) {
+      const box = document.getElementById('scenarioFeedback');
+      box.classList.remove('hidden');
+      if (caseNum === 1) {
+        box.innerHTML = '<strong class="text-crimson dark:text-crimson-bright">Analisis Kasus A — Gejala Apatisme Politik:</strong> Merasa tidak setuju terhadap kebijakan tetapi memilih untuk mengabaikannya karena merasa suaranya tidak akan didengar adalah bentuk melemahnya <em>political efficacy</em> yang berujung pada apatisme.';
+      } else {
+        box.innerHTML = '<strong class="text-emerald-600 dark:text-emerald-400">Analisis Kasus B — Partisipasi Demokratis (Bukan Apatisme):</strong> Mengkritik pemerintah, mempertanyakan keputusan, dan menolak kebijakan dengan alasan yang jelas justru merupakan wujud kepedulian dan bagian penting dari kehidupan demokrasi.';
+      }
+    }
+
+    // =========================================================
+    // 7. MODULE 2: DATA VISUALIZATION (PUTRI, MARLINA, & ZAIN 2025)
+    // =========================================================
+    function selectDataStage(stage) {
+      const stages = ['mengetahui', 'memahami', 'melakukan'];
+      stages.forEach(s => {
+        const el = document.getElementById(`stageRow-${s}`);
+        if (s === stage) {
+          el.className = 'cursor-pointer p-4 rounded-xl bg-paper-light dark:bg-night-bg border-2 border-crimson transition-all';
+        } else {
+          el.className = 'cursor-pointer p-4 rounded-xl bg-paper-light dark:bg-night-bg border border-paper-border dark:border-night-border hover:border-crimson/60 transition-all';
+        }
+      });
+
+      const detailBox = document.getElementById('dataStageDetail');
+      if (stage === 'mengetahui') {
+        detailBox.innerHTML = '<strong class="text-crimson dark:text-crimson-bright font-mono uppercase text-xs block mb-1">Analisis Tahap 1 (96,3% — Mengenal Konsep):</strong> Dari 567 pemuda berusia 16–30 tahun, hampir semuanya mengenal konsep partisipasi kebijakan publik. Hal ini membuktikan bahwa persoalan utamanya bukan karena generasi muda tidak mengenal politik.';
+      } else if (stage === 'memahami') {
+        detailBox.innerHTML = '<strong class="text-crimson dark:text-crimson-bright font-mono uppercase text-xs block mb-1">Analisis Tahap 2 (43,7% — Memahami Proses):</strong> Terjadi penurunan tajam. Seseorang mungkin mengetahui bahwa masyarakat berhak menyampaikan aspirasi, tetapi belum tentu memahami kepada siapa aspirasi harus disampaikan atau bagaimana proses kebijakan dapat dipengaruhi.';
+      } else {
+        detailBox.innerHTML = '<strong class="text-crimson dark:text-crimson-bright font-mono uppercase text-xs block mb-1">Analisis Tahap 3 (19,2% — Keterlibatan Langsung):</strong> Hanya 19,2% responden yang tercatat pernah terlibat langsung. Selain kendala pemahaman prosedur, rendahnya keterlibatan langsung juga dipengaruhi oleh rasa tidak percaya atau rendahnya <em>political efficacy</em>.';
+      }
+    }
+
+    function toggleMethodModal() {
+      const box = document.getElementById('methodNoteBox');
+      box.classList.toggle('hidden');
+    }
+
+    // =========================================================
+    // 8. MODULE 3: 4-STAGE PUBLIC POLICY CYCLE STEPPER
+    // =========================================================
+    const policyStepsData = [
+      {
+        num: 'TAHAP 01 DARI 04',
+        title: 'Identifikasi Masalah',
+        desc: 'Tahap paling awal ketika persoalan publik di tengah masyarakat mulai dikenali dan diangkat menjadi agenda pembahasan kebijakan.',
+        citizenRole: 'Masyarakat berkepentingan memperoleh informasi yang transparan dan menyuarakan persoalan nyata yang mereka alami sehari-hari (seperti kendala biaya pendidikan, transportasi, kesehatan, atau lingkungan).'
+      },
+      {
+        num: 'TAHAP 02 DARI 04',
+        title: 'Perumusan Alternatif Penyelesaian',
+        desc: 'Pemerintah dan pembentuk peraturan menyusun berbagai pilihan solusi atau rancangan kebijakan untuk menjawab masalah yang telah diidentifikasi.',
+        citizenRole: 'Warga dan mahasiswa dapat mengikuti diskusi atau konsultasi publik serta memberikan masukan lisan maupun tertulis (daring/luring) agar alternatif solusi tepat sasaran.'
+      },
+      {
+        num: 'TAHAP 03 DARI 04',
+        title: 'Pengambilan Keputusan',
+        desc: 'Tahap penentuan dan pengesahan kebijakan atau peraturan perundang-undangan oleh lembaga yang berwenang.',
+        citizenRole: 'Berlakunya prinsip Meaningful Participation (Putusan MK No. 91/PUU-XVIII/2020): masyarakat berhak didengar (right to be heard), dipertimbangkan masukannya (right to be considered), dan mendapat penjelasan (right to be explained).'
+      },
+      {
+        num: 'TAHAP 04 DARI 04',
+        title: 'Pelaksanaan dan Evaluasi',
+        desc: 'Kebijakan diterapkan di lapangan dan dinilai dampaknya terhadap kehidupan masyarakat luas.',
+        citizenRole: 'Masyarakat dan mahasiswa tetap memiliki tanggung jawab mengawasi pemerintahan, melakukan kajian sederhana untuk mengawasi pelaksanaan kebijakan, dan menyampaikan evaluasi.'
+      }
+    ];
+
+    function selectPolicyStep(idx) {
+      for (let i = 0; i < 4; i++) {
+        const tab = document.getElementById(`policyTab-${i}`);
+        if (i === idx) {
+          tab.className = 'policy-tab text-left p-3.5 rounded-xl border-2 border-crimson bg-paper-light dark:bg-night-bg transition-all';
+        } else {
+          tab.className = 'policy-tab text-left p-3.5 rounded-xl border border-paper-border dark:border-night-border bg-paper-light/60 dark:bg-night-bg/60 hover:border-crimson/50 transition-all';
+        }
+      }
+
+      const data = policyStepsData[idx];
+      const container = document.getElementById('policyStepContent');
+      container.innerHTML = `
+        <div class="md:col-span-5 space-y-2 border-b md:border-b-0 md:border-r border-paper-border dark:border-night-border pb-4 md:pb-0 md:pr-6">
+          <span class="font-mono text-[11px] uppercase tracking-widest text-crimson dark:text-crimson-bright font-bold">${data.num}</span>
+          <h4 class="font-display font-bold text-2xl text-paper-ink dark:text-night-ink">${data.title}</h4>
+          <p class="font-sans text-xs text-paper-muted dark:text-night-muted leading-relaxed">${data.desc}</p>
+        </div>
+        <div class="md:col-span-7 space-y-2">
+          <span class="font-mono text-[11px] uppercase tracking-widest text-navy dark:text-blue-400 font-bold">Kepentingan &amp; Peran Masyarakat:</span>
+          <p class="font-serif text-base text-paper-ink dark:text-night-ink leading-relaxed">${data.citizenRole}</p>
+        </div>
+      `;
+    }
+
+    // =========================================================
+    // 9. MODULE 4: CIVIC ACTION CHECKLIST
+    // =========================================================
+    function updateCivicChecklist() {
+      const checks = document.querySelectorAll('.civic-check');
+      let checkedCount = 0;
+      checks.forEach(c => { if (c.checked) checkedCount++; });
+
+      const total = checks.length;
+      const pct = Math.round((checkedCount / total) * 100);
+
+      document.getElementById('checklistScoreLabel').textContent = `${checkedCount} / ${total}`;
+      document.getElementById('checklistProgressBar').style.width = `${pct}%`;
+
+      const feedbackEl = document.getElementById('checklistFeedbackBox');
+      if (checkedCount === 0) {
+        feedbackEl.innerHTML = 'Mulai centang langkah-langkah di atas untuk melihat profil partisipasi kewarganegaraanmu.';
+      } else if (checkedCount <= 2) {
+        feedbackEl.innerHTML = '<strong class="text-amber-600 dark:text-amber-400">Langkah Awal Literasi Publik:</strong> Kamu sudah memulai kebiasaan baik dengan membangun literasi informasi. Teruskan dengan memahami dampak kebijakan dan mulai mengikuti diskusi publik.';
+      } else if (checkedCount <= 4) {
+        feedbackEl.innerHTML = '<strong class="text-navy dark:text-blue-400">Warga Kampus yang Kritis & Peduli:</strong> Kamu tidak sekadar menjadi penonton. Kamu telah menjembatani kesenjangan antara mengetahui konsep dan memahami proses kebijakan.';
+      } else {
+        feedbackEl.innerHTML = '<strong class="text-emerald-600 dark:text-emerald-400">Penggerak Partisipasi Bermakna (Meaningful Participation):</strong> Luar biasa! Kamu mempraktikkan literasi informasi, berdialog di ruang konsultasi publik, dan mengawal perubahan secara aktif.';
+      }
+    }
+
+    // =========================================================
+    // 10. COPY CITATION TO CLIPBOARD (IFRAME-SAFE)
+    // =========================================================
+    function copyCitation(num) {
+      const textEl = document.getElementById(`refText-${num}`);
+      const btnEl = document.getElementById(`copyBtn-${num}`);
+      if (!textEl || !btnEl) return;
+
+      const tempInput = document.createElement('textarea');
+      tempInput.value = textEl.innerText.trim();
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+
+      const originalText = btnEl.textContent;
+      btnEl.textContent = '✓ Tersalin';
+      btnEl.classList.add('bg-crimson', 'text-white', 'border-crimson');
+      setTimeout(() => {
+        btnEl.textContent = originalText;
+        btnEl.classList.remove('bg-crimson', 'text-white', 'border-crimson');
+      }, 2000);
+    }
+
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', () => {
+      initReadingMetrics();
+      selectPolicyStep(0);
+    });
+  </script>
+</body>
+</html>
