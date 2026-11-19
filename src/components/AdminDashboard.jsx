@@ -8,7 +8,8 @@ import {
 import { 
   fetchAllSubmissions, 
   upsertSubmission, 
-  updateAdminGrade 
+  updateAdminGrade,
+  deleteSubmission
 } from '../lib/supabaseDb';
 import { 
   Key, 
@@ -28,7 +29,8 @@ import {
   Award, 
   FileSpreadsheet,
   AlertCircle,
-  Database
+  Database,
+  Trash2
 } from 'lucide-react';
 
 export default function AdminDashboard({ setView, onClose }) {
@@ -409,6 +411,25 @@ export default function AdminDashboard({ setView, onClose }) {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+  };
+
+  // Delete Student Submission
+  const handleDeleteSubmission = async (student) => {
+    const studentName = student.studentName || student.name || 'Mahasiswa';
+    const docId = student.id || student.docId;
+    if (!window.confirm(`Hapus data pengerjaan "${studentName}" dari tabel dan database Supabase?`)) {
+      return;
+    }
+
+    const updated = submissions.filter(s => (s.id || s.docId) !== docId);
+    setSubmissions(updated);
+    localStorage.setItem(STORAGE_KEY_SUBMISSIONS, JSON.stringify(updated));
+
+    if (docId) {
+      deleteSubmission(docId).catch(e => console.error(e));
+    }
+
+    setSyncMessage(`Data "${studentName}" telah dihapus.`);
   };
 
   // Inspect Student Modal
@@ -1079,13 +1100,23 @@ function doGet(e) {
                         </td>
                         <td className="py-3.5 px-4 font-mono text-xs font-extrabold text-amber-600 dark:text-amber-400">{totalXp} XP</td>
                         <td className="py-3.5 px-4 text-right">
-                          <button
-                            onClick={() => openInspector(s)}
-                            className="btn-3d btn-3d-indigo px-3.5 py-1.5 rounded-xl font-bold text-xs inline-flex items-center gap-1.5 cursor-pointer"
-                          >
-                            <Eye className="w-3.5 h-3.5" />
-                            <span>Lihat &amp; Nilai Esai</span>
-                          </button>
+                          <div className="inline-flex items-center gap-1.5">
+                            <button
+                              onClick={() => openInspector(s)}
+                              className="btn-3d btn-3d-indigo px-3.5 py-1.5 rounded-xl font-bold text-xs inline-flex items-center gap-1.5 cursor-pointer"
+                              title="Periksa lembar jawaban dan beri penilaian esai"
+                            >
+                              <Eye className="w-3.5 h-3.5" />
+                              <span>Lihat &amp; Nilai Esai</span>
+                            </button>
+                            <button
+                              onClick={() => handleDeleteSubmission(s)}
+                              className="btn-3d btn-3d-rose p-1.5 rounded-xl text-xs inline-flex items-center justify-center cursor-pointer"
+                              title="Hapus data peserta ini dari tabel &amp; Supabase"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     );

@@ -100,3 +100,17 @@ export async function getSubmissionCount() {
   if (error) return null;
   return count;
 }
+
+/** Delete a submission by id from Supabase. */
+export async function deleteSubmission(id) {
+  const { error } = await supabase
+    .from('civic_quest_submissions')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.error('[Supabase] delete error:', error.message);
+    return false;
+  }
+  return true;
+}
