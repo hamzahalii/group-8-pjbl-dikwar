@@ -15,7 +15,8 @@ export default function KuisView({ setView }) {
   const [screen, setScreen] = useState('start');
   const [previousScreenBeforeAdmin, setPreviousScreenBeforeAdmin] = useState('start');
   const [playerName, setPlayerName] = useState('');
-  const [playerClass, setPlayerClass] = useState('');
+  const [playerProdi, setPlayerProdi] = useState('');
+  const [playerUniversity, setPlayerUniversity] = useState('');
   const [onboardingError, setOnboardingError] = useState('');
   const [isShaking, setIsShaking] = useState(false);
 
@@ -188,15 +189,13 @@ export default function KuisView({ setView }) {
   // Start Quiz
   const handleStartQuiz = () => {
     const nameVal = playerName.trim();
-    const classVal = playerClass.trim();
+    const prodiVal = playerProdi.trim();
+    const univVal = playerUniversity.trim();
 
-    if (!nameVal || !classVal) {
+    if (!nameVal || !prodiVal || !univVal) {
       playSound('wrong');
-      setOnboardingError(
-        !nameVal && !classVal
-          ? 'Mohon isi Nama Lengkap dan Program Studi / Kelas terlebih dahulu.'
-          : (!nameVal ? 'Mohon isi Nama Lengkap kamu terlebih dahulu.' : 'Mohon isi Program Studi / Kelas (contoh: Matematika/SS18).')
-      );
+      const missing = [!nameVal && 'Nama Lengkap', !prodiVal && 'Program Studi', !univVal && 'Universitas'].filter(Boolean);
+      setOnboardingError(`Mohon isi ${missing.join(' dan ')} terlebih dahulu.`);
       setIsShaking(true);
       setTimeout(() => setIsShaking(false), 500);
       return;
@@ -431,7 +430,8 @@ export default function KuisView({ setView }) {
       id: submissionId || ('CQ-' + now.getTime()),
       docId: submissionId || ('CQ-' + now.getTime()),
       studentName: playerName || 'Mahasiswa',
-      studentClass: playerClass || 'Matematika/SS18',
+      studentProdi: playerProdi || 'Ilmu Komputer',
+      studentUniversity: playerUniversity || 'Institut Pertanian Bogor',
       mcqScore: correctMcCount,
       mcqPercentage: pct,
       xp: xp + (curEssay?.id === 10 ? Math.max(150, previewXp) : 0),
@@ -490,7 +490,8 @@ export default function KuisView({ setView }) {
             id: newSub.id,
             timestamp: newSub.submittedAtWIB,
             name: newSub.studentName,
-            prodi: newSub.studentClass,
+            prodi: newSub.studentProdi,
+            universitas: newSub.studentUniversity,
             mcScore: `${newSub.mcqScore}/8 (${newSub.mcqPercentage}%)`,
             xp: newSub.xp,
             mcAnswers: detailedMcq.reduce((acc, cur) => {
@@ -531,7 +532,8 @@ export default function KuisView({ setView }) {
       'Topik: Apatisme Publik & Demokrasi',
       '==========================================',
       `Nama Lengkap          : ${playerName}`,
-      `Program Studi / Kelas : ${playerClass}`,
+      `Program Studi         : ${playerProdi}`,
+      `Universitas           : ${playerUniversity}`,
       `Skor Bagian A (PG)    : ${correctCount}/8 (${pct}%)`,
       `Total XP              : ${xp} XP`,
       '------------------------------------------',
@@ -699,7 +701,7 @@ export default function KuisView({ setView }) {
                 title="Identitas Peserta Kuis"
               >
                 <span className="text-sm leading-none">🎓</span>
-                <span className="truncate">{playerName} • {playerClass}</span>
+                <span className="truncate">{playerName} • {playerProdi}</span>
               </div>
             )}
 
@@ -881,18 +883,36 @@ export default function KuisView({ setView }) {
 
                   <div className="space-y-1.5">
                     <label className="block font-sans text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300">
-                      Program Studi / Kelas <span className="text-rose-500">*</span>
+                      Program Studi <span className="text-rose-500">*</span>
                     </label>
                     <input
                       type="text"
-                      value={playerClass}
+                      value={playerProdi}
                       onChange={(e) => {
-                        setPlayerClass(e.target.value);
+                        setPlayerProdi(e.target.value);
                         setOnboardingError('');
                       }}
                       onKeyDown={(e) => e.key === 'Enter' && handleStartQuiz()}
-                      placeholder="Matematika/SS18"
+                      placeholder="Ilmu Komputer"
                       maxLength={60}
+                      className="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-900 border-2 border-slate-300 dark:border-slate-700 focus:border-indigo-600 dark:focus:border-indigo-400 focus:outline-none font-sans text-sm font-semibold text-slate-900 dark:text-white transition-colors"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="block font-sans text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300">
+                      Universitas <span className="text-rose-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={playerUniversity}
+                      onChange={(e) => {
+                        setPlayerUniversity(e.target.value);
+                        setOnboardingError('');
+                      }}
+                      onKeyDown={(e) => e.key === 'Enter' && handleStartQuiz()}
+                      placeholder="Institut Pertanian Bogor"
+                      maxLength={80}
                       className="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-900 border-2 border-slate-300 dark:border-slate-700 focus:border-indigo-600 dark:focus:border-indigo-400 focus:outline-none font-sans text-sm font-semibold text-slate-900 dark:text-white transition-colors"
                     />
                   </div>
@@ -1395,7 +1415,7 @@ export default function KuisView({ setView }) {
                         SERTIFIKAT PENCAPAIAN CIVIC QUEST
                       </span>
                       <span className="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-mono text-xs font-extrabold">
-                        {playerClass || 'Matematika/SS18'}
+                        {playerProdi} — {playerUniversity}
                       </span>
                     </div>
                     <h2 className="font-quest font-bold text-3xl sm:text-4xl text-slate-900 dark:text-white">
@@ -1431,7 +1451,7 @@ export default function KuisView({ setView }) {
                         : 'Jawaban Tersimpan Otomatis ✓'}
                     </span>
                     <span className="font-mono text-[11px] text-emerald-700 dark:text-emerald-300 block">
-                      Jawaban Bagian A (1–8) &amp; Bagian B (9–10) atas nama {playerName} ({playerClass}) telah terekam di Rekap Admin.
+                      Jawaban Bagian A (1–8) &amp; Bagian B (9–10) atas nama {playerName} ({playerProdi} — {playerUniversity}) telah terekam di Rekap Admin.
                     </span>
                   </div>
                 </div>
