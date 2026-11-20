@@ -66,6 +66,10 @@ export default function AdminDashboard({ setView, onClose }) {
   const [savedFeedbackAlert, setSavedFeedbackAlert] = useState(false);
   const [copiedStudentText, setCopiedStudentText] = useState(false);
 
+  // Delete Confirmation Modal
+  const [studentToDelete, setStudentToDelete] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
   // Close handler: either onClose prop or setView('kuis')
   const handleClose = () => {
     if (onClose) {
@@ -413,23 +417,31 @@ export default function AdminDashboard({ setView, onClose }) {
     URL.revokeObjectURL(url);
   };
 
-  // Delete Student Submission
-  const handleDeleteSubmission = async (student) => {
-    const studentName = student.studentName || student.name || 'Mahasiswa';
-    const docId = student.id || student.docId;
-    if (!window.confirm(`Hapus data pengerjaan "${studentName}" dari tabel dan database Supabase?`)) {
-      return;
-    }
+  // Delete Student Submission Handler
+  const confirmDelete = async () => {
+    if (!studentToDelete) return;
+    setIsDeleting(true);
+    const docId = studentToDelete.id || studentToDelete.docId;
+    const studentName = studentToDelete.studentName || studentToDelete.name || 'Mahasiswa';
 
+    // 1. Hapus dari state lokal & localStorage
     const updated = submissions.filter(s => (s.id || s.docId) !== docId);
     setSubmissions(updated);
     localStorage.setItem(STORAGE_KEY_SUBMISSIONS, JSON.stringify(updated));
 
+    // 2. Hapus dari database Supabase
     if (docId) {
-      deleteSubmission(docId).catch(e => console.error(e));
+      await deleteSubmission(docId).catch(e => console.error(e));
     }
 
-    setSyncMessage(`Data "${studentName}" telah dihapus.`);
+    // 3. Jika sedang membuka modal detail mahasiswa ini, tutup modalnya
+    if (inspectedStudent && (inspectedStudent.id || inspectedStudent.docId) === docId) {
+      setInspectedStudent(null);
+    }
+
+    setIsDeleting(false);
+    setStudentToDelete(null);
+    setSyncMessage(`Data hasil kuis milik "${studentName}" berhasil dihapus dari sistem & Supabase.`);
   };
 
   // Inspect Student Modal
@@ -1103,18 +1115,19 @@ function doGet(e) {
                           <div className="inline-flex items-center gap-1.5">
                             <button
                               onClick={() => openInspector(s)}
-                              className="btn-3d btn-3d-indigo px-3.5 py-1.5 rounded-xl font-bold text-xs inline-flex items-center gap-1.5 cursor-pointer"
+                              className="btn-3d btn-3d-indigo px-3 py-1.5 rounded-xl font-bold text-xs inline-flex items-center gap-1.5 cursor-pointer"
                               title="Periksa lembar jawaban dan beri penilaian esai"
                             >
                               <Eye className="w-3.5 h-3.5" />
-                              <span>Lihat &amp; Nilai Esai</span>
+                              <span>Lihat &amp; Nilai</span>
                             </button>
                             <button
-                              onClick={() => handleDeleteSubmission(s)}
-                              className="btn-3d btn-3d-rose p-1.5 rounded-xl text-xs inline-flex items-center justify-center cursor-pointer"
+                              onClick={() => setStudentToDelete(s)}
+                              className="btn-3d btn-3d-rose px-2.5 py-1.5 rounded-xl font-bold text-xs inline-flex items-center gap-1 cursor-pointer"
                               title="Hapus data peserta ini dari tabel &amp; Supabase"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
+                              <span>Hapus</span>
                             </button>
                           </div>
                         </td>
@@ -1377,15 +1390,82 @@ function doGet(e) {
               </div>
             </div>
 
-            <div className="flex justify-end pt-2 border-t border-slate-200 dark:border-slate-800">
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-200 dark:border-slate-800">
               <button
+                type="button"
+                onClick={() => setStudentToDelete(inspectedStudent)}
+                className="btn-3d btn-3d-rose px-4 py-2.5 rounded-xl font-bold text-xs flex items-center gap-1.5 cursor-pointer"
+                title="Hapus data peserta ini dari tabel &amp; Supabase"
+              >
+                <Trash2 className="w-4 h-4" />
+                <span>Hapus Data Mahasiswa Ini</span>
+              </button>
+
+              <button
+                type="button"
                 onClick={() => setInspectedStudent(null)}
-                className="btn-3d btn-3d-indigo px-6 py-2.5 rounded-xl font-bold text-sm"
+                className="btn-3d btn-3d-indigo px-6 py-2.5 rounded-xl font-bold text-sm cursor-pointer"
               >
                 Tutup Detail Jawaban
               </button>
             </div>
 
+          </div>
+        </div>
+      )}
+
+      {/* ==============================================================
+           MODAL: DIALOG KONFIRMASI HAPUS DATA MAHASISWA
+           ============================================================== */}
+      {studentToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div onClick={() => !isDeleting && setStudentToDelete(null)} className="fixed inset-0 bg-slate-950/75 backdrop-blur-xs" />
+          <div className="relative z-10 w-full max-w-md rounded-3xl bg-white dark:bg-slate-900 border-2 border-rose-300 dark:border-rose-800 p-6 sm:p-7 shadow-2xl space-y-4 animate-pop-in">
+            <div className="flex items-center gap-3.5">
+              <div className="w-12 h-12 rounded-2xl bg-rose-100 dark:bg-rose-950/80 text-rose-600 dark:text-rose-400 flex items-center justify-center text-xl shadow-xs shrink-0">
+                <Trash2 className="w-6 h-6" />
+              </div>
+              <div>
+                <span className="font-mono text-[11px] font-bold uppercase text-rose-600 dark:text-rose-400 block">
+                  KONFIRMASI HAPUS DATA
+                </span>
+                <h3 className="font-quest font-bold text-lg text-slate-900 dark:text-white">
+                  Hapus Data Kuis Mahasiswa?
+                </h3>
+              </div>
+            </div>
+
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+              Apakah Anda yakin ingin menghapus data hasil pengerjaan kuis atas nama{' '}
+              <strong className="text-slate-900 dark:text-white">
+                {studentToDelete.studentName || studentToDelete.name}
+              </strong>{' '}
+              ({studentToDelete.studentClass || studentToDelete.className})?
+            </p>
+
+            <div className="p-3 rounded-xl bg-rose-50/80 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 text-rose-800 dark:text-rose-300 text-xs font-medium">
+              ⚠️ Data akan dihapus secara permanen dari penyimpanan lokal browser dan tabel database cloud <strong>Supabase</strong>.
+            </div>
+
+            <div className="flex items-center justify-end gap-2.5 pt-2 border-t border-slate-200 dark:border-slate-800">
+              <button
+                type="button"
+                disabled={isDeleting}
+                onClick={() => setStudentToDelete(null)}
+                className="btn-3d btn-3d-neutral px-4 py-2.5 rounded-xl font-bold text-xs cursor-pointer"
+              >
+                Batal
+              </button>
+              <button
+                type="button"
+                disabled={isDeleting}
+                onClick={confirmDelete}
+                className="btn-3d btn-3d-rose px-5 py-2.5 rounded-xl font-bold text-xs flex items-center gap-1.5 cursor-pointer shadow-md"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                <span>{isDeleting ? 'Sedang Menghapus...' : 'Ya, Hapus Permanen'}</span>
+              </button>
+            </div>
           </div>
         </div>
       )}
