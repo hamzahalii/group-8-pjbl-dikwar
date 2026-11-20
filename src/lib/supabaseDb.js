@@ -6,30 +6,36 @@ import { supabase } from './supabase';
 // ── helpers ──────────────────────────────────────────────────────
 
 /** Convert a JS submission object → DB row */
-const toRow = (s) => ({
-  id:              s.id || s.docId,
-  student_name:    s.studentName || s.name || '-',
-  student_prodi:      s.studentProdi || '-',
-  student_university: s.studentUniversity || '-',
-  mcq_score:       Number(s.mcqScore || s.mcCorrectCount || 0),
-  mcq_percentage:  Number(s.mcqPercentage || 0),
-  xp:              Number(s.xp || 0),
-  base_xp:         Number(s.baseXp || s.xp || 0),
-  max_streak:      Number(s.maxStreak || 0),
-  mcq_answers:     s.mcqAnswers || [],
-  essay9:          s.essay9 || {},
-  essay10:         s.essay10 || {},
-  admin_reviewed:  Boolean(s.moderatorReviewed || s.adminReviewed),
-  submitted_at:    s.submittedAt || new Date().toISOString(),
-  submitted_at_wib: s.submittedAtWIB || null
-});
+const toRow = (s) => {
+  const prodi = s.studentProdi || s.studentClass || '-';
+  const univ = s.studentUniversity || '-';
+  return {
+    id:                 s.id || s.docId,
+    student_name:       s.studentName || s.name || '-',
+    student_class:      s.studentClass || `${prodi} (${univ})`,
+    student_prodi:      prodi,
+    student_university: univ,
+    mcq_score:          Number(s.mcqScore || s.mcCorrectCount || 0),
+    mcq_percentage:     Number(s.mcqPercentage || 0),
+    xp:                 Number(s.xp || 0),
+    base_xp:            Number(s.baseXp || s.xp || 0),
+    max_streak:         Number(s.maxStreak || 0),
+    mcq_answers:        s.mcqAnswers || [],
+    essay9:             s.essay9 || {},
+    essay10:            s.essay10 || {},
+    admin_reviewed:     Boolean(s.moderatorReviewed || s.adminReviewed),
+    submitted_at:       s.submittedAt || new Date().toISOString(),
+    submitted_at_wib:   s.submittedAtWIB || null
+  };
+};
 
 /** Convert a DB row → JS submission object */
 const fromRow = (r) => ({
   id:               r.id,
   docId:            r.id,
   studentName:      r.student_name,
-  studentProdi:     r.student_prodi || '-',
+  studentClass:     r.student_class || '-',
+  studentProdi:     r.student_prodi || r.student_class || '-',
   studentUniversity: r.student_university || '-',
   mcqScore:         r.mcq_score,
   mcqPercentage:    r.mcq_percentage,
