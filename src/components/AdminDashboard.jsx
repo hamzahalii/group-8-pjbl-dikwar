@@ -222,10 +222,10 @@ export default function AdminDashboard({ setView, onClose }) {
   // Seed Demo Data
   const handleSeedDemo = () => {
     const samples = [
-      { name: "Nadira Putri Pratama", cls: "Matematika/SS18", score: 8 },
-      { name: "Raka Aditya Wijaya", cls: "Matematika/SS18", score: 7 },
-      { name: "Kirana Larasati", cls: "Matematika/SS18", score: 6 },
-      { name: "Fadhil Ramadhan", cls: "Matematika/SS18", score: 8 }
+      { name: "Nadira Putri Pratama", prodi: "Ilmu Komputer", univ: "Institut Pertanian Bogor", score: 8 },
+      { name: "Raka Aditya Wijaya", prodi: "Matematika", univ: "Institut Pertanian Bogor", score: 7 },
+      { name: "Kirana Larasati", prodi: "Agribisnis", univ: "Universitas Padjadjaran", score: 6 },
+      { name: "Fadhil Ramadhan", prodi: "Ilmu Komputer", univ: "Institut Pertanian Bogor", score: 8 }
     ];
     const pick = samples[submissions.length % samples.length];
     const now = new Date();
@@ -249,7 +249,8 @@ export default function AdminDashboard({ setView, onClose }) {
       id: demoId,
       docId: demoId,
       studentName: pick.name,
-      studentClass: pick.cls,
+      studentProdi: pick.prodi,
+      studentUniversity: pick.univ,
       mcqScore: pick.score,
       mcqPercentage: Math.round((pick.score / 8) * 100),
       xp: pick.score * 115 + 360,
@@ -320,7 +321,8 @@ export default function AdminDashboard({ setView, onClose }) {
       id: sub.id || sub.docId,
       timestamp: sub.submittedAtWIB || sub.submittedAt,
       name: sub.studentName || sub.name,
-      prodi: sub.studentClass || sub.className,
+      prodi: sub.studentProdi || '-',
+      universitas: sub.studentUniversity || '-',
       mcScore: `${sub.mcqScore || 0}/8 (${sub.mcqPercentage || 0}%)`,
       xp: totalXp,
       mcAnswers: mcMap,
@@ -354,7 +356,7 @@ export default function AdminDashboard({ setView, onClose }) {
     }
 
     const headers = [
-      "No", "Waktu Submit", "Nama Lengkap", "Program Studi / Kelas",
+      "No", "Waktu Submit", "Nama Lengkap", "Program Studi", "Universitas",
       "Skor PG (Benar/8)", "Akurasi PG (%)", "Total XP (Termasuk Bonus)",
       "Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7", "Q8",
       "Esai 9.1 (Mengapa Apatis)", "Esai 9.2 (2 Tindakan Konkret)",
@@ -383,7 +385,8 @@ export default function AdminDashboard({ setView, onClose }) {
         idx + 1,
         s.submittedAtWIB || s.date || "-",
         s.studentName || s.name || "-",
-        s.studentClass || s.className || "-",
+        s.studentProdi || '-',
+        s.studentUniversity || '-',
         `${s.mcqScore || s.mcCorrectCount || 0}/8`,
         `${s.mcqPercentage || Math.round(((s.mcqScore || 0) / 8) * 100)}%`,
         totalXp,
@@ -496,7 +499,7 @@ export default function AdminDashboard({ setView, onClose }) {
     const totalXp = (inspectedStudent.baseXp || inspectedStudent.xp || 0) + Number(modGrade9 || 0) + Number(modGrade10 || 0);
 
     const text = [
-      `HASIL KUIS CIVIC QUEST — ${inspectedStudent.studentName || inspectedStudent.name} (${inspectedStudent.studentClass || inspectedStudent.className})`,
+      `HASIL KUIS CIVIC QUEST — ${inspectedStudent.studentName || inspectedStudent.name} (${inspectedStudent.studentProdi || '-'} — ${inspectedStudent.studentUniversity || '-'})`,
       `Waktu Submit: ${inspectedStudent.submittedAtWIB || inspectedStudent.date || "-"}`,
       `Skor PG: ${inspectedStudent.mcqScore || inspectedStudent.mcCorrectCount || 0}/8`,
       `Total XP: ${totalXp} XP`,
@@ -540,9 +543,10 @@ export default function AdminDashboard({ setView, onClose }) {
   // Filtered & Sorted submissions
   const filteredSubmissions = submissions.filter(s => {
     const name = (s.studentName || s.name || "").toLowerCase();
-    const cls = (s.studentClass || s.className || "").toLowerCase();
+    const prodi = (s.studentProdi || "").toLowerCase();
+    const univ = (s.studentUniversity || "").toLowerCase();
     const query = searchQuery.trim().toLowerCase();
-    return !query || name.includes(query) || cls.includes(query);
+    return !query || name.includes(query) || prodi.includes(query) || univ.includes(query);
   }).sort((a, b) => {
     if (sortOrder === 'highest_mcq') return (b.mcqScore || b.mcCorrectCount || 0) - (a.mcqScore || a.mcCorrectCount || 0);
     if (sortOrder === 'highest_xp') return (b.xp || 0) - (a.xp || 0);
@@ -554,7 +558,7 @@ export default function AdminDashboard({ setView, onClose }) {
   // Code.gs sample string
   const appsScriptCode = `// GOOGLE APPS SCRIPT (Code.gs) — DATABASE 2 ARAH CIVIC QUEST
 const SHEET_NAME = 'Jawaban_Mahasiswa';
-const HEADERS = ['ID', 'Waktu Submit', 'Nama Lengkap', 'Program Studi / Kelas', 'Skor PG (Benar/8)', 'Total XP', 'Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Esai 9 (Analisis Kasus)', 'Esai 10 (Refleksi & Aksi)', 'Bonus XP Esai 9', 'Komentar Admin Esai 9', 'Bonus XP Esai 10', 'Komentar Admin Esai 10', 'Status Dinilai', 'Raw JSON'];
+const HEADERS = ['ID', 'Waktu Submit', 'Nama Lengkap', 'Program Studi', 'Universitas', 'Skor PG (Benar/8)', 'Total XP', 'Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Esai 9 (Analisis Kasus)', 'Esai 10 (Refleksi & Aksi)', 'Bonus XP Esai 9', 'Komentar Admin Esai 9', 'Bonus XP Esai 10', 'Komentar Admin Esai 10', 'Status Dinilai', 'Raw JSON'];
 
 function getOrCreateSheet() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -576,7 +580,7 @@ function doPost(e) {
     const id = String(body.id || ('CQ-' + new Date().getTime()));
     const mc = body.mcAnswers || {};
     const rowValues = [
-      id, body.timestamp || new Date().toLocaleString('id-ID'), body.name || '-', body.prodi || '-',
+      id, body.timestamp || new Date().toLocaleString('id-ID'), body.name || '-', body.prodi || '-', body.universitas || '-',
       body.mcScore || '0/8', Number(body.xp || 0),
       mc.Q1 || '-', mc.Q2 || '-', mc.Q3 || '-', mc.Q4 || '-', mc.Q5 || '-', mc.Q6 || '-', mc.Q7 || '-', mc.Q8 || '-',
       body.essay9 || '-', body.essay10 || '-',
@@ -617,26 +621,26 @@ function doGet(e) {
       const r = rows[i];
       if (!r[0] && !r[2]) continue;
       let obj = null;
-      try { obj = r[21] ? JSON.parse(r[21]) : null; } catch (err) { obj = null; }
+      try { obj = r[22] ? JSON.parse(r[22]) : null; } catch (err) { obj = null; }
       if (!obj) {
         obj = {
           id: String(r[0]), docId: String(r[0]),
           submittedAtWIB: String(r[1]),
-          studentName: String(r[2]), studentClass: String(r[3]),
-          mcqScore: parseInt(String(r[4]).split('/')[0], 10) || 0,
-          mcqPercentage: Math.round(((parseInt(String(r[4]).split('/')[0], 10) || 0) / 8) * 100),
-          xp: Number(r[5] || 0),
-          essay9: { part1_mengapa_apatis: String(r[14]), part2_dua_tindakan: '', moderatorScore: Number(r[16] || 0), moderatorComment: String(r[17] || '') },
-          essay10: { part1_bentuk_apatisme: String(r[15]), part2_aksi_dan_alasan: '', moderatorScore: Number(r[18] || 0), moderatorComment: String(r[19] || '') }
+          studentName: String(r[2]), studentProdi: String(r[3]), studentUniversity: String(r[4]),
+          mcqScore: parseInt(String(r[5]).split('/')[0], 10) || 0,
+          mcqPercentage: Math.round(((parseInt(String(r[5]).split('/')[0], 10) || 0) / 8) * 100),
+          xp: Number(r[6] || 0),
+          essay9: { part1_mengapa_apatis: String(r[15]), part2_dua_tindakan: '', moderatorScore: Number(r[17] || 0), moderatorComment: String(r[18] || '') },
+          essay10: { part1_bentuk_apatisme: String(r[16]), part2_aksi_dan_alasan: '', moderatorScore: Number(r[19] || 0), moderatorComment: String(r[20] || '') }
         };
       } else {
         if (!obj.essay9) obj.essay9 = {};
         if (!obj.essay10) obj.essay10 = {};
-        obj.essay9.moderatorScore = Number(r[16] || obj.essay9.moderatorScore || 0);
-        obj.essay9.moderatorComment = String(r[17] || obj.essay9.moderatorComment || '');
-        obj.essay10.moderatorScore = Number(r[18] || obj.essay10.moderatorScore || 0);
-        obj.essay10.moderatorComment = String(r[19] || obj.essay10.moderatorComment || '');
-        obj.moderatorReviewed = (String(r[20]) === 'Sudah Dinilai Admin') || Boolean(obj.moderatorReviewed);
+        obj.essay9.moderatorScore = Number(r[17] || obj.essay9.moderatorScore || 0);
+        obj.essay9.moderatorComment = String(r[18] || obj.essay9.moderatorComment || '');
+        obj.essay10.moderatorScore = Number(r[19] || obj.essay10.moderatorScore || 0);
+        obj.essay10.moderatorComment = String(r[20] || obj.essay10.moderatorComment || '');
+        obj.moderatorReviewed = (String(r[21]) === 'Sudah Dinilai Admin') || Boolean(obj.moderatorReviewed);
       }
       submissions.push(obj);
     }
@@ -1036,7 +1040,7 @@ function doGet(e) {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Cari nama mahasiswa atau program studi/kelas (contoh: Matematika/SS18)..."
+                placeholder="Cari nama, program studi, atau universitas..."
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 focus:border-indigo-600 focus:outline-none font-sans text-sm text-slate-900 dark:text-white"
               />
             </div>
@@ -1064,7 +1068,8 @@ function doGet(e) {
                   <th className="py-3.5 px-4">No</th>
                   <th className="py-3.5 px-4">Waktu Submit</th>
                   <th className="py-3.5 px-4">Nama Lengkap</th>
-                  <th className="py-3.5 px-4">Program Studi / Kelas</th>
+                  <th className="py-3.5 px-4">Program Studi</th>
+                  <th className="py-3.5 px-4">Universitas</th>
                   <th className="py-3.5 px-4">Skor PG (1–8)</th>
                   <th className="py-3.5 px-4">Total XP</th>
                   <th className="py-3.5 px-4 text-right">Aksi Admin</th>
@@ -1073,7 +1078,7 @@ function doGet(e) {
               <tbody className="divide-y divide-slate-200 dark:divide-slate-800 font-sans text-xs sm:text-sm">
                 {filteredSubmissions.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="py-10 px-4 text-center text-slate-500">
+                    <td colSpan={8} className="py-10 px-4 text-center text-slate-500">
                       Belum ada data pengerjaan mahasiswa yang cocok. Klik tombol <strong>"+ Data Simulasi"</strong> untuk menambahkan data demo.
                     </td>
                   </tr>
@@ -1094,7 +1099,8 @@ function doGet(e) {
                             </span>
                           )}
                         </td>
-                        <td className="py-3.5 px-4 font-mono text-xs font-semibold text-indigo-700 dark:text-indigo-300">{s.studentClass || s.className || "-"}</td>
+                        <td className="py-3.5 px-4 font-mono text-xs font-semibold text-indigo-700 dark:text-indigo-300">{s.studentProdi || "-"}</td>
+                        <td className="py-3.5 px-4 font-mono text-xs font-semibold text-slate-600 dark:text-slate-300">{s.studentUniversity || "-"}</td>
                         <td className="py-3.5 px-4 font-mono text-xs font-extrabold text-emerald-600 dark:text-emerald-400">
                           {s.mcqScore || s.mcCorrectCount || 0}/8 ({s.mcqPercentage || Math.round(((s.mcqScore || 0) / 8) * 100)}%)
                         </td>
@@ -1146,7 +1152,10 @@ function doGet(e) {
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="px-2.5 py-0.5 rounded-lg bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-mono text-xs font-bold">
-                      {inspectedStudent.studentClass || inspectedStudent.className}
+                      {inspectedStudent.studentProdi || '-'}
+                    </span>
+                    <span className="px-2.5 py-0.5 rounded-lg bg-indigo-100 dark:bg-indigo-950 text-indigo-800 dark:text-indigo-300 font-mono text-xs font-bold">
+                      {inspectedStudent.studentUniversity || '-'}
                     </span>
                     <span className="font-mono text-xs text-slate-500">
                       {inspectedStudent.submittedAtWIB || inspectedStudent.date || "-"}
